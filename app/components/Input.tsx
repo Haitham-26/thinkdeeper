@@ -16,7 +16,7 @@ export const Input: React.FC<InputProps> = ({ title }) => {
       />
       <label
         htmlFor="name"
-        className="absolute start-5 top-1/2 -translate-y-1/2 text-white transition-all peer-focus:top-0 peer-focus:text-sm peer-focus:bg-gray-700 peer-focus:px-1"
+        className="absolute start-5 top-1/2 -translate-y-1/2 text-white transition-all peer-focus:top-0 peer-focus:text-sm peer-focus:bg-gray-700 peer-focus:px-1 pointer-events-none"
       >
         {title}
       </label>

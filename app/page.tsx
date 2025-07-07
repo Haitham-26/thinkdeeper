@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="px-4 md:px-8 bg-gray-950">
       <section className="min-h-screen content-center">
-        <div className="flex flex-col items-center mx-auto justify-center gap-5 w-min">
+        <div className="flex flex-col items-center mx-auto justify-center gap-5">
           <h1 className="text-4xl text-center font-bold text-white animate-pulse">
             فكر بعمق
           </h1>
