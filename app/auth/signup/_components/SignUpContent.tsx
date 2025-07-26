@@ -33,6 +33,7 @@ export const SignUpContent: React.FC = () => {
       });
 
       router.push("/");
+      router.refresh();
     } catch (e) {
       console.log(e);
       alert(e);

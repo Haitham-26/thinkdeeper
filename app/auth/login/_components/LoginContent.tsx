@@ -33,6 +33,7 @@ export const LoginContent: React.FC = () => {
       });
 
       router.push("/");
+      router.refresh();
     } catch (e) {
       console.log(e);
       alert(e);
