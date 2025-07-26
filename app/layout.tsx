@@ -21,7 +21,9 @@ export default async function RootLayout({
 
   return (
     <html lang="ar" dir="rtl">
-      <body className={cairoFont.className}>
+      <body
+        className={`${cairoFont.className} min-h-screen flex flex-col overflow-y-auto`}
+      >
         <Header token={token} />
         {children}
       </body>
