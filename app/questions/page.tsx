@@ -4,6 +4,7 @@ import { AuthClient } from "@/tools/AuthClient";
 import getToken from "@/tools/getToken";
 import { QuestionCreateSection } from "./_components/QuestionCreateSection";
 import { QuestionCard } from "./_components/QuestionCard";
+import { Profile } from "./_components/Profile";
 
 export default async function Page() {
   const token = await getToken();
@@ -29,10 +30,10 @@ export default async function Page() {
 
   return (
     <main className="px-4 md:px-8 py-6 bg-gray-900 flex-1">
-      <div className="flex gap-8 relative">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
         <QuestionCreateSection userId={user._id} />
 
-        <div className="flex flex-col gap-6 flex-1">
+        <div className="flex flex-col gap-6 order-3 lg:order-2">
           <p className="text-white text-2xl text-center font-bold">أسئلتي</p>
 
           <div className="flex flex-col gap-2">
@@ -42,7 +43,7 @@ export default async function Page() {
           </div>
         </div>
 
-        <div className="flex-1"></div>
+        <Profile user={user} questionsLength={questions.length} />
       </div>
     </main>
   );

@@ -5,3 +5,12 @@
 *::selection {
   @apply bg-white text-black;
 }
+
+textarea {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
