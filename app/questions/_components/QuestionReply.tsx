@@ -1,4 +1,4 @@
-import { Reply } from "@/model/question/types/Reply";
+import { Reply } from "@/model/reply/Reply";
 import React from "react";
 
 type QuestionReplyProps = {

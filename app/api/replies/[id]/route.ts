@@ -7,8 +7,7 @@ export async function POST(
 ) {
   const { id } = context.params;
 
-  return await useProxy(`/questions/${id}/reply`, {
+  return await useProxy(`/replies/${id}`, {
     method: "POST",
-    data: await req.json(),
   });
 }

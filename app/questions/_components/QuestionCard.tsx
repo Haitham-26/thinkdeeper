@@ -14,15 +14,19 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { QuestionReply } from "./QuestionReply";
 import { faShare } from "@fortawesome/free-solid-svg-icons/faShare";
+import { Reply } from "@/model/reply/Reply";
 
 type QuestionCardProps = {
   question: Question;
+  replies?: Reply[];
 };
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({
-  question: question,
+  question,
+  replies: _replies,
 }) => {
   const [replySubmitLoading, setReplySubmitLoading] = useState(false);
+  const [replies, setReplies] = useState<Reply[]>(_replies || []);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const replyContainerRef = useRef<HTMLDivElement>(null);
@@ -67,12 +71,22 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     try {
       setReplySubmitLoading(true);
 
-      await NextClient(`/questions/${question._id}/reply`, {
+      await NextClient(`/replies/${question._id}/reply`, {
         method: "POST",
         data: {
           reply: getValues("reply"),
+          questionId: question._id,
         },
       });
+
+      const { data: updatedReplies } = await NextClient<Reply[]>(
+        `/replies/${question._id}`,
+        {
+          method: "POST",
+        }
+      );
+
+      setReplies(updatedReplies);
 
       reset({
         reply: "",
@@ -110,7 +124,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       </Link>
       <span className="text-gray-400 text-sm">{formattedCreatedAt}</span>
 
-      {pathname === "/questions" ? (
+      {true ? (
         <div className="flex justify-end gap-4 h-8">
           <Button
             onClick={onShare}
@@ -130,17 +144,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             href={`/questions/${question._id}`}
             className="!bg-transparent text-white !p-1 flex items-center gap-2"
           >
-            الردود ({question.replies.length || 0})
+            الردود ({replies.length || 0})
             <FontAwesomeIcon icon={faComment} />
           </Link>
         </div>
       ) : null}
-
-      {pathname !== "/questions"
-        ? question.replies.map((reply) => (
-            <QuestionReply key={reply._id} reply={reply} />
-          ))
-        : null}
 
       <Controller
         control={control}
@@ -175,6 +183,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           </div>
         )}
       />
+
+      {true
+        ? replies.map((reply) => (
+            <QuestionReply key={reply._id} reply={reply} />
+          ))
+        : null}
     </div>
   );
 };
