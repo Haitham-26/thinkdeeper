@@ -10,7 +10,7 @@ export default async function Page() {
   const token = await getToken();
 
   const { data: user } = await AuthClient<User>(
-    `/user/6884d64167fb1579ab73f128`,
+    `/user`,
     {
       method: "POST",
     },
