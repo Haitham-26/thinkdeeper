@@ -1,118 +1,35 @@
 "use client";
 
-import { Button } from "@/app/components/Button";
-import { ReplyOnQuestionDto } from "@/model/question/dto/ReplyOnQuestionDto";
+import React, { useEffect, useState } from "react";
 import { Question } from "@/model/question/Question";
-import { NextClient } from "@/tools/NextClient";
-import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
-import { faReply } from "@fortawesome/free-solid-svg-icons/faReply";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { QuestionReply } from "./QuestionReply";
-import { faShare } from "@fortawesome/free-solid-svg-icons/faShare";
 import { Reply } from "@/model/reply/Reply";
+import { AuthClient } from "@/tools/AuthClient";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
+import { ShareQuestion } from "./ShareQuestion";
 
 type QuestionCardProps = {
   question: Question;
-  replies?: Reply[];
 };
 
-export const QuestionCard: React.FC<QuestionCardProps> = ({
-  question,
-  replies: _replies,
-}) => {
-  const [replySubmitLoading, setReplySubmitLoading] = useState(false);
-  const [replies, setReplies] = useState<Reply[]>(_replies || []);
-
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const replyContainerRef = useRef<HTMLDivElement>(null);
-
-  const { control, getValues, handleSubmit, reset } =
-    useForm<ReplyOnQuestionDto>({
-      defaultValues: {
-        reply: "",
-      },
-    });
-
-  const pathname = usePathname();
-
-  const formattedCreatedAt = new Date(question.createdAt).toLocaleString();
-
-  const onShare = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/questions/${question._id}`
-    );
-  };
-
-  const onStartReply = () => {
-    const textarea = textareaRef.current;
-    const replyContainer = replyContainerRef.current;
-
-    if (!textarea || !replyContainer) {
-      return;
-    }
-
-    window.dispatchEvent(
-      new CustomEvent("reply-focus", {
-        detail: { source: replyContainer },
-      })
-    );
-
-    replyContainer.classList.remove("hidden");
-    replyContainer.classList.add("flex");
-    textarea.focus();
-  };
-
-  const onReplySubmit = async () => {
-    try {
-      setReplySubmitLoading(true);
-
-      await NextClient(`/replies/${question._id}/reply`, {
-        method: "POST",
-        data: {
-          reply: getValues("reply"),
-          questionId: question._id,
-        },
-      });
-
-      const { data: updatedReplies } = await NextClient<Reply[]>(
-        `/replies/${question._id}`,
-        {
-          method: "POST",
-        }
-      );
-
-      setReplies(updatedReplies);
-
-      reset({
-        reply: "",
-      });
-    } catch (e) {
-      console.log(e);
-      alert(e);
-    } finally {
-      setReplySubmitLoading(false);
-    }
-  };
+export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
+  const [replies, setReplies] = useState<Reply[]>([]);
 
   useEffect(() => {
-    const handleFocus = (e: any) => {
-      if (
-        replyContainerRef.current &&
-        e.detail.source !== replyContainerRef.current
-      ) {
-        replyContainerRef.current.classList.remove("flex");
-        replyContainerRef.current.classList.add("hidden");
+    const fetchReplies = async () => {
+      try {
+        const { data } = await AuthClient<Reply[]>(`/replies/${question._id}`, {
+          method: "POST",
+        });
+        setReplies(data);
+      } catch (err) {
+        console.error("Error fetching replies:", err);
       }
     };
 
-    window.addEventListener("reply-focus", handleFocus);
-    return () => window.removeEventListener("reply-focus", handleFocus);
-  }, []);
+    fetchReplies();
+  }, [question._id]);
 
   return (
     <div className="p-6 bg-gray-800 rounded-2xl border-2 border-gray-700">
@@ -122,73 +39,17 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       >
         {question.question}
       </Link>
-      <span className="text-gray-400 text-sm">{formattedCreatedAt}</span>
 
-      {true ? (
-        <div className="flex justify-end gap-4 h-8">
-          <Button
-            onClick={onShare}
-            icon={faShare}
-            className="!bg-transparent text-white !p-1"
-          >
-            مشاركة
-          </Button>
-          <Button
-            onClick={onStartReply}
-            icon={faReply}
-            className="!bg-transparent text-white !p-1"
-          >
-            رد
-          </Button>
-          <Link
-            href={`/questions/${question._id}`}
-            className="!bg-transparent text-white !p-1 flex items-center gap-2"
-          >
-            الردود ({replies.length || 0})
-            <FontAwesomeIcon icon={faComment} />
-          </Link>
-        </div>
-      ) : null}
-
-      <Controller
-        control={control}
-        name="reply"
-        render={({ field: { value, onChange } }) => (
-          <div
-            ref={replyContainerRef}
-            className="hidden relative flex-col gap-1 border-1 border-gray-200 rounded-lg overflow-hidden mt-3"
-          >
-            <div className="text-gray-200 bg-gray-800 text-sm pt-2 pe-2 rounded-[inherit] w-full text-end">
-              {value?.length || 0} / 200
-            </div>
-
-            <textarea
-              ref={textareaRef}
-              value={value}
-              onChange={onChange}
-              maxLength={200}
-              className="w-full border-0 text-white outline-0 p-3 pt-0 block h-60"
-            ></textarea>
-
-            <div className="absolute bottom-0 end-0 start-0 w-full bg-gray-800 flex justify-end z-10">
-              <Button
-                icon={faPaperPlane}
-                onClick={handleSubmit(onReplySubmit)}
-                loading={replySubmitLoading}
-                className="!bg-transparent text-white !p-2 h-12 w-28"
-              >
-                إرسال الرد
-              </Button>
-            </div>
-          </div>
-        )}
-      />
-
-      {true
-        ? replies.map((reply) => (
-            <QuestionReply key={reply._id} reply={reply} />
-          ))
-        : null}
+      <div className="flex justify-end gap-4 h-8">
+        <ShareQuestion questionId={question._id} />
+        <Link
+          href={`/questions/${question._id}`}
+          className="!bg-transparent text-white !p-1 flex items-center gap-2"
+        >
+          الردود ({replies?.length || 0})
+          <FontAwesomeIcon icon={faComment} />
+        </Link>
+      </div>
     </div>
   );
 };

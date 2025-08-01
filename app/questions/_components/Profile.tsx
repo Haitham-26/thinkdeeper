@@ -5,13 +5,9 @@ import React from "react";
 
 type ProfileProps = {
   user: User;
-  questionsLength: number;
 };
 
-export const Profile: React.FC<ProfileProps> = ({
-  user,
-  questionsLength = 0,
-}) => {
+export const Profile: React.FC<ProfileProps> = ({ user }) => {
   const formattedCreatedAt = new Intl.DateTimeFormat("en", {
     year: "numeric",
     month: "2-digit",
@@ -36,11 +32,6 @@ export const Profile: React.FC<ProfileProps> = ({
           <p className="text-white text-base">
             <strong>تاريخ الانضمام: </strong>
             {formattedCreatedAt}
-          </p>
-
-          <p className="text-white text-base">
-            <strong>عدد الأسئلة: </strong>
-            {questionsLength}
           </p>
         </div>
       </div>

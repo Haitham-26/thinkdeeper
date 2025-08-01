@@ -3,88 +3,72 @@
 import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input";
 import { CreateQuestionDto } from "@/model/question/dto/CreateQuestionDto";
+import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 type QuestionCreateSectionProps = {
   userId: string;
+  onCreate: (questions: Question[]) => void;
 };
 
 export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
   userId,
+  onCreate,
 }) => {
   const [loading, setLoading] = useState(false);
 
-  const { control, handleSubmit, getValues, reset } =
-    useForm<CreateQuestionDto>({
-      defaultValues: {
-        question: "",
-        userId,
-      },
-    });
+  const { control, handleSubmit, getValues } = useForm<CreateQuestionDto>({
+    defaultValues: { question: "", userId },
+  });
 
   const onSubmit = async () => {
     try {
       setLoading(true);
 
-      const dto = getValues();
-
-      await NextClient("/questions/create", {
+      await NextClient<Question>("/questions/create", {
         method: "POST",
-        data: dto,
+        data: { userId, question: getValues("question") },
       });
 
-      await NextClient("/questions", {
+      const { data: questions } = await NextClient<Question[]>("/questions", {
         method: "POST",
-        data: {
-          userId,
-        },
+        data: { userId },
       });
 
-      reset({
-        question: "",
-        userId,
-      });
+      onCreate(questions);
     } catch (e) {
       console.log(e);
+      alert(e);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="lg:sticky lg:top-20 h-fit order-2 lg:order-1">
-      <div className="px-6 py-8 mx-auto flex flex-col gap-6 rounded-2xl border-2 border-gray-100 before:absolute before:w-full before:h-full before:bg-gray-700 before:rounded-[inherit] before:top-0 before:left-0 before:right-0 before:bottom-0 before:-z-[1] relative z-1">
-        <p className="text-white text-center text-2xl font-bold mx-auto">
-          شارك سؤالًا
-        </p>
-
-        <Controller
-          control={control}
-          name="question"
-          rules={{
-            required: { value: true, message: "هذا الحقل مطلوب" },
-          }}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
-            <Input
-              title="سؤالك"
-              value={value}
-              onChange={onChange}
-              valid={!error}
-              errorMessage={error?.message}
-            />
-          )}
-        />
-
-        <Button
-          loading={loading}
-          onClick={handleSubmit(onSubmit)}
-          className="h-10"
-        >
-          إضافة السؤال
-        </Button>
-      </div>
+    <div className="flex flex-col gap-2">
+      <Controller
+        control={control}
+        name="question"
+        rules={{ required: true }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
+          <Input
+            title="السؤال الجديد"
+            value={value}
+            onChange={onChange}
+            valid={!error}
+            errorMessage={error?.message}
+          />
+        )}
+      />
+      <Button
+        onClick={handleSubmit(onSubmit)}
+        loading={loading}
+        className="h-10"
+      >
+        أرسل سؤال
+      </Button>
     </div>
   );
 };
