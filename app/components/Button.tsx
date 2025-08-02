@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: string;
+  children?: React.ReactNode;
   loading?: boolean;
   icon?: IconProp;
 };

@@ -1,6 +1,6 @@
 import { AuthClient } from "@/tools/AuthClient";
-import { QuestionCard } from "../_components/QuestionCard";
 import { Question } from "@/model/question/Question";
+import { QuestionCard } from "../_components/QuestionCard";
 
 type Props = {
   params: Promise<{ id: string }>;

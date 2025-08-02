@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
       ) : null}
 
       <div className="ms-auto">
-        <span className="text-white sm:text-2xl font-bold">فكر بعمق</span>
+        <span className="text-white sm:text-2xl font-bold">لوجو</span>
       </div>
     </header>
   );
