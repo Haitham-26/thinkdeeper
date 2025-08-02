@@ -3,11 +3,11 @@ import { NextRequest } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = context.params;
 
-  return await useProxy(`/replies/${id}`, {
+  return await useProxy(`/replies/${id}/has-liked`, {
     method: "POST",
   });
 }

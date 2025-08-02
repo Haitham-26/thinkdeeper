@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Question } from "@/model/question/Question";
 import { Reply } from "@/model/reply/Reply";
-import { AuthClient } from "@/tools/AuthClient";
 import { Button } from "@/app/components/Button";
 import { faShare } from "@fortawesome/free-solid-svg-icons/faShare";
 import { usePathname } from "next/navigation";
@@ -18,7 +17,6 @@ import { DeleteQuestion } from "./DeleteQuestion";
 import { Input } from "@/app/components/Input";
 import toast from "react-hot-toast";
 import { useQuestionsReplies } from "../context/questions-replies-context";
-import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 
 const buttonClassName = "!bg-transparent text-white !p-1";
 
@@ -29,7 +27,7 @@ type QuestionCardProps = {
 };
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({
-  question: _question,
+  question,
   isLoggedIn,
   userId,
 }) => {
@@ -37,16 +35,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const [reply, setReply] = useState("");
   const [replyAsAnnonymous, setReplyAsAnonymous] = useState(true);
   const [name, setName] = useState("");
-  const [question, setQuestion] = useState<Question>(_question);
 
-  const { replies, setReplies, questions, setQuestions } =
-    useQuestionsReplies();
+  const { replies, setReplies } = useQuestionsReplies();
 
   const pathname = usePathname();
 
   const isOnProfilePage = !Boolean(pathname.replace("/questions", "").length);
-
-  const isLiked = question?.likes.find((like) => like.userId === userId);
 
   const onShare = () => {
     navigator.clipboard.writeText(
@@ -70,9 +64,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         data: { reply, name },
       });
 
-      const { data } = await AuthClient<Reply[]>(`/replies/${question._id}`, {
-        method: "POST",
-      });
+      const { data } = await NextClient<Reply[]>(
+        `/replies/${question._id}/all`,
+        {
+          method: "POST",
+        }
+      );
 
       setReplies(data);
       setReply("");
@@ -86,41 +83,15 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     }
   };
 
-  const onLike = async () => {
-    try {
-      if (!userId) {
-        return;
-      }
-
-      await NextClient(`/like/${question._id}`, {
-        method: "POST",
-      });
-
-      const { data: updatedQuestion } = await NextClient<Question>(
-        `/questions/${question._id}`,
-        {
-          method: "GET",
-        }
-      );
-
-      const updatedQuestions = questions
-        .filter((q) => q._id !== updatedQuestion._id)
-        .concat(updatedQuestion);
-
-      setQuestions(updatedQuestions);
-
-      setQuestion(updatedQuestion);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
     const fetchReplies = async () => {
       try {
-        const { data } = await AuthClient<Reply[]>(`/replies/${question._id}`, {
-          method: "POST",
-        });
+        const { data } = await NextClient<Reply[]>(
+          `/replies/${question._id}/all`,
+          {
+            method: "POST",
+          }
+        );
         setReplies(data);
       } catch (err) {
         console.error("Error fetching replies:", err);
@@ -171,7 +142,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           }}
         >
           {replies.map((reply) => (
-            <QuestionReply key={reply._id} reply={reply} />
+            <QuestionReply key={reply._id} reply={reply} userId={userId} />
           ))}
         </div>
       ) : null}
@@ -233,16 +204,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           </Button>
 
           {isOnProfilePage ? <DeleteQuestion question={question} /> : null}
-
-          <Button
-            icon={faHeart}
-            onClick={onLike}
-            className={`${buttonClassName} ${
-              isLiked ? "[&_svg]:text-red-500" : ""
-            } hover:text-red-500`}
-          >
-            <span>{question.likes.length || 0}</span>
-          </Button>
         </div>
       </div>
     </div>
