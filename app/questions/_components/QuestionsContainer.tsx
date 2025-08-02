@@ -8,11 +8,13 @@ import { NextClient } from "@/tools/NextClient";
 import { useQuestionsReplies } from "../context/questions-replies-context";
 
 type QuestionsContainerProps = {
-  userId: string;
+  userId: string | null;
+  isLoggedIn: boolean;
 };
 
 export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   userId,
+  isLoggedIn = false,
 }) => {
   const { questions, setQuestions } = useQuestionsReplies();
 
@@ -29,19 +31,20 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
     fetchQuestions();
   }, [userId, setQuestions]);
 
-  const handleQuestionCreated = (updatedQuestions: Question[]) => {
-    setQuestions(updatedQuestions);
-  };
-
   return (
     <div className="flex flex-col gap-6 order-3 lg:order-2">
       <p className="text-white text-2xl text-center font-bold">أسئلتي</p>
 
-      <QuestionCreateSection userId={userId} onCreate={handleQuestionCreated} />
+      <QuestionCreateSection userId={userId} />
 
       <div className="flex flex-col gap-2">
         {questions.map((question) => (
-          <QuestionCard key={question._id} question={question} />
+          <QuestionCard
+            key={question._id}
+            question={question}
+            isLoggedIn={isLoggedIn}
+            userId={userId}
+          />
         ))}
       </div>
     </div>

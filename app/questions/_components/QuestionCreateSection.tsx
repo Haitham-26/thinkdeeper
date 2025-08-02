@@ -11,7 +11,7 @@ import { useQuestionsReplies } from "../context/questions-replies-context";
 import toast from "react-hot-toast";
 
 type QuestionCreateSectionProps = {
-  userId: string;
+  userId: string | null;
 };
 
 export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
@@ -21,7 +21,7 @@ export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
 
   const { control, handleSubmit, getValues, reset } =
     useForm<CreateQuestionDto>({
-      defaultValues: { question: "", userId },
+      defaultValues: { question: "", userId: userId || "" },
     });
 
   const { setQuestions } = useQuestionsReplies();
@@ -40,7 +40,7 @@ export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
         data: { userId },
       });
 
-      reset({ question: "", userId });
+      reset({ question: "", userId: userId || "" });
 
       setQuestions(questions);
 

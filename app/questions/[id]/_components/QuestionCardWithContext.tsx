@@ -5,14 +5,20 @@ import { Question } from "@/model/question/Question";
 
 type QuestionCardWithContextProps = {
   question: Question;
+  isLoggedIn: boolean;
+  userId: string | null;
 };
 
 export const QuestionCardWithContext: React.FC<
   QuestionCardWithContextProps
-> = ({ question }) => {
+> = ({ question, isLoggedIn = false, userId }) => {
   return (
     <QuestionsRepliesProvider>
-      <QuestionCard question={question} />
+      <QuestionCard
+        question={question}
+        isLoggedIn={isLoggedIn}
+        userId={userId}
+      />
     </QuestionsRepliesProvider>
   );
 };

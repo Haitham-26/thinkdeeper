@@ -18,24 +18,35 @@ import { DeleteQuestion } from "./DeleteQuestion";
 import { Input } from "@/app/components/Input";
 import toast from "react-hot-toast";
 import { useQuestionsReplies } from "../context/questions-replies-context";
+import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 
 const buttonClassName = "!bg-transparent text-white !p-1";
 
 type QuestionCardProps = {
   question: Question;
+  isLoggedIn: boolean;
+  userId: string | null;
 };
 
-export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
+export const QuestionCard: React.FC<QuestionCardProps> = ({
+  question: _question,
+  isLoggedIn,
+  userId,
+}) => {
   const [replyLoading, setReplyLoading] = useState(false);
   const [reply, setReply] = useState("");
   const [replyAsAnnonymous, setReplyAsAnonymous] = useState(true);
   const [name, setName] = useState("");
+  const [question, setQuestion] = useState<Question>(_question);
 
-  const { replies, setReplies } = useQuestionsReplies();
+  const { replies, setReplies, questions, setQuestions } =
+    useQuestionsReplies();
 
   const pathname = usePathname();
 
   const isOnProfilePage = !Boolean(pathname.replace("/questions", "").length);
+
+  const isLiked = question?.likes.find((like) => like.userId === userId);
 
   const onShare = () => {
     navigator.clipboard.writeText(
@@ -72,6 +83,35 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
       alert(e);
     } finally {
       setReplyLoading(false);
+    }
+  };
+
+  const onLike = async () => {
+    try {
+      if (!userId) {
+        return;
+      }
+
+      await NextClient(`/like/${question._id}`, {
+        method: "POST",
+      });
+
+      const { data: updatedQuestion } = await NextClient<Question>(
+        `/questions/${question._id}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const updatedQuestions = questions
+        .filter((q) => q._id !== updatedQuestion._id)
+        .concat(updatedQuestion);
+
+      setQuestions(updatedQuestions);
+
+      setQuestion(updatedQuestion);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -193,6 +233,16 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
           </Button>
 
           {isOnProfilePage ? <DeleteQuestion question={question} /> : null}
+
+          <Button
+            icon={faHeart}
+            onClick={onLike}
+            className={`${buttonClassName} ${
+              isLiked ? "[&_svg]:text-red-500" : ""
+            } hover:text-red-500`}
+          >
+            <span>{question.likes.length || 0}</span>
+          </Button>
         </div>
       </div>
     </div>
