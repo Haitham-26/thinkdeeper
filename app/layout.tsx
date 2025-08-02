@@ -5,6 +5,7 @@ import { Header } from "./components/Header";
 import getToken from "@/tools/getToken";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Toaster } from "react-hot-toast";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default async function RootLayout({
       >
         <Header token={token} />
         {children}
+        <Toaster position="top-left" />
       </body>
     </html>
   );

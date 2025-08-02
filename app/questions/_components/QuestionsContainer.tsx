@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Question } from "@/model/question/Question";
 import { QuestionCreateSection } from "./QuestionCreateSection";
 import { QuestionCard } from "./QuestionCard";
 import { NextClient } from "@/tools/NextClient";
+import { useQuestionsReplies } from "../context/questions-replies-context";
 
-export default function QuestionsContainer({ userId }: { userId: string }) {
-  const [questions, setQuestions] = useState<Question[]>([]);
+type QuestionsContainerProps = {
+  userId: string;
+};
+
+export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
+  userId,
+}) => {
+  const { questions, setQuestions } = useQuestionsReplies();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -20,7 +27,7 @@ export default function QuestionsContainer({ userId }: { userId: string }) {
     };
 
     fetchQuestions();
-  }, [userId]);
+  }, [userId, setQuestions]);
 
   const handleQuestionCreated = (updatedQuestions: Question[]) => {
     setQuestions(updatedQuestions);
@@ -39,4 +46,4 @@ export default function QuestionsContainer({ userId }: { userId: string }) {
       </div>
     </div>
   );
-}
+};

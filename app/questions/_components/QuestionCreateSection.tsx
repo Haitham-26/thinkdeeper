@@ -7,21 +7,24 @@ import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useQuestionsReplies } from "../context/questions-replies-context";
+import toast from "react-hot-toast";
 
 type QuestionCreateSectionProps = {
   userId: string;
-  onCreate: (questions: Question[]) => void;
 };
 
 export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
   userId,
-  onCreate,
 }) => {
   const [loading, setLoading] = useState(false);
 
-  const { control, handleSubmit, getValues } = useForm<CreateQuestionDto>({
-    defaultValues: { question: "", userId },
-  });
+  const { control, handleSubmit, getValues, reset } =
+    useForm<CreateQuestionDto>({
+      defaultValues: { question: "", userId },
+    });
+
+  const { setQuestions } = useQuestionsReplies();
 
   const onSubmit = async () => {
     try {
@@ -37,7 +40,11 @@ export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
         data: { userId },
       });
 
-      onCreate(questions);
+      reset({ question: "", userId });
+
+      setQuestions(questions);
+
+      toast.success("تمت إضافة السؤال بنجاح");
     } catch (e) {
       console.log(e);
       alert(e);
