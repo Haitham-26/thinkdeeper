@@ -3,6 +3,7 @@ import { Question } from "@/model/question/Question";
 import { QuestionCardWithContext } from "./_components/QuestionCardWithContext";
 import getToken from "@/tools/getToken";
 import { User } from "@/model/user/User";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -14,10 +15,17 @@ export default async function Page(props: Props) {
   const token = await getToken();
 
   let user: User | null = null;
+  let question: Question | null = null;
 
-  const { data: question } = await AuthClient<Question>(`/questions/${id}`, {
-    method: "GET",
-  });
+  try {
+    const { data } = await AuthClient<Question>(`/questions/${id}`, {
+      method: "GET",
+    });
+
+    question = data;
+  } catch (e: any) {
+    console.log(e);
+  }
 
   if (token) {
     const { data } = await AuthClient<User>(
@@ -32,7 +40,7 @@ export default async function Page(props: Props) {
   }
 
   if (!question) {
-    return <div>Question not found</div>;
+    return notFound();
   }
 
   return (

@@ -35,6 +35,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const [reply, setReply] = useState("");
   const [replyAsAnnonymous, setReplyAsAnonymous] = useState(true);
   const [name, setName] = useState("");
+  const [repliesLoading, setRepliesLoading] = useState(false);
 
   const { replies, setReplies } = useQuestionsReplies();
 
@@ -86,6 +87,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   useEffect(() => {
     const fetchReplies = async () => {
       try {
+        setRepliesLoading(true);
+
         const { data } = await NextClient<Reply[]>(
           `/replies/${question._id}/all`,
           {
@@ -95,6 +98,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         setReplies(data);
       } catch (err) {
         console.error("Error fetching replies:", err);
+      } finally {
+        setRepliesLoading(false);
       }
     };
 
@@ -107,7 +112,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         {isOnProfilePage ? (
           <Link
             href={`/questions/${question._id}`}
-            className="flex items-center justify-between gap-2 text-white text-lg overflow-hidden whitespace-nowrap text-ellipsis group"
+            className="flex items-center justify-between gap-2 text-white font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis group"
           >
             {question.question}
 
@@ -117,17 +122,17 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             />
           </Link>
         ) : (
-          <h2 className="block text-white text-lg overflow-hidden whitespace-nowrap text-ellipsis">
+          <h2 className="block text-white text-xl font-black">
             {question.question}
           </h2>
         )}
 
-        <span className="text-gray-400 text-sm">
+        <span className="text-gray-400 text-sm block ms-auto">
           {formattedDate(question.createdAt)}
         </span>
       </div>
 
-      {replies.length ? (
+      {replies.length && !repliesLoading ? (
         <div
           className="mb-6 max-h-60 overflow-y-auto relative pb-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           style={{
@@ -145,7 +150,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             <QuestionReply key={reply._id} reply={reply} userId={userId} />
           ))}
         </div>
-      ) : null}
+      ) : (
+        <div className="h-8 w-8 border-3 border-gray-200 border-t-transparent animate-spin rounded-full my-12 mx-auto"></div>
+      )}
 
       <div className="flex flex-col gap-6">
         {!isOnProfilePage ? (

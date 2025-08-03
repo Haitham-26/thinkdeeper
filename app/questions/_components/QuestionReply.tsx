@@ -55,7 +55,7 @@ export const QuestionReply: React.FC<QuestionReplyProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2 p-2 border-b-1 border-b-gray-600">
+    <div className="flex flex-col gap-2 px-2 py-4 border-b-1 border-b-gray-600">
       <div className="flex items-center gap-2">
         <FontAwesomeIcon icon={faUserCircle} className="text-white !w-6 !h-6" />
 
