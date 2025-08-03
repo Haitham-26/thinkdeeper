@@ -1,12 +1,14 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
+import { Modal } from "@/app/components/Modal";
 import { Reply } from "@/model/reply/Reply";
 import { formattedDate } from "@/tools/Date";
 import { NextClient } from "@/tools/NextClient";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import React, { useState } from "react";
 
 type QuestionReplyProps = {
@@ -19,10 +21,12 @@ export const QuestionReply: React.FC<QuestionReplyProps> = ({
   userId,
 }) => {
   const [reply, setReply] = useState<Reply>(_reply);
+  const [registerModalVisible, setRegisterModalVisible] = useState(false);
 
   const onLike = async () => {
     try {
       if (!userId) {
+        setRegisterModalVisible(true);
         return;
       }
 
@@ -73,6 +77,23 @@ export const QuestionReply: React.FC<QuestionReplyProps> = ({
       <p className="text-xs text-gray-400 ms-auto">
         {formattedDate(reply.createdAt)}
       </p>
+
+      <Modal
+        title="سجل الآن"
+        open={registerModalVisible}
+        onClose={() => setRegisterModalVisible(false)}
+      >
+        <div className="flex flex-col gap-4">
+          <p className="text-gray-100">قم بتسجيل الدخول لتتمكن من التفاعل</p>
+
+          <Link
+            href="/auth/login"
+            className={`bg-white text-black py-2 px-5 rounded-md w-full text-center`}
+          >
+            تسجيل الدخول
+          </Link>
+        </div>
+      </Modal>
     </div>
   );
 };

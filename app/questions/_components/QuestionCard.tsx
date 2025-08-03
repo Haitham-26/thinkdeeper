@@ -149,7 +149,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
       <div className="flex flex-col gap-6">
         {!isOnProfilePage ? (
-          <div className="flex flex-col gap-2 w-full lg:w-2xl">
+          <div className="flex flex-col gap-4 w-full">
             <p className="text-white">اكتب رد</p>
             <textarea
               value={reply}
