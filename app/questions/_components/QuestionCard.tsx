@@ -24,12 +24,14 @@ type QuestionCardProps = {
   question: Question;
   isLoggedIn: boolean;
   userId: string | null;
+  openRegisterModal?: VoidFunction;
 };
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
   isLoggedIn,
   userId,
+  openRegisterModal,
 }) => {
   const [replyLoading, setReplyLoading] = useState(false);
   const [reply, setReply] = useState("");
@@ -147,7 +149,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           }}
         >
           {replies.map((reply) => (
-            <QuestionReply key={reply._id} reply={reply} userId={userId} />
+            <QuestionReply
+              key={reply._id}
+              reply={reply}
+              userId={userId}
+              openRegisterModal={openRegisterModal}
+            />
           ))}
         </div>
       ) : (

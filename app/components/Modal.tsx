@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { Button } from "./Button";
+import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 
 type ModalProps = {
   title: string;
@@ -34,9 +36,17 @@ export const Modal: React.FC<ModalProps> = ({
         className="bg-gray-700 rounded-xl shadow-lg w-full max-w-md p-6 mx-2"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-bold text-white mb-2 text-ellipsis whitespace-nowrap overflow-hidden">
-          {title}
-        </h2>
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-xl font-bold text-white mb-2 text-ellipsis whitespace-nowrap overflow-hidden">
+            {title}
+          </h2>
+
+          <Button
+            onClick={onClose}
+            icon={faXmark}
+            className="!bg-transparent !p-0 text-white hover:text-gray-300"
+          />
+        </div>
 
         {children}
       </div>
