@@ -48,7 +48,6 @@ export default async function Page(props: Props) {
       <div className="md:max-w-2xl mx-auto">
         <QuestionCardWithContext
           question={question}
-          isLoggedIn={Boolean(token?.length)}
           userId={user?._id || null}
         />
       </div>

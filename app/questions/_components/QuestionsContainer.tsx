@@ -9,12 +9,10 @@ import { useQuestionsReplies } from "../context/questions-replies-context";
 
 type QuestionsContainerProps = {
   userId: string | null;
-  isLoggedIn: boolean;
 };
 
 export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   userId,
-  isLoggedIn = false,
 }) => {
   const { questions, setQuestions } = useQuestionsReplies();
 
@@ -42,7 +40,6 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
           <QuestionCard
             key={question._id}
             question={question}
-            isLoggedIn={isLoggedIn}
             userId={userId}
           />
         ))}

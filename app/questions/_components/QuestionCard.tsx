@@ -22,14 +22,12 @@ const buttonClassName = "!bg-transparent text-white !p-1";
 
 type QuestionCardProps = {
   question: Question;
-  isLoggedIn: boolean;
   userId: string | null;
   openRegisterModal?: VoidFunction;
 };
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
-  isLoggedIn,
   userId,
   openRegisterModal,
 }) => {
@@ -134,29 +132,31 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         </span>
       </div>
 
-      {replies.length && !repliesLoading ? (
-        <div
-          className="mb-6 max-h-60 overflow-y-auto relative pb-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          style={{
-            WebkitMaskImage:
-              "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.8), rgba(0,0,0,0))",
-            maskImage:
-              "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.8), rgba(0,0,0,0))",
-            WebkitMaskSize: "100% 100%",
-            maskSize: "100% 100%",
-            WebkitMaskRepeat: "no-repeat",
-            maskRepeat: "no-repeat",
-          }}
-        >
-          {replies.map((reply) => (
-            <QuestionReply
-              key={reply._id}
-              reply={reply}
-              userId={userId}
-              openRegisterModal={openRegisterModal}
-            />
-          ))}
-        </div>
+      {!repliesLoading ? (
+        replies.length > 0 ? (
+          <div
+            className="mb-6 max-h-60 overflow-y-auto relative pb-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            style={{
+              WebkitMaskImage:
+                "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.8), rgba(0,0,0,0))",
+              maskImage:
+                "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.8), rgba(0,0,0,0))",
+              WebkitMaskSize: "100% 100%",
+              maskSize: "100% 100%",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+            }}
+          >
+            {replies.map((reply) => (
+              <QuestionReply
+                key={reply._id}
+                reply={reply}
+                userId={userId}
+                openRegisterModal={openRegisterModal}
+              />
+            ))}
+          </div>
+        ) : null
       ) : (
         <div className="h-8 w-8 border-3 border-gray-200 border-t-transparent animate-spin rounded-full my-12 mx-auto"></div>
       )}

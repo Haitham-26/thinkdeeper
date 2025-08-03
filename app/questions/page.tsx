@@ -16,10 +16,7 @@ export default async function Page() {
   return (
     <main className="px-4 md:px-8 py-6 bg-gray-900 flex-1">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
-        <QuestionContainerWithContext
-          isLoggedIn={Boolean(token?.length)}
-          userId={user?._id || null}
-        />
+        <QuestionContainerWithContext userId={user?._id || null} />
         <Profile user={user} />
       </div>
     </main>

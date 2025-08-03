@@ -9,20 +9,18 @@ import Link from "next/link";
 
 type QuestionCardWithContextProps = {
   question: Question;
-  isLoggedIn: boolean;
   userId: string | null;
 };
 
 export const QuestionCardWithContext: React.FC<
   QuestionCardWithContextProps
-> = ({ question, isLoggedIn = false, userId }) => {
+> = ({ question, userId }) => {
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
 
   return (
     <QuestionsRepliesProvider>
       <QuestionCard
         question={question}
-        isLoggedIn={isLoggedIn}
         userId={userId}
         openRegisterModal={() => setRegisterModalVisible(true)}
       />

@@ -4,15 +4,14 @@ import { QuestionsContainer } from "./QuestionsContainer";
 
 type QuestionContainerWithContextProps = {
   userId: string | null;
-  isLoggedIn: boolean;
 };
 
 export const QuestionContainerWithContext: React.FC<
   QuestionContainerWithContextProps
-> = ({ userId, isLoggedIn = false }) => {
+> = ({ userId }) => {
   return (
     <QuestionsRepliesProvider>
-      <QuestionsContainer userId={userId} isLoggedIn={isLoggedIn} />
+      <QuestionsContainer userId={userId} />
     </QuestionsRepliesProvider>
   );
 };
