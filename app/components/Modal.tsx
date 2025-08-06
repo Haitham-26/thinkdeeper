@@ -4,7 +4,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 
 type ModalProps = {
   title: string;
-  onClose: VoidFunction;
+  onClose?: VoidFunction;
   open: boolean;
   children?: React.ReactNode;
 };
@@ -29,7 +29,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100]"
       onClick={onClose}
     >
       <div
@@ -41,11 +41,13 @@ export const Modal: React.FC<ModalProps> = ({
             {title}
           </h2>
 
-          <Button
-            onClick={onClose}
-            icon={faXmark}
-            className="!bg-transparent !p-0 text-white hover:text-gray-300"
-          />
+          {typeof onClose === "function" ? (
+            <Button
+              onClick={onClose}
+              icon={faXmark}
+              className="!bg-transparent !p-0 text-white hover:text-gray-300"
+            />
+          ) : null}
         </div>
 
         {children}

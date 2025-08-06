@@ -7,18 +7,20 @@ import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { Client } from "@/tools/Client";
 import { Button } from "@/app/components/Button";
-import { regexes } from "@/tools/Regex";
+// import { regexes } from "@/tools/Regex";
 import { SignUpDto } from "@/model/auth/signup/SignUpDto";
-import { useRouter } from "next/navigation";
+import { SignUpTokenModal } from "./SignUpTokenModal";
+import { Toast } from "@/tools/Toast";
 
 export const SignUpContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [verificationModalVisible, setVerificationModalVisible] =
+    useState(false);
+  const [email, setEmail] = useState("");
 
   const { control, handleSubmit, getValues } = useForm<SignUpDto>({
     defaultValues: { name: "", email: "", password: "" },
   });
-
-  const router = useRouter();
 
   const onSubmit = async () => {
     try {
@@ -26,17 +28,20 @@ export const SignUpContent: React.FC = () => {
 
       const dto = getValues();
 
-      await Client("/auth/signup", {
+      await Client("/auth/signup/email", {
         method: "POST",
         data: dto,
         withCredentials: true,
       });
 
-      router.push("/");
-      router.refresh();
-    } catch (e) {
+      setEmail(dto.email);
+
+      setVerificationModalVisible(true);
+
+      Toast.success("تم ارسال رمز التحقق إلى بريدك الإلكتروني");
+    } catch (e: any) {
       console.log(e);
-      alert(e);
+      Toast.apiError(e);
     } finally {
       setLoading(false);
     }
@@ -47,17 +52,17 @@ export const SignUpContent: React.FC = () => {
       <Controller
         control={control}
         name="name"
-        rules={{
-          required: { value: true, message: "كلمة المرور مطلوبة" },
-          minLength: {
-            value: 3,
-            message: "الاسم يجب ان يكون على الاقل 6 أحرف",
-          },
-          maxLength: {
-            value: 26,
-            message: "الاسم يجب ان يكون 26 حرفا كحد أقصى",
-          },
-        }}
+        // rules={{
+        //   required: { value: true, message: "كلمة المرور مطلوبة" },
+        //   minLength: {
+        //     value: 3,
+        //     message: "الاسم يجب ان يكون على الاقل 6 أحرف",
+        //   },
+        //   maxLength: {
+        //     value: 26,
+        //     message: "الاسم يجب ان يكون 26 حرفا كحد أقصى",
+        //   },
+        // }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <Input
             title="الاسم"
@@ -72,13 +77,13 @@ export const SignUpContent: React.FC = () => {
       <Controller
         control={control}
         name="email"
-        rules={{
-          required: { value: true, message: "البريد الإلكتروني مطلوب" },
-          pattern: {
-            value: regexes.EMAIL_REGEX,
-            message: "البريد الإلكتروني غير صالح",
-          },
-        }}
+        // rules={{
+        //   required: { value: true, message: "البريد الإلكتروني مطلوب" },
+        //   pattern: {
+        //     value: regexes.EMAIL_REGEX,
+        //     message: "البريد الإلكتروني غير صالح",
+        //   },
+        // }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <Input
             title="البريد الإلكتروني"
@@ -93,13 +98,13 @@ export const SignUpContent: React.FC = () => {
       <Controller
         control={control}
         name="password"
-        rules={{
-          required: { value: true, message: "كلمة المرور مطلوبة" },
-          minLength: {
-            value: 6,
-            message: "كلمة المرور يجب ان تكون على الاقل 6 أحرف",
-          },
-        }}
+        // rules={{
+        //   required: { value: true, message: "كلمة المرور مطلوبة" },
+        //   minLength: {
+        //     value: 6,
+        //     message: "كلمة المرور يجب ان تكون على الاقل 6 أحرف",
+        //   },
+        // }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <Input
             title="كلمة المرور"
@@ -127,6 +132,12 @@ export const SignUpContent: React.FC = () => {
           لديك حساب بالفعل؟
         </Link>
       </div>
+
+      <SignUpTokenModal
+        open={verificationModalVisible}
+        onClose={() => setVerificationModalVisible(false)}
+        email={email}
+      />
     </AuthFormContainer>
   );
 };
