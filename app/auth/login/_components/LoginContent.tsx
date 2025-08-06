@@ -8,8 +8,8 @@ import { Controller, useForm } from "react-hook-form";
 import { LoginDto } from "@/model/auth/login/LoginDto";
 import { Client } from "@/tools/Client";
 import { Button } from "@/app/components/Button";
-import { regexes } from "@/tools/Regex";
 import { useRouter } from "next/navigation";
+import { Toast } from "@/tools/Toast";
 
 export const LoginContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -32,11 +32,11 @@ export const LoginContent: React.FC = () => {
         withCredentials: true,
       });
 
-      router.push("/");
+      router.push("/questions");
       router.refresh();
     } catch (e) {
       console.log(e);
-      alert(e);
+      Toast.apiError(e);
     } finally {
       setLoading(false);
     }
@@ -47,13 +47,13 @@ export const LoginContent: React.FC = () => {
       <Controller
         control={control}
         name="email"
-        rules={{
-          required: { value: true, message: "البريد الإلكتروني مطلوب" },
-          pattern: {
-            value: regexes.EMAIL_REGEX,
-            message: "البريد الإلكتروني غير صالح",
-          },
-        }}
+        // rules={{
+        //   required: { value: true, message: "البريد الإلكتروني مطلوب" },
+        //   pattern: {
+        //     value: regexes.EMAIL_REGEX,
+        //     message: "البريد الإلكتروني غير صالح",
+        //   },
+        // }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <Input
             title="البريد الإلكتروني"
@@ -69,13 +69,13 @@ export const LoginContent: React.FC = () => {
         <Controller
           control={control}
           name="password"
-          rules={{
-            required: { value: true, message: "كلمة المرور مطلوبة" },
-            minLength: {
-              value: 6,
-              message: "كلمة المرور يجب ان تكون على الاقل 6 أحرف",
-            },
-          }}
+          // rules={{
+          //   required: { value: true, message: "كلمة المرور مطلوبة" },
+          //   minLength: {
+          //     value: 6,
+          //     message: "كلمة المرور يجب ان تكون على الاقل 6 أحرف",
+          //   },
+          // }}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <Input
               title="كلمة المرور"

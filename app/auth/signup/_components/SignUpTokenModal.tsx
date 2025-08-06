@@ -33,6 +33,7 @@ export const SignUpTokenModal: React.FC<SignUpTokenModal> = ({
       });
 
       router.push("/questions");
+      router.refresh();
     } catch (e) {
       console.log(e);
       Toast.apiError(e);
