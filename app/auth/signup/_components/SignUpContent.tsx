@@ -7,10 +7,9 @@ import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { Client } from "@/tools/Client";
 import { Button } from "@/app/components/Button";
-// import { regexes } from "@/tools/Regex";
 import { SignUpDto } from "@/model/auth/signup/SignUpDto";
-import { SignUpTokenModal } from "./SignUpTokenModal";
 import { Toast } from "@/tools/Toast";
+import { SignUpTokenModal } from "./SignUpTokenModal";
 
 export const SignUpContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -52,17 +51,6 @@ export const SignUpContent: React.FC = () => {
       <Controller
         control={control}
         name="name"
-        // rules={{
-        //   required: { value: true, message: "كلمة المرور مطلوبة" },
-        //   minLength: {
-        //     value: 3,
-        //     message: "الاسم يجب ان يكون على الاقل 6 أحرف",
-        //   },
-        //   maxLength: {
-        //     value: 26,
-        //     message: "الاسم يجب ان يكون 26 حرفا كحد أقصى",
-        //   },
-        // }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <Input
             title="الاسم"
@@ -77,13 +65,6 @@ export const SignUpContent: React.FC = () => {
       <Controller
         control={control}
         name="email"
-        // rules={{
-        //   required: { value: true, message: "البريد الإلكتروني مطلوب" },
-        //   pattern: {
-        //     value: regexes.EMAIL_REGEX,
-        //     message: "البريد الإلكتروني غير صالح",
-        //   },
-        // }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <Input
             title="البريد الإلكتروني"
@@ -98,13 +79,6 @@ export const SignUpContent: React.FC = () => {
       <Controller
         control={control}
         name="password"
-        // rules={{
-        //   required: { value: true, message: "كلمة المرور مطلوبة" },
-        //   minLength: {
-        //     value: 6,
-        //     message: "كلمة المرور يجب ان تكون على الاقل 6 أحرف",
-        //   },
-        // }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <Input
             title="كلمة المرور"
@@ -133,11 +107,7 @@ export const SignUpContent: React.FC = () => {
         </Link>
       </div>
 
-      <SignUpTokenModal
-        open={verificationModalVisible}
-        onClose={() => setVerificationModalVisible(false)}
-        email={email}
-      />
+      <SignUpTokenModal open={verificationModalVisible} email={email} />
     </AuthFormContainer>
   );
 };
