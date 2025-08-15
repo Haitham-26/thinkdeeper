@@ -23,10 +23,10 @@ export default async function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${cairoFont.className} min-h-screen flex flex-col overflow-y-auto`}
+        className={`${cairoFont.className} min-h-screen flex flex-col overflow-y-auto bg-secondary`}
       >
         <Header token={token} />
-        {children}
+        <div className="pt-16 flex-grow flex">{children}</div>
         <Toaster position="top-left" />
       </body>
     </html>

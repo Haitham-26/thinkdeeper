@@ -2,28 +2,29 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="px-4 md:px-8 bg-gray-950">
-      <section className="min-h-screen content-center">
-        <div className="flex flex-col items-center mx-auto justify-center gap-5">
-          <h1 className="text-4xl text-center font-bold text-white animate-pulse">
+    <main className="flex-grow bg-primary flex items-center justify-center">
+      <section className="max-w-xl w-full">
+        <div className="flex flex-col items-center gap-8 text-center">
+          <h1 className="text-5xl font-extrabold text-secondary animate-pulse">
             فكر بعمق
           </h1>
-          <p className="text-xl text-white text-center">
-            هنا يمكنك طرح أي سؤال قد يتبادر إلى ذهنك لا حدود والاطلاع على
-            أسئلة لم تخطر على بالك من قبل
+
+          <p className="text-lg leading-relaxed max-w-md text-text-muted">
+            هنا يمكنك طرح أي سؤال قد يتبادر إلى ذهنك، لا حدود والاطلاع على أسئلة
+            لم تخطر على بالك من قبل
           </p>
 
-          <div className="flex gap-3 mt-6">
+          <div className="flex gap-6">
             <Link
               href="/"
-              className="bg-white text-black py-2 px-5 rounded-full hover:bg-gray-200 transition-colors duration-300 ease-in-out"
+              className="py-3 px-7 rounded-full font-semibold shadow-md bg-secondary text-primary hover:bg-surface transition-colors duration-300 ease-in-out"
             >
               الاطلاع على أكثر الأسئلة تداولًا
             </Link>
 
             <Link
               href="/register"
-              className="text-white rounded-full py-2 px-5 border-2 border-gray-200 transition-colors duration-300 ease-in-out hover:bg-white hover:text-black"
+              className="py-3 px-7 rounded-full font-semibold border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary transition-colors duration-300 ease-in-out shadow-md"
             >
               شارك سؤالًا
             </Link>

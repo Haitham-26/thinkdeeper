@@ -54,7 +54,7 @@ export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4 bg-surface rounded-xl rounded-t-none p-6">
       <Controller
         control={control}
         name="question"
@@ -66,13 +66,15 @@ export const QuestionCreateSection: React.FC<QuestionCreateSectionProps> = ({
             onChange={onChange}
             valid={!error}
             errorMessage={error?.message}
+            className="border-primary !text-primary"
+            labelClassName="!text-primary"
           />
         )}
       />
       <Button
         onClick={handleSubmit(onSubmit)}
         loading={loading}
-        className="h-10"
+        className="h-10 !bg-primary text-surface hover:!bg-primary/90"
       >
         أرسل سؤال
       </Button>

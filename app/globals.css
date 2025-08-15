@@ -1,9 +1,21 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
-*::selection {
-  @apply bg-white text-black;
+@theme {
+  --color-primary: #1a1a1a;
+  --color-secondary: #fafafa;
+  --color-accent: #4a90e2;
+  --color-background: #ffffff;
+  --color-surface: #fdfdfd;
+  --color-text-primary: #1a1a1a;
+  --color-text-muted: #6b7280;
+  --color-danger: #f87171;
+  --color-success: #22c55e;
+  --color-warning: #fbbf24;
+  --color-info: #3b82f6;
 }
 
 textarea {

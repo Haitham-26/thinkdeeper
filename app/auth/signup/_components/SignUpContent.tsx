@@ -72,6 +72,7 @@ export const SignUpContent: React.FC = () => {
             onChange={onChange}
             valid={!error}
             errorMessage={error?.message}
+            type="email"
           />
         )}
       />
@@ -86,11 +87,12 @@ export const SignUpContent: React.FC = () => {
             onChange={onChange}
             valid={!error}
             errorMessage={error?.message}
+            type="password"
           />
         )}
       />
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 mt-4">
         <Button
           loading={loading}
           onClick={handleSubmit(onSubmit)}

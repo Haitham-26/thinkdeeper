@@ -61,6 +61,7 @@ export const LoginContent: React.FC = () => {
             onChange={onChange}
             valid={!error}
             errorMessage={error?.message}
+            type="email"
           />
         )}
       />
@@ -83,6 +84,7 @@ export const LoginContent: React.FC = () => {
               onChange={onChange}
               valid={!error}
               errorMessage={error?.message}
+              type="password"
             />
           )}
         />
@@ -95,7 +97,7 @@ export const LoginContent: React.FC = () => {
         </Link>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 mt-4">
         <Button
           loading={loading}
           onClick={handleSubmit(onSubmit)}
