@@ -16,41 +16,35 @@ export const Modal: React.FC<ModalProps> = ({
   children,
 }) => {
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = open ? "hidden" : "unset";
   }, [open]);
 
-  if (!open) {
-    return null;
-  }
+  if (!open) return null;
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100]"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] px-4"
       onClick={onClose}
     >
       <div
-        className="bg-gray-700 rounded-xl shadow-lg w-full max-w-md p-6 mx-2"
+        className="bg-surface rounded-2xl shadow-lg w-full max-w-md p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="text-xl font-bold text-white mb-2 text-ellipsis whitespace-nowrap overflow-hidden">
-            {title}
-          </h2>
+        {/* Header */}
+        <div className="flex items-center justify-between gap-2 mb-6">
+          <h2 className="text-xl font-bold text-primary truncate">{title}</h2>
 
-          {typeof onClose === "function" ? (
+          {onClose && (
             <Button
               onClick={onClose}
               icon={faXmark}
-              className="!bg-transparent !p-0 text-white hover:text-gray-300"
+              className="!bg-transparent !p-0 text-text-muted hover:text-accent transition-colors"
             />
-          ) : null}
+          )}
         </div>
 
-        {children}
+        {/* Body */}
+        <div className="text-primary">{children}</div>
       </div>
     </div>
   );

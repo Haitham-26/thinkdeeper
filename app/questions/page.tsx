@@ -13,7 +13,7 @@ export default async function Page() {
   );
 
   return (
-    <main className="flex-grow py-10 bg-primary">
+    <main className="flex-grow py-10">
       <QuestionContainerWithContext userId={user?._id || null} />
     </main>
   );

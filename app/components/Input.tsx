@@ -21,37 +21,40 @@ export const Input: React.FC<InputProps> = ({
       case "password":
       case "tel":
         return true;
-
       default:
         return false;
     }
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
+      {/* Label */}
       <label
-        htmlFor="name"
-        className={`text-white/90 ${
-          !valid ? "!text-red-600" : ""
-        } ${labelClassName}`}
+        htmlFor={props.id || "input-field"}
+        className={`text-sm font-medium ${
+          valid ? "text-primary" : "text-danger"
+        } ${labelClassName || ""}`}
       >
         {title}
       </label>
 
+      {/* Input Field */}
       <input
-        type="text"
-        id="name"
-        placeholder=""
+        id={props.id || "input-field"}
         autoComplete="off"
-        className={`peer border-2 border-gray-200 py-2 px-5 rounded-full outline-none w-full text-white transition-all duration-300 ease-in-out ${className} ${
-          !valid ? "border-red-700" : ""
-        } ${forceLTR() ? "[direction:ltr]" : ""}`}
+        className={`peer border border-gray-300 bg-surface text-primary placeholder-text-muted py-2 px-4 rounded-lg outline-none w-full transition-all duration-200
+          focus:border-accent focus:ring-2 focus:ring-accent/30
+          ${!valid ? "border-danger focus:ring-danger/30" : ""}
+          ${forceLTR() ? "[direction:ltr]" : ""}
+          ${className || ""}
+        `}
         {...props}
       />
 
-      {!valid && errorMessage ? (
-        <p className="text-red-600 text-xs mt-1 ps-5">{errorMessage}</p>
-      ) : null}
+      {/* Error Message */}
+      {!valid && errorMessage && (
+        <p className="text-danger text-xs mt-1">{errorMessage}</p>
+      )}
     </div>
   );
 };

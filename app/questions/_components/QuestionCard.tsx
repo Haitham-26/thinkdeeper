@@ -107,44 +107,40 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   }, [question._id, setReplies]);
 
   return (
-    <div className="p-6 bg-gray-800 rounded-2xl border-2 border-gray-700">
+    <div className="p-6 bg-surface rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
+      {/* Header */}
       <div className="flex flex-col gap-2 mb-4">
         {isOnProfilePage ? (
           <Link
             href={`/questions/${question._id}`}
-            className="flex items-center justify-between gap-2 text-white font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis group"
+            className="flex items-center justify-between gap-2 text-primary font-bold text-lg overflow-hidden whitespace-nowrap text-ellipsis group"
           >
             {question.question}
-
             <FontAwesomeIcon
               icon={faAngleLeft}
-              className="transition-transform duration-300 group-hover:-translate-x-1"
+              className="text-accent transition-transform duration-300 group-hover:-translate-x-1"
             />
           </Link>
         ) : (
-          <h2 className="block text-white text-xl font-black">
+          <h2 className="block text-primary text-lg font-semibold">
             {question.question}
           </h2>
         )}
-
-        <span className="text-gray-400 text-sm block ms-auto">
+        <span className="text-textMuted text-sm ms-auto">
           {formattedDate(question.createdAt)}
         </span>
       </div>
 
+      {/* Replies */}
       {!repliesLoading ? (
-        replies.length > 0 ? (
+        replies.length > 0 && (
           <div
-            className="mb-6 max-h-60 overflow-y-auto relative pb-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="mb-6 max-h-60 overflow-y-auto pr-2 pb-20 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             style={{
               WebkitMaskImage:
-                "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.8), rgba(0,0,0,0))",
+                "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))",
               maskImage:
-                "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.8), rgba(0,0,0,0))",
-              WebkitMaskSize: "100% 100%",
-              maskSize: "100% 100%",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
+                "linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))",
             }}
           >
             {replies.map((reply) => (
@@ -156,69 +152,70 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               />
             ))}
           </div>
-        ) : null
+        )
       ) : (
-        <div className="h-8 w-8 border-3 border-gray-200 border-t-transparent animate-spin rounded-full my-12 mx-auto"></div>
+        <div className="h-8 w-8 border-3 border-accent border-t-transparent animate-spin rounded-full my-12 mx-auto"></div>
       )}
 
-      <div className="flex flex-col gap-6">
-        {!isOnProfilePage ? (
-          <div className="flex flex-col gap-4 w-full">
-            <p className="text-white">اكتب رد</p>
-            <textarea
-              value={reply}
-              onChange={(e) => setReply(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  onReply();
-                }
-              }}
-              className="w-full bg-gray-700 text-white p-2 rounded-2xl outline-0 max-h-60"
+      {/* Reply Input */}
+      {!isOnProfilePage && (
+        <div className="flex flex-col gap-4 w-full">
+          <p className="text-primary font-medium">اكتب رد</p>
+          <textarea
+            value={reply}
+            onChange={(e) => setReply(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                onReply();
+              }
+            }}
+            placeholder="شارك ردك هنا..."
+            className="w-full bg-background text-primary p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent/50 outline-none transition-all resize-none"
+          />
+
+          {/* Checkbox */}
+          <label className="inline-flex items-center gap-2 cursor-pointer text-primary">
+            <input
+              type="checkbox"
+              checked={replyAsAnnonymous}
+              onChange={(e) => onCheckAnonymous(e.target.checked)}
+              className="form-checkbox h-5 w-5 text-accent rounded-md border-gray-300 focus:ring-accent"
             />
+            <span>الرد كمجهول</span>
+          </label>
 
-            <label className="inline-flex items-center space-x-2 cursor-pointer w-fit">
-              <input
-                type="checkbox"
-                checked={replyAsAnnonymous}
-                onChange={(e) => onCheckAnonymous(e.target.checked)}
-                className="form-checkbox h-5 w-5 text-blue-600 rounded-md border-gray-300 focus:ring-blue-500"
-              />
-              <span className="text-white">الرد كمجهول</span>
-            </label>
+          {/* Name Input */}
+          {!replyAsAnnonymous && (
+            <Input
+              title="الاسم"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
 
-            {!replyAsAnnonymous ? (
-              <Input
-                title="الاسم"
-                value={!replyAsAnnonymous ? name : ""}
-                onChange={(e) => setName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    onReply();
-                  }
-                }}
-              />
-            ) : null}
-
-            <Button
-              icon={faPaperPlane}
-              className="[&_svg]:rotate-225 block ms-auto h-10 w-28"
-              loading={replyLoading}
-              onClick={onReply}
-            >
-              إرسال
-            </Button>
-          </div>
-        ) : null}
-
-        <div className="flex items-center justify-end gap-4">
-          <Button onClick={onShare} icon={faShare} className={buttonClassName}>
-            مشاركة
+          {/* Send Button */}
+          <Button
+            icon={faPaperPlane}
+            className="!bg-accent !hover:bg-accent/90 text-white font-medium px-5 py-2 rounded-lg ms-auto flex items-center gap-2 shadow transition"
+            loading={replyLoading}
+            onClick={onReply}
+          >
+            إرسال
           </Button>
-
-          {isOnProfilePage ? <DeleteQuestion question={question} /> : null}
         </div>
+      )}
+
+      {/* Footer Actions */}
+      <div className="flex items-center justify-end gap-4 mt-6">
+        <Button
+          onClick={onShare}
+          icon={faShare}
+          className="!text-accent !hover:text-accent/80"
+        >
+          مشاركة
+        </Button>
+        {isOnProfilePage && <DeleteQuestion question={question} />}
       </div>
     </div>
   );

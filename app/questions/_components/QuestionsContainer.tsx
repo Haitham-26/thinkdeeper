@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Question } from "@/model/question/Question";
-import { QuestionCreateSection } from "./QuestionCreateSection";
+import { QuestionCreateModal } from "./QuestionCreateModal";
 import { QuestionCard } from "./QuestionCard";
 import { NextClient } from "@/tools/NextClient";
 import { useQuestionsReplies } from "../context/questions-replies-context";
+import { Button } from "@/app/components/Button";
 
 type QuestionsContainerProps = {
   userId: string | null;
@@ -14,6 +15,8 @@ type QuestionsContainerProps = {
 export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   userId,
 }) => {
+  const [createQuestionModalVisible, setCreateQuestionModalVisible] =
+    useState(false);
   const { questions, setQuestions } = useQuestionsReplies();
 
   useEffect(() => {
@@ -22,37 +25,57 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
         method: "POST",
         data: { userId },
       });
-
       setQuestions(data);
     };
-
     fetchQuestions();
   }, [userId, setQuestions]);
 
   return (
-    <div className="flex flex-col order-3 lg:order-2 md:max-w-3xl px-4 md:px-8 mx-auto">
-      <div
-        className="bg-fixed bg-center bg-cover rounded-xl rounded-b-none overflow-hidden shadow-lg"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80')",
-        }}
-      >
-        <p className="text-secondary text-center text-2xl md:text-3xl font-extrabold bg-primary/60 py-6 drop-shadow-lg">
-          أسئلتي
+    <section className="min-h-screen bg-background px-4 md:px-0">
+      {/* Header */}
+      <header className="max-w-3xl mx-auto mb-8 text-center">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-primary tracking-wide mb-4">
+          أسئلتي 💬
+        </h1>
+        <p className="text-textMuted text-lg">
+          هنا تلاقي كل الأسئلة اللي طرحتها وتتابع تفاعل الناس معها
         </p>
-      </div>
-      <QuestionCreateSection userId={userId} />
+      </header>
 
-      <div className="flex flex-col gap-2">
-        {questions.map((question) => (
-          <QuestionCard
-            key={question._id}
-            question={question}
-            userId={userId}
-          />
-        ))}
+      {/* Action bar */}
+      <div className="max-w-3xl mx-auto flex justify-end mb-6">
+        <Button
+          onClick={() => setCreateQuestionModalVisible(true)}
+          className="px-6 py-2 !bg-accent text-white font-semibold rounded-lg shadow hover:shadow-lg !hover:bg-accent/90 transition-all duration-200"
+        >
+          + سؤال جديد
+        </Button>
       </div>
-    </div>
+
+      {/* Questions List */}
+      <div className="max-w-3xl mx-auto grid gap-4">
+        {questions.length > 0 ? (
+          questions.map((question) => (
+            <div
+              key={question._id}
+              className="bg-surface border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
+            >
+              <QuestionCard question={question} userId={userId} />
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-textMuted py-12">
+            لا توجد أسئلة بعد. جرب تضيف أول سؤال لك ✨
+          </p>
+        )}
+      </div>
+
+      {/* Modal */}
+      <QuestionCreateModal
+        userId={userId}
+        open={createQuestionModalVisible}
+        onClose={() => setCreateQuestionModalVisible(false)}
+      />
+    </section>
   );
 };
