@@ -52,7 +52,7 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({ question }) => {
       <Button
         onClick={() => setModalVisible(true)}
         icon={faTrash}
-        className="!bg-transparent text-red-500 hover:!bg-danger/10"
+        className="!bg-danger text-secondary hover:!bg-danger/90"
       >
         حذف
       </Button>

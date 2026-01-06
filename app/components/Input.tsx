@@ -1,4 +1,6 @@
 import React from "react";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { Icon } from "./Icon";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   title: string;
@@ -27,34 +29,55 @@ export const Input: React.FC<InputProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      {/* Label */}
+    <div className="flex flex-col gap-1.5 w-full group">
       <label
-        htmlFor={props.id || "input-field"}
-        className={`text-sm font-medium ${
-          valid ? "text-primary" : "text-danger"
+        htmlFor={props.id || props.name}
+        className={`text-sm font-bold tracking-tight transition-colors duration-200 px-1 ${
+          valid
+            ? "text-text-primary group-focus-within:text-accent"
+            : "text-danger"
         } ${labelClassName || ""}`}
       >
         {title}
       </label>
 
-      {/* Input Field */}
-      <input
-        id={props.id || "input-field"}
-        autoComplete="off"
-        className={`peer border border-gray-300 bg-surface text-primary placeholder-text-muted py-2 px-4 rounded-lg outline-none w-full transition-all duration-200
-          focus:border-accent focus:ring-2 focus:ring-accent/30
-          ${!valid ? "border-danger focus:ring-danger/30" : ""}
-          ${forceLTR() ? "[direction:ltr]" : ""}
-          ${className || ""}
-        `}
-        {...props}
-      />
+      <div className="relative">
+        <input
+          id={props.id || props.name}
+          autoComplete="off"
+          className={`
+            w-full py-3.5 px-5 rounded-2xl outline-none transition-all duration-300
+            bg-surface border-2 text-text-primary placeholder:text-text-muted/50
+            
+            ${valid ? "border-border shadow-sm" : "border-danger bg-danger/5"}
+            
+            ${
+              valid
+                ? "focus:border-accent focus:ring-4 focus:ring-accent/10 focus:shadow-md"
+                : "focus:ring-4 focus:ring-danger/10"
+            }
+            
+            ${forceLTR() ? "[direction:ltr] placeholder:text-right" : ""}
+            
+            ${className || ""}
+          `}
+          {...props}
+        />
 
-      {/* Error Message */}
-      {!valid && errorMessage && (
-        <p className="text-danger text-xs mt-1">{errorMessage}</p>
-      )}
+        {!valid && (
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-danger">
+            <Icon icon={faCircleExclamation} />
+          </div>
+        )}
+      </div>
+
+      <div className="min-h-[20px] px-1">
+        {!valid && errorMessage && (
+          <p className="text-danger text-xs font-semibold animate-in fade-in slide-in-from-top-1 duration-200">
+            {errorMessage}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

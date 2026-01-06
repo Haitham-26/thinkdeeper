@@ -10,20 +10,19 @@ import { Client } from "@/tools/Client";
 import { Button } from "@/app/components/Button";
 import { useRouter } from "next/navigation";
 import { Toast } from "@/tools/Toast";
+import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightToBracket";
 
 export const LoginContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const { control, handleSubmit, getValues } = useForm<LoginDto>({
     defaultValues: { email: "", password: "" },
   });
 
-  const router = useRouter();
-
   const onSubmit = async () => {
     try {
       setLoading(true);
-
       const dto = getValues();
 
       await Client("/auth/login", {
@@ -43,74 +42,78 @@ export const LoginContent: React.FC = () => {
   };
 
   return (
-    <AuthFormContainer title="تسجيل الدخول">
-      <Controller
-        control={control}
-        name="email"
-        // rules={{
-        //   required: { value: true, message: "البريد الإلكتروني مطلوب" },
-        //   pattern: {
-        //     value: regexes.EMAIL_REGEX,
-        //     message: "البريد الإلكتروني غير صالح",
-        //   },
-        // }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <Input
-            title="البريد الإلكتروني"
-            value={value}
-            onChange={onChange}
-            valid={!error}
-            errorMessage={error?.message}
-            type="email"
-          />
-        )}
-      />
-
-      <div>
+    <AuthFormContainer
+      title="مرحباً بعودتك"
+      subtitle="سجل دخولك لمتابعة المصارحات والرسائل الجديدة"
+    >
+      <div className="space-y-4">
         <Controller
           control={control}
-          name="password"
-          // rules={{
-          //   required: { value: true, message: "كلمة المرور مطلوبة" },
-          //   minLength: {
-          //     value: 6,
-          //     message: "كلمة المرور يجب ان تكون على الاقل 6 أحرف",
-          //   },
-          // }}
+          name="email"
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <Input
-              title="كلمة المرور"
+              title="البريد الإلكتروني"
+              placeholder="name@example.com"
               value={value}
               onChange={onChange}
               valid={!error}
               errorMessage={error?.message}
-              type="password"
+              type="email"
             />
           )}
         />
 
-        <Link
-          href="/auth/forgot-password"
-          className="mt-1 ps-5 text-slate-300 hover:text-slate-100 transition-colors duration-300 ease-in-out text-xs"
-        >
-          نسيت كلمة المرور؟
-        </Link>
+        <div className="space-y-1">
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
+              <Input
+                title="كلمة المرور"
+                placeholder="••••••••"
+                value={value}
+                onChange={onChange}
+                valid={!error}
+                errorMessage={error?.message}
+                type="password"
+              />
+            )}
+          />
+          <div className="flex justify-end px-1">
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
+            >
+              نسيت كلمة المرور؟
+            </Link>
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="flex flex-col gap-4 mt-6">
         <Button
           loading={loading}
           onClick={handleSubmit(onSubmit)}
-          className="h-10"
+          className="w-full h-14 rounded-2xl bg-accent text-white font-bold text-lg shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+          icon={faArrowRightToBracket}
         >
           تسجيل الدخول
         </Button>
 
+        <div className="relative flex items-center py-2">
+          <div className="flex-grow border-t border-border"></div>
+          <span className="flex-shrink mx-4 text-text-muted text-sm">أو</span>
+          <div className="flex-grow border-t border-border"></div>
+        </div>
+
         <Link
           href="/auth/signup"
-          className="mt-1 ps-5 text-slate-300 hover:text-slate-100 transition-colors duration-300 ease-in-out block text-center py-2 px-5"
+          className="group text-center py-4 px-5 rounded-2xl border-2 border-transparent hover:border-border hover:bg-surface-muted transition-all duration-300"
         >
-          ليس لديك حساب؟
+          <span className="text-text-muted font-medium">ليس لديك حساب؟ </span>
+          <span className="text-accent font-bold group-hover:underline">
+            أنشئ حساباً الآن
+          </span>
         </Link>
       </div>
     </AuthFormContainer>

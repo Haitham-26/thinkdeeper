@@ -1,11 +1,13 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import React from "react";
+import { Icon } from "./Icon";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: React.ReactNode;
   loading?: boolean;
   icon?: IconProp;
+  variant?: "primary" | "secondary" | "outline";
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -13,24 +15,51 @@ export const Button: React.FC<ButtonProps> = ({
   loading = false,
   className,
   icon,
+  variant = "primary",
   ...props
 }) => {
+  const variants = {
+    primary:
+      "bg-accent text-white shadow-lg shadow-accent/20 hover:bg-accent/90 border-transparent",
+    secondary:
+      "bg-primary text-white shadow-lg shadow-primary/10 hover:opacity-90 border-transparent",
+    outline:
+      "bg-transparent border-2 border-border text-text-primary hover:bg-surface-muted hover:border-text-muted/30",
+  };
+
+  const isDisabled = loading || props.disabled;
+
   return (
     <button
-      className={`bg-white text-black py-2 px-5 rounded-full hover:bg-gray-200 transition-colors duration-300 ease-in-out cursor-pointer ${
-        loading || props.disabled ? "pointer-events- cursor-not-allowed" : ""
-      } ${className}`}
+      className={`
+        relative overflow-hidden flex items-center justify-center gap-3
+        py-3.5 px-7 rounded-2xl font-bold text-base
+        transition-all duration-300 ease-out active:scale-95
+        ${variants[variant]}
+        ${
+          isDisabled
+            ? "opacity-70 cursor-not-allowed grayscale-[0.2]"
+            : "cursor-pointer"
+        }
+        ${className || ""}
+      `}
       {...props}
-      disabled={loading || props.disabled}
+      disabled={isDisabled}
     >
-      {loading ? (
-        <div className="animate-spin border-2 border-gray-500 border-t-transparent rounded-full h-full aspect-square pointer-events-none mx-auto"></div>
-      ) : (
-        <div className="flex items-center justify-center gap-2">
-          {children}
-          {icon ? <FontAwesomeIcon icon={icon} /> : null}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-inherit">
+          <Icon icon={faCircleNotch} className="animate-spin text-xl" />
         </div>
       )}
+
+      <div
+        className={`flex items-center justify-center gap-2 transition-all ${
+          loading ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        {children}
+        {icon && <Icon icon={icon} className="text-sm" />}
+      </div>
     </button>
   );
 };

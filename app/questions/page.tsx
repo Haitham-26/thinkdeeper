@@ -13,8 +13,8 @@ export default async function Page() {
   );
 
   return (
-    <main className="flex-grow py-10">
+    <section className="flex-grow py-10">
       <QuestionContainerWithContext userId={user?._id || null} />
-    </main>
+    </section>
   );
 }

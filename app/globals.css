@@ -5,17 +5,21 @@
 @tailwind utilities;
 
 @theme {
-  --color-primary: #1a1a1a;
-  --color-secondary: #fafafa;
-  --color-accent: #4a90e2;
-  --color-background: #ffffff;
-  --color-surface: #fdfdfd;
-  --color-text-primary: #1a1a1a;
-  --color-text-muted: #6b7280;
-  --color-danger: #f87171;
-  --color-success: #22c55e;
-  --color-warning: #fbbf24;
-  --color-info: #3b82f6;
+  --color-primary: #0f172a;
+  --color-secondary: #ffffff;
+  --color-accent: #8b5cf6;
+
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+
+  --color-text-primary: #0f172a;
+  --color-text-muted: #64748b;
+
+  --color-border: #e2e8f0;
+
+  --color-danger: #ef4444;
+  --color-success: #10b981;
 }
 
 textarea {

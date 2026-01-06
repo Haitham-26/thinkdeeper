@@ -26,7 +26,7 @@ export default async function RootLayout({
         className={`${cairoFont.className} min-h-screen flex flex-col overflow-y-auto bg-secondary`}
       >
         <Header token={token} />
-        <div className="pt-16 flex-grow flex">{children}</div>
+        <main className="pt-16 flex-grow flex">{children}</main>
         <Toaster position="top-left" />
       </body>
     </html>

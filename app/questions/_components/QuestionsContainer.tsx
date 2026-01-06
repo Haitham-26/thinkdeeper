@@ -7,6 +7,10 @@ import { QuestionCard } from "./QuestionCard";
 import { NextClient } from "@/tools/NextClient";
 import { useQuestionsReplies } from "../context/questions-replies-context";
 import { Button } from "@/app/components/Button";
+import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
+import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
+import { faInbox } from "@fortawesome/free-solid-svg-icons/faInbox";
+import { Icon } from "@/app/components/Icon";
 
 type QuestionsContainerProps = {
   userId: string | null;
@@ -31,46 +35,67 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   }, [userId, setQuestions]);
 
   return (
-    <section className="min-h-screen bg-background px-4 md:px-0">
-      {/* Header */}
-      <header className="max-w-3xl mx-auto mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-primary tracking-wide mb-4">
-          أسئلتي 💬
-        </h1>
-        <p className="text-textMuted text-lg">
-          هنا تلاقي كل الأسئلة اللي طرحتها وتتابع تفاعل الناس معها
-        </p>
-      </header>
-
-      {/* Action bar */}
-      <div className="max-w-3xl mx-auto flex justify-end mb-6">
-        <Button
-          onClick={() => setCreateQuestionModalVisible(true)}
-          className="px-6 py-2 !bg-accent text-white font-semibold rounded-lg shadow hover:shadow-lg !hover:bg-accent/90 transition-all duration-200"
-        >
-          + سؤال جديد
-        </Button>
-      </div>
-
-      {/* Questions List */}
-      <div className="max-w-3xl mx-auto grid gap-4">
-        {questions.length > 0 ? (
-          questions.map((question) => (
-            <div
-              key={question._id}
-              className="bg-surface border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
-            >
-              <QuestionCard question={question} userId={userId} />
+    <section className="min-h-screen bg-background pt-32 pb-20 px-4">
+      <div className="max-w-4xl mx-auto">
+        <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-accent/10 text-accent text-sm font-bold">
+              <Icon icon={faComments} />
+              <span>إدارة المحتوى</span>
             </div>
-          ))
-        ) : (
-          <p className="text-center text-textMuted py-12">
-            لا توجد أسئلة بعد. جرب تضيف أول سؤال لك ✨
-          </p>
-        )}
+            <h1 className="my-3 text-4xl md:text-5xl font-black text-text-primary tracking-tight">
+              أسئلتي المنشورة
+            </h1>
+            <p className="text-text-muted text-lg font-medium max-w-md">
+              تابع الأسئلة التي طرحتها وشاهد إجابات أصدقائك وتفاعلهم معك في مكان
+              واحد.
+            </p>
+          </div>
+
+          <Button
+            onClick={() => setCreateQuestionModalVisible(true)}
+            variant="primary"
+            className="h-14 px-8 shadow-xl shadow-accent/20"
+            icon={faPlus}
+          >
+            طرح سؤال جديد
+          </Button>
+        </header>
+
+        <div className="grid gap-6">
+          {questions.length > 0 ? (
+            questions.map((question) => (
+              <div
+                key={question._id}
+                className="transform transition-all duration-300 hover:-translate-y-1"
+              >
+                <QuestionCard question={question} userId={userId} />
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-24 px-6 bg-surface border-2 border-dashed border-border rounded-[3rem] text-center">
+              <div className="w-20 h-20 bg-surface-muted rounded-3xl flex items-center justify-center text-text-muted mb-6">
+                <Icon icon={faInbox} className="text-3xl" />
+              </div>
+              <h3 className="text-2xl font-black text-text-primary mb-2">
+                لا توجد أسئلة حالياً
+              </h3>
+              <p className="text-text-muted max-w-xs mx-auto mb-8">
+                لم تقم بإضافة أي أسئلة بعد، ابدأ الآن وشارك أول تساؤل لك مع
+                متابعيك.
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => setCreateQuestionModalVisible(true)}
+                className="border-accent text-accent hover:bg-accent hover:text-white"
+              >
+                إضافة سؤالك الأول
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Modal */}
       <QuestionCreateModal
         userId={userId}
         open={createQuestionModalVisible}

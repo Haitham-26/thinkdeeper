@@ -4,6 +4,13 @@ import Link from "next/link";
 import React, { Fragment } from "react";
 import { LogoutButton } from "./LogoutButton";
 import { usePathname } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faComments,
+  faUserCircle,
+  faPlus,
+  faPaperPlane,
+} from "@fortawesome/free-solid-svg-icons";
 
 type HeaderProps = {
   token?: string;
@@ -12,49 +19,66 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ token }) => {
   const pathname = usePathname();
 
-  const navLinkClass = (path: string) =>
-    `relative px-2 py-1 font-medium transition-colors duration-300 ${
-      pathname === path ? "text-accent" : "text-primary"
-    } hover:text-accent
-     after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-accent after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full`;
-
-  const buttonClass =
-    "text-sm sm:text-base py-2 px-4 rounded-full bg-accent text-white font-medium shadow hover:bg-accent/90 transition-colors duration-300";
+  const navLinkClass = (path: string) => `
+    relative px-5 py-2 rounded-xl font-bold transition-all duration-300 flex items-center gap-2
+    ${
+      pathname === path
+        ? "bg-accent/10 text-accent"
+        : "text-text-muted hover:text-text-primary hover:bg-surface-muted"
+    }
+  `;
 
   return (
-    <header className="px-4 md:px-8 flex items-center h-20 fixed top-0 w-full z-20 bg-surface border-b border-gray-200 shadow-sm">
-      {/* Logo */}
-      <div className="flex items-center gap-2 me-auto">
-        <span className="text-primary text-xl sm:text-2xl font-extrabold tracking-wide cursor-pointer">
-          لوجو
-        </span>
+    <header className="fixed top-0 w-full z-50 px-4 md:px-10 h-20 flex items-center justify-between bg-surface/80 backdrop-blur-md border-b border-border/50">
+      <div className="flex items-center">
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30 group-hover:rotate-12 transition-transform duration-300">
+            <FontAwesomeIcon
+              icon={faPaperPlane}
+              className="text-white text-lg -mr-1"
+            />
+          </div>
+          <span className="text-text-primary text-2xl font-black tracking-tighter">
+            صراحة
+          </span>
+        </Link>
       </div>
 
-      {/* Nav Links */}
       {token && (
-        <nav className="hidden sm:flex flex-grow justify-center gap-8">
+        <nav className="hidden md:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
           <Link href="/questions" className={navLinkClass("/questions")}>
-            أسئلتي
+            <FontAwesomeIcon icon={faComments} className="text-sm" />
+            <span>رسائلي</span>
           </Link>
           <Link href="/profile" className={navLinkClass("/profile")}>
-            الملف الشخصي
+            <FontAwesomeIcon icon={faUserCircle} className="text-sm" />
+            <span>الملف الشخصي</span>
           </Link>
         </nav>
       )}
 
-      {/* Auth Buttons / Logout */}
-      <div className="flex items-center gap-3 ms-auto">
+      <div className="flex items-center gap-3">
         {!token ? (
           <Fragment>
-            <Link href="/auth/login" className={buttonClass}>
+            <Link
+              href="/auth/login"
+              className="hidden sm:block text-text-primary font-bold px-6 py-2.5 hover:text-accent transition-colors"
+            >
               تسجيل الدخول
             </Link>
-            <Link href="/auth/signup" className={buttonClass}>
-              عضو جديد
+            <Link
+              href="/auth/signup"
+              className="bg-primary text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faPlus} className="text-xs" />
+              <span>ابدأ الآن</span>
             </Link>
           </Fragment>
         ) : (
-          <LogoutButton />
+          <div className="flex items-center gap-4">
+            <div className="h-8 w-[1px] bg-border mx-2 hidden sm:block"></div>
+            <LogoutButton />
+          </div>
         )}
       </div>
     </header>
