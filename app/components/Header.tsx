@@ -4,13 +4,12 @@ import Link from "next/link";
 import React, { Fragment } from "react";
 import { LogoutButton } from "./LogoutButton";
 import { usePathname } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faComments,
-  faUserCircle,
-  faPlus,
-  faPaperPlane,
-} from "@fortawesome/free-solid-svg-icons";
+import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
+import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
+
+import { Icon } from "./Icon";
 
 type HeaderProps = {
   token?: string;
@@ -33,10 +32,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
       <div className="flex items-center">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30 group-hover:rotate-12 transition-transform duration-300">
-            <FontAwesomeIcon
-              icon={faPaperPlane}
-              className="text-white text-lg -mr-1"
-            />
+            <Icon icon={faPaperPlane} className="text-white text-lg -mr-1" />
           </div>
           <span className="text-text-primary text-2xl font-black tracking-tighter">
             صراحة
@@ -47,11 +43,11 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
       {token ? (
         <nav className="hidden md:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
           <Link href="/questions" className={navLinkClass("/questions")}>
-            <FontAwesomeIcon icon={faComments} className="text-sm" />
+            <Icon icon={faComments} className="text-sm" />
             <span>مناقشاتي</span>
           </Link>
           <Link href="/profile" className={navLinkClass("/profile")}>
-            <FontAwesomeIcon icon={faUserCircle} className="text-sm" />
+            <Icon icon={faUserCircle} className="text-sm" />
             <span>الملف الشخصي</span>
           </Link>
         </nav>
@@ -68,9 +64,9 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
             </Link>
             <Link
               href="/auth/signup"
-              className="bg-primary text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+              className="bg-accent text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-accent/90 hover:-translate-y-0.5 transition-all flex items-center gap-2"
             >
-              <FontAwesomeIcon icon={faPlus} className="text-xs" />
+              <Icon icon={faPlus} className="text-xs" />
               <span>ابدأ الآن</span>
             </Link>
           </Fragment>

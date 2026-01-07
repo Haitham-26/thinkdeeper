@@ -35,7 +35,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   }, [userId, setQuestions]);
 
   return (
-    <section className="min-h-screen bg-background pt-32 pb-20 px-4">
+    <section className="min-h-screen bg-background pt-32 pb-20 px-4 w-full">
       <div className="max-w-4xl mx-auto">
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-2">
@@ -44,11 +44,11 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
               <span>إدارة المحتوى</span>
             </div>
             <h1 className="my-3 text-4xl md:text-5xl font-black text-text-primary tracking-tight">
-              أسئلتي المنشورة
+              نقاشاتي
             </h1>
             <p className="text-text-muted text-lg font-medium max-w-md">
-              تابع الأسئلة التي طرحتها وشاهد إجابات أصدقائك وتفاعلهم معك في مكان
-              واحد.
+              تابع النقاشات التي طرحتها وشاهد إجابات أصدقائك وتفاعلهم معك في
+              مكان واحد.
             </p>
           </div>
 
@@ -58,7 +58,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
             className="h-14 px-8 shadow-xl shadow-accent/20"
             icon={faPlus}
           >
-            طرح سؤال جديد
+            نقاش جديد
           </Button>
         </header>
 
@@ -78,18 +78,17 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
                 <Icon icon={faInbox} className="text-3xl" />
               </div>
               <h3 className="text-2xl font-black text-text-primary mb-2">
-                لا توجد أسئلة حالياً
+                لا توجد نقاشات حالياً
               </h3>
               <p className="text-text-muted max-w-xs mx-auto mb-8">
-                لم تقم بإضافة أي أسئلة بعد، ابدأ الآن وشارك أول تساؤل لك مع
-                متابعيك.
+                لم تقم بفتح أي نقاش بعد، ابدأ الآن وافتح أول نقاش لك مع متابعيك.
               </p>
               <Button
                 variant="outline"
                 onClick={() => setCreateQuestionModalVisible(true)}
                 className="border-accent text-accent hover:bg-accent hover:text-white"
               >
-                إضافة سؤالك الأول
+                فتح نقاشك الأول
               </Button>
             </div>
           )}

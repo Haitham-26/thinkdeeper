@@ -19,6 +19,7 @@ import { DeleteQuestion } from "./DeleteQuestion";
 import toast from "react-hot-toast";
 import { useQuestionsReplies } from "../context/questions-replies-context";
 import { Icon } from "@/app/components/Icon";
+import { Textarea } from "@/app/components/Textarea";
 
 type QuestionCardProps = {
   question: Question;
@@ -152,14 +153,14 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
       )}
 
-      {!isOnProfilePage ? (
+      {!isOnProfilePage && userId !== question.userId ? (
         <div className="bg-surface-muted/50 rounded-[2rem] p-6 border border-border/50">
           <div className="flex items-center gap-3 mb-4 text-text-primary font-bold">
             <Icon icon={faReply} className="text-accent" />
             <span>إضافة ردك</span>
           </div>
 
-          <textarea
+          <Textarea
             value={reply}
             onChange={(e) => setReply(e.target.value)}
             onKeyDown={(e) => {

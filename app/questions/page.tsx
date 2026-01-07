@@ -12,9 +12,5 @@ export default async function Page() {
     token
   );
 
-  return (
-    <section className="flex-grow py-10">
-      <QuestionContainerWithContext userId={user?._id || null} />
-    </section>
-  );
+  return <QuestionContainerWithContext userId={user?._id || null} />;
 }
