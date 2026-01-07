@@ -6,8 +6,9 @@ import { NextClient } from "@/tools/NextClient";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons/faUserSecret";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons/faCircleUser";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { Icon } from "@/app/components/Icon";
+import { Button } from "@/app/components/Button";
 
 type QuestionReplyProps = {
   reply: Reply;
@@ -66,7 +67,7 @@ export const QuestionReply: React.FC<QuestionReplyProps> = ({
                 : "bg-accent/10 text-accent"
             }`}
           >
-            <FontAwesomeIcon
+            <Icon
               icon={isAnonymous ? faUserSecret : faCircleUser}
               className="text-lg"
             />
@@ -81,23 +82,23 @@ export const QuestionReply: React.FC<QuestionReplyProps> = ({
           </div>
         </div>
 
-        <button
+        <Button
           onClick={onLike}
           disabled={isLiking}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all duration-300 ${
+          className={`shadow-none flex items-center gap-2 !px-3 !py-1.5 rounded-xl border-2 transition-all duration-300 ${
             reply.hasLiked
-              ? "bg-danger/10 border-danger/20 text-danger shadow-sm shadow-danger/10"
-              : "bg-surface border-border text-text-muted hover:border-danger/30 hover:text-danger"
+              ? "!bg-danger/10 !border-danger/20 !text-danger shadow-sm shadow-danger/10"
+              : "!bg-surface !border-border !text-text-muted hover:!border-danger/30 hover:!text-danger"
           }`}
         >
-          <FontAwesomeIcon
+          <Icon
             icon={faHeart}
             className={`text-sm transition-transform duration-300 ${
               reply.hasLiked ? "scale-110" : "group-hover:scale-110"
             }`}
           />
           <span className="text-xs font-black">{reply.likesCount || 0}</span>
-        </button>
+        </Button>
       </div>
 
       <div className="relative">

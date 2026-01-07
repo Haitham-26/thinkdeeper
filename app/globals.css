@@ -30,3 +30,29 @@ textarea {
 textarea::-webkit-scrollbar {
   display: none;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}

@@ -152,7 +152,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
       )}
 
-      {!isOnProfilePage && (
+      {!isOnProfilePage ? (
         <div className="bg-surface-muted/50 rounded-[2rem] p-6 border border-border/50">
           <div className="flex items-center gap-3 mb-4 text-text-primary font-bold">
             <Icon icon={faReply} className="text-accent" />
@@ -192,7 +192,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 </span>
               </label>
 
-              {!replyAsAnnonymous && (
+              {!replyAsAnnonymous ? (
                 <div className="animate-in fade-in slide-in-from-right-2 duration-300">
                   <input
                     placeholder="اسمك"
@@ -201,7 +201,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     className="bg-surface border-2 border-border rounded-xl px-4 py-1.5 text-sm focus:border-accent outline-none"
                   />
                 </div>
-              )}
+              ) : null}
             </div>
 
             <Button
@@ -215,22 +215,22 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             </Button>
           </div>
         </div>
-      )}
+      ) : null}
 
       <div className="flex items-center justify-between mt-8 pt-6 border-t border-border/50">
-        <button
+        <Button
           onClick={onShare}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-text-muted font-bold hover:bg-accent/10 hover:text-accent transition-all"
+          icon={faShareNodes}
+          className="shadow-none !bg-transparent flex items-center gap-2 px-5 py-2.5 rounded-xl !text-text-muted font-bold hover:!bg-accent/10 hover:!text-accent transition-all"
         >
-          <Icon icon={faShareNodes} className="text-sm" />
-          <span>مشاركة السؤال</span>
-        </button>
+          مشاركة السؤال
+        </Button>
 
-        {isOnProfilePage && (
+        {isOnProfilePage ? (
           <div className="scale-90 origin-left">
             <DeleteQuestion question={question} />
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
+"use client";
+
 import React from "react";
 import { Button } from "./Button";
 import { Modal } from "./Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons/faTriangleExclamation";
 
 type WarningModalProps = {
   title?: string;
@@ -13,7 +17,7 @@ type WarningModalProps = {
 
 export const WarningModal: React.FC<WarningModalProps> = ({
   title = "هل أنت متأكد؟",
-  description = "بمجرد التأكيد، لن تتمكن من التراجع عن هذا الإجراء لاحقًا",
+  description = "بمجرد التأكيد، لن تتمكن من التراجع عن هذا الإجراء لاحقًا.",
   onConfirm,
   onClose,
   open,
@@ -21,21 +25,33 @@ export const WarningModal: React.FC<WarningModalProps> = ({
 }) => {
   return (
     <Modal open={open} onClose={onClose} title={title}>
-      <p className="text-gray-300 mb-8">{description}</p>
-      <div className="flex justify-end gap-3">
-        <Button
-          onClick={onClose}
-          className="rounded-md !bg-transparent border border-white hover:filter hover:brightness-90 text-white h-10 w-20"
-        >
-          إلغاء
-        </Button>
-        <Button
-          onClick={onConfirm}
-          loading={loading}
-          className="rounded-md bg-white hover:bg-gray-200 text-gray-800 h-10 w-20"
-        >
-          تأكيد
-        </Button>
+      <div className="flex flex-col items-center text-center">
+        <div className="w-20 h-20 bg-danger/10 text-danger rounded-[2rem] flex items-center justify-center mb-6 animate-pulse">
+          <FontAwesomeIcon icon={faTriangleExclamation} className="text-4xl" />
+        </div>
+
+        <p className="text-text-muted leading-relaxed mb-10 text-lg font-medium">
+          {description}
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-3 w-full">
+          <Button
+            onClick={onConfirm}
+            loading={loading}
+            variant="primary"
+            className="flex-1 !bg-danger hover:!bg-danger/90 shadow-danger/20 h-14 rounded-2xl order-2 sm:order-1"
+          >
+            تأكيد الحذف
+          </Button>
+
+          <Button
+            onClick={onClose}
+            variant="outline"
+            className="flex-1 h-14 rounded-2xl border-border text-text-muted hover:bg-surface-muted order-1 sm:order-2"
+          >
+            إلغاء الأمر
+          </Button>
+        </div>
       </div>
     </Modal>
   );

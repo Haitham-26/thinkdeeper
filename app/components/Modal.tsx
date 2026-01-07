@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { Button } from "./Button";
+import { createPortal } from "react-dom";
 
 type ModalProps = {
   title: string;
@@ -19,6 +20,7 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   useEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow;
+
     if (open) {
       document.body.style.overflow = "hidden";
     }
@@ -31,7 +33,7 @@ export const Modal: React.FC<ModalProps> = ({
     return null;
   }
 
-  return (
+  const content = (
     <div
       className="fixed inset-0 flex items-center justify-center z-[100] px-4 animate-in fade-in duration-300"
       onClick={onClose}
@@ -51,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
             <Button
               onClick={onClose}
               icon={faXmark}
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface border border-border text-text-muted hover:text-danger hover:border-danger/20 hover:bg-danger/5 transition-all duration-200"
+              className="w-10 h-10 flex items-center justify-center rounded-xl !bg-surface border !border-border !text-text-muted hover:!text-danger hover:!border-danger/20 hover:!bg-danger/5 transition-all duration-200 shadow-none"
             />
           )}
         </div>
@@ -62,4 +64,6 @@ export const Modal: React.FC<ModalProps> = ({
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 };

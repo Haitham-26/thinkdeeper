@@ -44,18 +44,18 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         </Link>
       </div>
 
-      {token && (
+      {token ? (
         <nav className="hidden md:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
           <Link href="/questions" className={navLinkClass("/questions")}>
             <FontAwesomeIcon icon={faComments} className="text-sm" />
-            <span>رسائلي</span>
+            <span>مناقشاتي</span>
           </Link>
           <Link href="/profile" className={navLinkClass("/profile")}>
             <FontAwesomeIcon icon={faUserCircle} className="text-sm" />
             <span>الملف الشخصي</span>
           </Link>
         </nav>
-      )}
+      ) : null}
 
       <div className="flex items-center gap-3">
         {!token ? (

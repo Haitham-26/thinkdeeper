@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
-import { Input } from "@/app/components/Input";
 import { CreateQuestionDto } from "@/model/question/dto/CreateQuestionDto";
 import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
@@ -10,6 +9,9 @@ import { Controller, useForm } from "react-hook-form";
 import { useQuestionsReplies } from "../context/questions-replies-context";
 import toast from "react-hot-toast";
 import { Modal } from "@/app/components/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons/faCircleQuestion";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 
 type QuestionCreateModalProps = {
   userId: string | null;
@@ -46,42 +48,86 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
       });
 
       reset({ question: "", userId: userId || "" });
-
       setQuestions(questions);
-
-      toast.success("تمت إضافة السؤال بنجاح");
+      toast.success("تم نشر سؤالك بنجاح");
+      onClose();
     } catch (e) {
-      console.log(e);
-      alert(e);
+      toast.error("حدث خطأ أثناء إضافة السؤال");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Modal open={open} onClose={onClose} title="سؤال جديد">
-      <div className="flex flex-col gap-4">
+    <Modal open={open} onClose={onClose} title="طرح تساؤل جديد">
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-4 bg-accent/5 p-4 rounded-2xl border border-accent/10">
+          <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-white shadow-lg shadow-accent/20">
+            <FontAwesomeIcon icon={faCircleQuestion} className="text-xl" />
+          </div>
+          <div>
+            <h4 className="text-sm font-black text-text-primary">
+              ماذا يدور في ذهنك؟
+            </h4>
+            <p className="text-xs text-text-muted font-medium">
+              سيظهر هذا السؤال لمتابعيك ليتمكنوا من الرد عليه.
+            </p>
+          </div>
+        </div>
+
         <Controller
           control={control}
           name="question"
-          rules={{ required: true }}
+          rules={{
+            required: "يرجى كتابة السؤال أولاً",
+            minLength: { value: 5, message: "السؤال قصير جداً" },
+          }}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
-            <Input
-              title="السؤال الجديد"
-              value={value}
-              onChange={onChange}
-              valid={!error}
-              errorMessage={error?.message}
-            />
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-text-primary px-1">
+                نص السؤال
+              </label>
+              <textarea
+                value={value}
+                onChange={onChange}
+                placeholder="مثال: ما هو أفضل كتاب قرأته هذا العام؟"
+                className={`
+                  w-full min-h-[140px] p-5 rounded-2xl border-2 outline-none transition-all duration-300 resize-none
+                  bg-surface text-text-primary placeholder:text-text-muted/50
+                  ${
+                    error
+                      ? "border-danger focus:ring-4 focus:ring-danger/10"
+                      : "border-border focus:border-accent focus:ring-4 focus:ring-accent/10"
+                  }
+                `}
+              />
+              {error && (
+                <p className="text-danger text-xs font-bold px-1 animate-in fade-in slide-in-from-top-1">
+                  {error.message}
+                </p>
+              )}
+            </div>
           )}
         />
-        <Button
-          onClick={handleSubmit(onSubmit)}
-          loading={loading}
-          className="h-10"
-        >
-          أضف السؤال
-        </Button>
+
+        <div className="flex flex-col gap-3 pt-2">
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            loading={loading}
+            variant="primary"
+            className="h-14 w-full shadow-xl shadow-accent/20 text-lg"
+            icon={faPaperPlane}
+          >
+            نشر السؤال الآن
+          </Button>
+
+          <Button
+            onClick={onClose}
+            className="!bg-transparent shadow-none h-12 w-full !text-text-muted font-bold hover:!text-text-primary transition-colors text-sm"
+          >
+            إلغاء وتجاهل
+          </Button>
+        </div>
       </div>
     </Modal>
   );
