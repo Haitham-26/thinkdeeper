@@ -3,7 +3,10 @@ import { AuthClient } from "./AuthClient";
 import { AxiosRequestConfig } from "axios";
 import getToken from "./getToken";
 
-export async function useProxy(url: string, config?: AxiosRequestConfig) {
+export async function useProxy(
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<Response> {
   const token = await getToken();
 
   try {
