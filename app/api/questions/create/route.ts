@@ -1,8 +1,8 @@
-import { useProxy } from "@/tools/useProxy";
+import { proxyRequest } from "@/tools/proxyRequest";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
-  return await useProxy("/questions/create", {
+  return await proxyRequest("/questions/create", {
     method: "POST",
     data: await req.json(),
   });

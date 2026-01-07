@@ -1,13 +1,10 @@
-import { useProxy } from "@/tools/useProxy";
+import { proxyRequest } from "@/tools/proxyRequest";
 import { NextRequest } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function GET(req: NextRequest, context: any) {
+  const { id } = context.params;
 
-  return await useProxy(`/questions/${id}`, {
+  return await proxyRequest(`/questions/${id}`, {
     method: "GET",
   });
 }

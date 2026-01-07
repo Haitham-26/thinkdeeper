@@ -52,6 +52,7 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
       toast.success("تم نشر سؤالك بنجاح");
       onClose();
     } catch (e) {
+      console.log(e);
       toast.error("حدث خطأ أثناء إضافة السؤال");
     } finally {
       setLoading(false);

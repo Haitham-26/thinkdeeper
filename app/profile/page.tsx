@@ -81,7 +81,7 @@ export default async function Page() {
               </h2>
 
               <div className="space-y-6">
-                {infoRows.map(({ icon, label, value }, i) => (
+                {infoRows.map(({ icon, label, value }) => (
                   <div
                     key={label}
                     className="flex items-center justify-between py-1"

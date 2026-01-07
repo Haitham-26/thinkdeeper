@@ -1,13 +1,10 @@
-import { useProxy } from "@/tools/useProxy";
+import { proxyRequest } from "@/tools/proxyRequest";
 import { NextRequest } from "next/server";
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function POST(req: NextRequest, context: any) {
+  const { id } = context.params;
 
-  return await useProxy(`/user/${id}`, {
+  return await proxyRequest(`/user/${id}`, {
     method: "POST",
   });
 }

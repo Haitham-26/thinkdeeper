@@ -76,6 +76,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       setReplyAsAnonymous(true);
       toast.success("تم إرسال الرد بنجاح");
     } catch (e) {
+      console.log(e);
       toast.error("حدث خطأ أثناء إرسال الرد");
     } finally {
       setReplyLoading(false);
