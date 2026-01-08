@@ -18,9 +18,13 @@ export default async function Page(props: Props) {
   let question: Question | null = null;
 
   try {
-    const { data } = await AuthClient<Question>(`/questions/${id}`, {
-      method: "GET",
-    });
+    const { data } = await AuthClient<Question>(
+      `/questions/${id}`,
+      {
+        method: "GET",
+      },
+      token
+    );
 
     question = data;
   } catch (e: any) {
