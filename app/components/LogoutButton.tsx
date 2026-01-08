@@ -5,6 +5,7 @@ import { Button } from "./Button";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
 import { useRouter } from "next/navigation";
 import { NextClient } from "@/tools/NextClient";
+import { Toast } from "@/tools/Toast";
 
 export const LogoutButton: React.FC = () => {
   const router = useRouter();
@@ -13,13 +14,12 @@ export const LogoutButton: React.FC = () => {
     try {
       await NextClient("/logout", {
         method: "POST",
-        withCredentials: true,
       });
 
       router.refresh();
     } catch (e) {
       console.log(e);
-      alert(e);
+      Toast.apiError(e);
     }
   };
 

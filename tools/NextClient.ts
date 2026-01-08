@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 const client = axios.create({
   baseURL: "/api",
   headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
 export function NextClient<T>(route: string, config: AxiosRequestConfig = {}) {

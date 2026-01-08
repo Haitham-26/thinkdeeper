@@ -6,11 +6,21 @@ import { QuestionContainerWithContext } from "./_components/QuestionContainerWit
 export default async function Page() {
   const token = await getToken();
 
-  const { data: user } = await AuthClient<User>(
-    `/user`,
-    { method: "POST" },
-    token
-  );
+  let user: User | null = null;
+
+  if (token) {
+    try {
+      const { data } = await AuthClient<User>(
+        `/user`,
+        { method: "POST" },
+        token
+      );
+
+      user = data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return <QuestionContainerWithContext userId={user?._id || null} />;
 }

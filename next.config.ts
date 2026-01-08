@@ -36,6 +36,17 @@ const nextConfig: NextConfig = {
         permanent: false,
         destination: "/",
       },
+      {
+        source: "/profile",
+        missing: [
+          {
+            type: "cookie",
+            key: "token",
+          },
+        ],
+        permanent: false,
+        destination: "/",
+      },
     ];
   },
 };

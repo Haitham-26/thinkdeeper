@@ -1,9 +1,9 @@
-import { AuthClient } from "@/tools/AuthClient";
 import { Question } from "@/model/question/Question";
 import { QuestionCardWithContext } from "./_components/QuestionCardWithContext";
 import getToken from "@/tools/getToken";
 import { User } from "@/model/user/User";
 import { notFound } from "next/navigation";
+import { AuthClient } from "@/tools/AuthClient";
 
 type Props = {
   params: Promise<{ id: string }>;

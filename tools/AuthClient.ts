@@ -13,7 +13,7 @@ export function AuthClient<T>(
     ...config,
     headers: {
       ...config.headers,
-      Authorization: `Bearer ${token}`,
+      Cookie: `token=${token}`,
     },
     withCredentials: true,
   });
