@@ -9,8 +9,8 @@ import { useQuestionsReplies } from "../context/questions-replies-context";
 import { Button } from "@/app/components/Button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
-import { faInbox } from "@fortawesome/free-solid-svg-icons/faInbox";
 import { Icon } from "@/app/components/Icon";
+import { Empty } from "@/app/components/Empty";
 
 type QuestionsContainerProps = {
   userId: string | null;
@@ -73,24 +73,14 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center py-24 px-6 bg-surface border-2 border-dashed border-border rounded-[3rem] text-center">
-              <div className="w-20 h-20 bg-surface-muted rounded-3xl flex items-center justify-center text-text-muted mb-6">
-                <Icon icon={faInbox} className="text-3xl" />
-              </div>
-              <h3 className="text-2xl font-black text-text-primary mb-2">
-                لا توجد نقاشات حالياً
-              </h3>
-              <p className="text-text-muted max-w-xs mx-auto mb-8">
-                لم تقم بفتح أي نقاش بعد، ابدأ الآن وافتح أول نقاش لك مع متابعيك.
-              </p>
-              <Button
-                variant="outline"
-                onClick={() => setCreateQuestionModalVisible(true)}
-                className="border-accent text-accent hover:bg-accent hover:text-white"
-              >
-                فتح نقاشك الأول
-              </Button>
-            </div>
+            <Empty
+              title="لا توجد نقاشات حالياً"
+              description="لم تقم بفتح أي نقاش بعد، ابدأ الآن وافتح أول نقاش لك مع متابعيك."
+              action={{
+                title: "افتح نقاشا جديدا",
+                onClick: () => setCreateQuestionModalVisible(true),
+              }}
+            />
           )}
         </div>
       </div>

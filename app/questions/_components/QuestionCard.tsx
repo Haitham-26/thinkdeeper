@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import { useQuestionsReplies } from "../context/questions-replies-context";
 import { Icon } from "@/app/components/Icon";
 import { Textarea } from "@/app/components/Textarea";
+import { Empty } from "@/app/components/Empty";
 
 type QuestionCardProps = {
   question: Question;
@@ -93,6 +94,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             method: "POST",
           }
         );
+
         setReplies(data);
       } catch (err) {
         console.error("Error fetching replies:", err);
@@ -135,24 +137,31 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         )}
       </div>
 
-      {!repliesLoading ? (
-        replies.length > 0 && (
-          <div className="space-y-4 mb-8 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
-            {replies.map((reply) => (
-              <QuestionReply
-                key={reply._id}
-                reply={reply}
-                userId={userId}
-                openRegisterModal={openRegisterModal}
-              />
-            ))}
+      {!isOnProfilePage ? (
+        !repliesLoading ? (
+          replies.length > 0 ? (
+            <div className="space-y-4 mb-8 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
+              {replies.map((reply) => (
+                <QuestionReply
+                  key={reply._id}
+                  reply={reply}
+                  userId={userId}
+                  openRegisterModal={openRegisterModal}
+                />
+              ))}
+            </div>
+          ) : (
+            <Empty
+              title="لا توجد ردود"
+              description="لم يقم أحد بالتفاعل مع هذا النقاش بعد."
+            />
+          )
+        ) : (
+          <div className="flex justify-center py-10">
+            <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
           </div>
         )
-      ) : (
-        <div className="flex justify-center py-10">
-          <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      )}
+      ) : null}
 
       {!isOnProfilePage && userId !== question.userId ? (
         <div className="bg-surface-muted/50 rounded-[2rem] p-6 border border-border/50">

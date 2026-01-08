@@ -1,8 +1,12 @@
 import { proxyRequest } from "@/tools/proxyRequest";
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest, context: any) {
-  const { id } = context.params;
+type Context = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(req: NextRequest, context: Context) {
+  const { id } = await context.params;
 
   return await proxyRequest(`/questions/${id}`, {
     method: "GET",
