@@ -16,11 +16,11 @@ import { faQuoteRight } from "@fortawesome/free-solid-svg-icons/faQuoteRight";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
 import { faReply } from "@fortawesome/free-solid-svg-icons/faReply";
 import { DeleteQuestion } from "./DeleteQuestion";
-import toast from "react-hot-toast";
 import { useQuestionsReplies } from "../context/questions-replies-context";
 import { Icon } from "@/app/components/Icon";
 import { Textarea } from "@/app/components/Textarea";
 import { Empty } from "@/app/components/Empty";
+import { Toast } from "@/tools/Toast";
 
 type QuestionCardProps = {
   question: Question;
@@ -47,7 +47,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     navigator.clipboard.writeText(
       `${window.location.origin}/questions/${question._id}`
     );
-    toast.success("تم نسخ الرابط بنجاح");
+    Toast.success("تم نسخ الرابط بنجاح");
   };
 
   const onCheckAnonymous = (checked: boolean) => {
@@ -75,10 +75,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       setReply("");
       setName("");
       setReplyAsAnonymous(true);
-      toast.success("تم إرسال الرد بنجاح");
-    } catch (e) {
+      Toast.success("تم إرسال الرد بنجاح");
+    } catch (e: any) {
       console.log(e);
-      toast.error("حدث خطأ أثناء إرسال الرد");
+      Toast.apiError(e);
     } finally {
       setReplyLoading(false);
     }
@@ -153,7 +153,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           ) : (
             <Empty
               title="لا توجد ردود"
-              description="لم يقم أحد بالتفاعل مع هذا النقاش بعد."
+              description="لم يقم أحد بالتفاعل مع هذا السؤال بعد."
             />
           )
         ) : (

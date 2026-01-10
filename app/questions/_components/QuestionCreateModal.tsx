@@ -7,11 +7,11 @@ import { NextClient } from "@/tools/NextClient";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useQuestionsReplies } from "../context/questions-replies-context";
-import toast from "react-hot-toast";
 import { Modal } from "@/app/components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons/faCircleQuestion";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
+import { Toast } from "@/tools/Toast";
 
 type QuestionCreateModalProps = {
   userId: string | null;
@@ -49,18 +49,18 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
 
       reset({ question: "", userId: userId || "" });
       setQuestions(questions);
-      toast.success("تم نشر سؤالك بنجاح");
+      Toast.success("تم نشر سؤالك بنجاح");
       onClose();
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
-      toast.error("حدث خطأ أثناء إضافة السؤال");
+      Toast.apiError(e);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Modal open={open} onClose={onClose} title="طرح تساؤل جديد">
+    <Modal open={open} onClose={onClose} title="إضافة سؤال جديد">
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-4 bg-accent/5 p-4 rounded-2xl border border-accent/10">
           <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-white shadow-lg shadow-accent/20">
@@ -71,7 +71,7 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
               ماذا يدور في ذهنك؟
             </h4>
             <p className="text-xs text-text-muted font-medium">
-              سيظهر هذا السؤال لمتابعيك ليتمكنوا من الرد عليه.
+              سيظهر هذا السؤال للجميع وسيتمكن الجميع من الرد عليه كذلك.
             </p>
           </div>
         </div>

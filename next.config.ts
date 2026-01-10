@@ -4,6 +4,17 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/",
+        has: [
+          {
+            type: "cookie",
+            key: "token",
+          },
+        ],
+        permanent: false,
+        destination: "/profile",
+      },
+      {
         source: "/auth/login",
         has: [
           {
@@ -12,7 +23,7 @@ const nextConfig: NextConfig = {
           },
         ],
         permanent: false,
-        destination: "/",
+        destination: "/profile",
       },
       {
         source: "/auth/signup",
@@ -23,7 +34,7 @@ const nextConfig: NextConfig = {
           },
         ],
         permanent: false,
-        destination: "/",
+        destination: "/profile",
       },
       {
         source: "/questions",

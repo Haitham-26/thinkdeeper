@@ -6,8 +6,8 @@ import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import React, { Fragment, useState } from "react";
-import toast from "react-hot-toast";
 import { useQuestionsReplies } from "../context/questions-replies-context";
+import { Toast } from "@/tools/Toast";
 
 type DeleteQuestionProps = {
   question: Question;
@@ -38,10 +38,10 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({ question }) => {
 
       setModalVisible(false);
 
-      toast.success("تم حذف السؤال بنجاح");
+      Toast.success("تم حذف السؤال بنجاح");
     } catch (e: any) {
       console.log(e);
-      toast.error(e.response?.data?.message);
+      Toast.apiError(e);
     } finally {
       setLoading(false);
     }

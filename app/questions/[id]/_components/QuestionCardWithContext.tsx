@@ -50,8 +50,8 @@ export const QuestionCardWithContext: React.FC<
           </h3>
 
           <p className="text-text-muted leading-relaxed mb-8">
-            قم بإنشاء حساب أو تسجيل الدخول لتتمكن من الإعجاب بالردود والتفاعل مع
-            الأسئلة الصريحة.
+            قم بإنشاء حساب أو تسجيل الدخول لتتمكن من الإعجاب بالردود على
+            الأسئلة.
           </p>
 
           <div className="flex flex-col gap-3 w-full">

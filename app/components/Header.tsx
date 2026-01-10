@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         <nav className="hidden md:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
           <Link href="/questions" className={navLinkClass("/questions")}>
             <Icon icon={faComments} className="text-sm" />
-            <span>مناقشاتي</span>
+            <span>أسئلتي</span>
           </Link>
           <Link href="/profile" className={navLinkClass("/profile")}>
             <Icon icon={faUserCircle} className="text-sm" />

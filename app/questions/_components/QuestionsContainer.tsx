@@ -43,12 +43,11 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
               <Icon icon={faComments} />
               <span>إدارة المحتوى</span>
             </div>
-            <h1 className="my-3 text-4xl md:text-5xl font-black text-text-primary tracking-tight">
-              نقاشاتي
+            <h1 className="my-6 text-4xl md:text-5xl font-black text-text-primary tracking-tight">
+              أسئلتي
             </h1>
             <p className="text-text-muted text-lg font-medium max-w-md">
-              تابع النقاشات التي طرحتها وشاهد إجابات أصدقائك وتفاعلهم معك في
-              مكان واحد.
+              تابع الأسئلة التي طرحتها وشاهد إجابات أصدقائك وتفاعلهم معك.
             </p>
           </div>
 
@@ -58,7 +57,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
             className="h-14 px-8 shadow-xl shadow-accent/20"
             icon={faPlus}
           >
-            نقاش جديد
+            سؤال جديد
           </Button>
         </header>
 
@@ -74,10 +73,10 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
             ))
           ) : (
             <Empty
-              title="لا توجد نقاشات حالياً"
-              description="لم تقم بفتح أي نقاش بعد، ابدأ الآن وافتح أول نقاش لك مع متابعيك."
+              title="لا توجد أسئلة حالياً"
+              description="لم تقم بإضافة أي سؤال بعد، قم بمشاركة أول سؤال لك الآن."
               action={{
-                title: "افتح نقاشا جديدا",
+                title: "أضف سؤالًا جديدًا",
                 onClick: () => setCreateQuestionModalVisible(true),
               }}
             />

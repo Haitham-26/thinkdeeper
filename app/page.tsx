@@ -18,7 +18,7 @@ const features = [
   {
     title: "تفاعل سريع",
     description:
-      "نظام إشعارات فوري يخبرك فور وصول رسالة جديدة إلى صندوق بريدك.",
+      "يمكنك إرسال رسائل لأي شخص أو الرد على أسئلته بدون تسجيل دخول.",
     icon: faBolt,
   },
   {
@@ -37,12 +37,12 @@ const steps = [
   },
   {
     title: "انشر رابطك",
-    description: "شارك الرابط على ستوري انستجرام أو تويتر.",
+    description: "شارك الرابط على ستوري انستجرام أو أي منصة تواصل اجتماعي.",
     icon: faShareNodes,
   },
   {
     title: "استلم الرسائل",
-    description: "استمتع بقراءة ما كتبه الناس لك بصراحة.",
+    description: "استمتع بقراءة ما كتبه الناس لك بدون معرفة هويتهم.",
     icon: faInbox,
   },
 ];
@@ -62,20 +62,20 @@ export default function Page() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-            استقبل رسائل <br />
+            اطرح أسئلة واستقبل ردود ورسائل <br />
             <span className="text-accent underline decoration-accent/20 underline-offset-[20px]">
               بصراحة تامة
             </span>
           </h1>
 
           <p className="text-xl text-text-muted leading-relaxed max-w-2xl mx-auto mb-12">
-            اكتشف ما يفكر به الآخرون تجاهك، استقبل نصائحهم، أو أجب على أسئلتهم
+            اكتشف ما يفكر به الآخرون تجاهك، استقبل رسائلهم، أو أجب على أسئلتهم
             دون معرفة هويتهم.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
             <Link
-              href="/register"
+              href="/auth/signup"
               className="group py-4 px-12 rounded-2xl font-bold text-lg bg-accent text-white shadow-xl shadow-accent/30 hover:-translate-y-1 transition-all duration-300"
             >
               ابدأ الآن مجاناً
@@ -143,13 +143,13 @@ export default function Page() {
         <div className="max-w-4xl mx-auto bg-primary rounded-[3rem] p-12 text-center text-white relative overflow-hidden">
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              هل أنت جاهز لسماع الحقيقة؟
+              هل أنت جاهز لمعرفة آراء وأفكار أصدقاءك حولك؟
             </h2>
             <Link
-              href="/register"
+              href="/auth/signup"
               className="inline-block bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg hover:bg-accent hover:text-white transition-all"
             >
-              سجل الآن وابدأ باستقبال الرسائل
+              سجل الآن وابدأ بطرح الأسئلة واستقبال الرسائل
             </Link>
           </div>
           <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
