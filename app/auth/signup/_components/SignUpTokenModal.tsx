@@ -3,13 +3,13 @@
 import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input";
 import { Modal } from "@/app/components/Modal";
-import { Client } from "@/tools/Client";
 import { Toast } from "@/tools/Toast";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons/faEnvelopeOpenText";
 import { faShield } from "@fortawesome/free-solid-svg-icons/faShield";
+import { NextClient } from "@/tools/NextClient";
 
 type SignUpTokenModalProps = {
   open: boolean;
@@ -34,7 +34,7 @@ export const SignUpTokenModal: React.FC<SignUpTokenModalProps> = ({
     try {
       setLoading(true);
 
-      await Client("/auth/signup/token", {
+      await NextClient("/auth/signup/token", {
         method: "POST",
         data: { email, token },
         withCredentials: true,

@@ -6,11 +6,11 @@ import { Input } from "@/app/components/Input";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { LoginDto } from "@/model/auth/login/LoginDto";
-import { Client } from "@/tools/Client";
 import { Button } from "@/app/components/Button";
 import { useRouter } from "next/navigation";
 import { Toast } from "@/tools/Toast";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightToBracket";
+import { NextClient } from "@/tools/NextClient";
 
 export const LoginContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ export const LoginContent: React.FC = () => {
       setLoading(true);
       const dto = getValues();
 
-      await Client("/auth/login", {
+      await NextClient("/auth/login", {
         method: "POST",
         data: dto,
         withCredentials: true,

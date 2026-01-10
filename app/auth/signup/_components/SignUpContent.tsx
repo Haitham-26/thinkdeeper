@@ -5,7 +5,6 @@ import { AuthFormContainer } from "../../_components/AuthFormContainer";
 import { Input } from "@/app/components/Input";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
-import { Client } from "@/tools/Client";
 import { Button } from "@/app/components/Button";
 import { SignUpDto } from "@/model/auth/signup/SignUpDto";
 import { Toast } from "@/tools/Toast";
@@ -15,6 +14,7 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "@/app/components/Icon";
+import { NextClient } from "@/tools/NextClient";
 
 export const SignUpContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ export const SignUpContent: React.FC = () => {
       setLoading(true);
       const dto = getValues();
 
-      await Client("/auth/signup/email", {
+      await NextClient("/auth/signup/email", {
         method: "POST",
         data: dto,
         withCredentials: true,
