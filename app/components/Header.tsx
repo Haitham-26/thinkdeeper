@@ -8,11 +8,11 @@ import { Drawer } from "./Drawer";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
 import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons/faBarsStaggered";
 import { Icon } from "./Icon";
 import { Button } from "./Button";
+import Image from "next/image";
 
 type HeaderProps = {
   token?: string;
@@ -64,12 +64,13 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
     <header className="fixed top-0 w-full z-50 px-4 md:px-10 h-20 flex items-center justify-between bg-surface/80 backdrop-blur-md border-b border-border/50">
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30 group-hover:rotate-12 transition-transform duration-300">
-            <Icon icon={faPaperPlane} className="text-white text-lg -mr-1" />
-          </div>
-          <span className="text-text-primary text-2xl font-black tracking-tighter">
-            صراحة
-          </span>
+          <Image
+            src="/images/logo.png"
+            alt="بصراحة"
+            width={200}
+            height={40}
+            quality={100}
+          />
         </Link>
       </div>
 
@@ -114,7 +115,19 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         )}
       </div>
 
-      <Drawer onClose={() => setOpen(false)} open={open} title="صراحة">
+      <Drawer
+        onClose={() => setOpen(false)}
+        open={open}
+        title={
+          <Image
+            src="/images/logo.png"
+            alt="بصراحة"
+            width={200}
+            height={40}
+            quality={100}
+          />
+        }
+      >
         <div className="flex flex-col gap-2">
           <NavContent />
         </div>

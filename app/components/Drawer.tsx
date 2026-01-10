@@ -8,7 +8,7 @@ import { Button } from "./Button";
 type Props = {
   open: boolean;
   onClose: VoidFunction;
-  title?: string;
+  title?: string | React.ReactNode;
   children?: React.ReactNode;
 };
 
@@ -50,11 +50,11 @@ export const Drawer: React.FC<Props> = ({
       />
 
       <div
-        className={`absolute right-0 top-0 h-full w-[280px] bg-surface shadow-2xl border-l border-border transition-transform duration-300 ease-out flex flex-col ${
+        className={`absolute right-0 top-0 h-full w-[350px] bg-surface shadow-2xl border-l border-border transition-transform duration-300 ease-out flex flex-col ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between p-6 border-b border-border/50">
+        <div className="flex items-center justify-between gap-2 p-6 border-b border-border/50">
           <span className="text-xl font-black text-text-primary">
             {title || "القائمة"}
           </span>
@@ -71,7 +71,7 @@ export const Drawer: React.FC<Props> = ({
 
         <div className="p-6 border-t border-border/50">
           <p className="text-[10px] text-center font-bold text-text-muted uppercase tracking-widest">
-            جميع الحقوق محفوظة © صراحة
+            جميع الحقوق محفوظة © بصراحة
           </p>
         </div>
       </div>

@@ -76,7 +76,7 @@ export default async function Page() {
                 </p>
               </div>
               <p className="text-white/60 text-lg font-medium">
-                عضو في صراحة منذ {formattedDate(user.createdAt)}
+                عضو في صراحةب منذ {formattedDate(user.createdAt)}
               </p>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default async function Page() {
                     <Icon icon={faShareNodes} className="text-xl" />
                   </div>
                   <h3 className="text-2xl font-black text-text-primary">
-                    رابط الصراحة الخاص بك
+                    رابط المراسلة الخاص بك
                   </h3>
                 </div>
 

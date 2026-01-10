@@ -9,8 +9,9 @@ import { Toaster } from "react-hot-toast";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
-  title: "فكر بعمق",
-  description: "هنا يمكنك طرح أي سؤال قد يتبادر إلى ذهنك لا حدود",
+  title: "بصراحة",
+  description:
+    "شارك أسئلتك ودع أصدقاءك يجيبون عليها بشكل سري، أو استقبل رسائل سرية منهم.",
 };
 
 export default async function RootLayout({
