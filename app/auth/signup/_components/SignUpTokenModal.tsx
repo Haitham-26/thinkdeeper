@@ -7,13 +7,16 @@ import { Client } from "@/tools/Client";
 import { Toast } from "@/tools/Toast";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons/faEnvelopeOpenText";
+import { faShield } from "@fortawesome/free-solid-svg-icons/faShield";
 
-type SignUpTokenModal = {
+type SignUpTokenModalProps = {
   open: boolean;
   email: string;
 };
 
-export const SignUpTokenModal: React.FC<SignUpTokenModal> = ({
+export const SignUpTokenModal: React.FC<SignUpTokenModalProps> = ({
   open = false,
   email,
 }) => {
@@ -23,6 +26,11 @@ export const SignUpTokenModal: React.FC<SignUpTokenModal> = ({
   const router = useRouter();
 
   const onSubmit = async () => {
+    if (token.length < 4) {
+      Toast.error("يرجى إدخال رمز التحقق بشكل صحيح");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -32,6 +40,7 @@ export const SignUpTokenModal: React.FC<SignUpTokenModal> = ({
         withCredentials: true,
       });
 
+      Toast.success("تم تفعيل حسابك بنجاح");
       router.push("/questions");
       router.refresh();
     } catch (e) {
@@ -43,27 +52,39 @@ export const SignUpTokenModal: React.FC<SignUpTokenModal> = ({
   };
 
   return (
-    <Modal title="التحقق من البريد الإلكتروني" open={open}>
-      <div className="flex flex-col gap-4">
-        <div className="mt-3 mb-6">
-          <p className="text-gray-100 text-sm mb-2">
-            تم ارسال رابط التحقق الى {email}
-          </p>
-          <p className="text-gray-100 text-sm">
-            يرجى التحقق من بريدك الإلكتروني
-          </p>
+    <Modal title="خطوة التفعيل الأخيرة" open={open}>
+      <div className="flex flex-col items-center">
+        <div className="w-20 h-20 bg-accent/10 text-accent rounded-3xl flex items-center justify-center mb-6">
+          <FontAwesomeIcon icon={faEnvelopeOpenText} className="text-3xl" />
         </div>
 
-        <Input
-          title="رمز التحقق"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          maxLength={6}
-        />
+        <div className="text-center mb-8">
+          <p className="text-text-muted font-medium mb-1">
+            لقد أرسلنا رمز التحقق إلى بريدك:
+          </p>
+          <p className="text-text-primary font-black dir-ltr">{email}</p>
+        </div>
 
-        <Button onClick={onSubmit} loading={loading} className="h-10">
-          تحقق واستمرار
-        </Button>
+        <div className="w-full space-y-6">
+          <Input
+            title="رمز التحقق"
+            placeholder="abc123"
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+            maxLength={6}
+            className="text-center text-2xl tracking-[0.5em] font-mono"
+          />
+
+          <Button
+            onClick={onSubmit}
+            loading={loading}
+            variant="primary"
+            className="w-full h-14 rounded-2xl shadow-xl shadow-accent/20"
+            icon={faShield}
+          >
+            تفعيل الحساب
+          </Button>
+        </div>
       </div>
     </Modal>
   );
