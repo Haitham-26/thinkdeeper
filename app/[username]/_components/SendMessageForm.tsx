@@ -14,10 +14,10 @@ import { Textarea } from "@/app/components/Textarea";
 import { Input } from "@/app/components/Input";
 
 type Props = {
-  recipientId: string;
+  username: string;
 };
 
-export const SendMessageForm: React.FC<Props> = ({ recipientId }) => {
+export const SendMessageForm: React.FC<Props> = ({ username }) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -32,7 +32,7 @@ export const SendMessageForm: React.FC<Props> = ({ recipientId }) => {
     defaultValues: {
       message: "",
       name: "",
-      recipientId,
+      recipientUsername: username,
       asAnnonymous: true,
     },
   });
@@ -48,7 +48,7 @@ export const SendMessageForm: React.FC<Props> = ({ recipientId }) => {
     try {
       setLoading(true);
       const dto = getValues();
-      await NextClient(`/messages/${recipientId}/send-message`, {
+      await NextClient(`/message/${username}/send-message`, {
         method: "POST",
         data: dto,
       });

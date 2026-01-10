@@ -10,6 +10,7 @@ import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 
 import { Icon } from "./Icon";
+import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
 
 type HeaderProps = {
   token?: string;
@@ -42,6 +43,10 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
       {token ? (
         <nav className="hidden md:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
+          <Link href="/messages" className={navLinkClass("/messages")}>
+            <Icon icon={faMessage} className="text-sm" />
+            <span>الرسائل الواردة</span>
+          </Link>
           <Link href="/questions" className={navLinkClass("/questions")}>
             <Icon icon={faComments} className="text-sm" />
             <span>أسئلتي</span>

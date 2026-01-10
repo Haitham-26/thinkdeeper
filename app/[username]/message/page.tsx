@@ -7,6 +7,7 @@ import { Icon } from "@/app/components/Icon";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import { faShieldHeart } from "@fortawesome/free-solid-svg-icons/faShieldHeart";
 import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
+import { User } from "@/model/user/User";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -16,6 +17,20 @@ export default async function Page({ params }: Props) {
   const [{ username }, token] = await Promise.all([params, getToken()]);
 
   if (!username) {
+    redirect("/");
+  }
+
+  let user: User | null = null;
+
+  try {
+    const { data } = await AuthClient<User>(`/user`, { method: "POST" }, token);
+
+    user = data;
+  } catch (e) {
+    console.log(e);
+  }
+
+  if (user?.username === username) {
     redirect("/");
   }
 
@@ -52,7 +67,7 @@ export default async function Page({ params }: Props) {
 
         <div className="bg-surface rounded-[3rem] border-2 border-border p-8 md:p-12 shadow-xl shadow-primary/5 relative overflow-hidden">
           <div className="relative z-10">
-            <SendMessageForm recipientId={profile?._id} />
+            <SendMessageForm username={profile?.username} />
           </div>
 
           <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl -mr-16 -mt-16" />

@@ -48,6 +48,17 @@ const nextConfig: NextConfig = {
         destination: "/",
       },
       {
+        source: "/messages",
+        missing: [
+          {
+            type: "cookie",
+            key: "token",
+          },
+        ],
+        permanent: false,
+        destination: "/",
+      },
+      {
         source: "/profile",
         missing: [
           {

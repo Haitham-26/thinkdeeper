@@ -1,5 +1,5 @@
 export interface SendMessageDto {
-  recipientId: string;
+  recipientUsername: string;
   message: string;
   name?: string;
 }
