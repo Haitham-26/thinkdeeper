@@ -6,7 +6,7 @@ import { LogoutButton } from "./LogoutButton";
 import { usePathname } from "next/navigation";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
-import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
+import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 
 import { Icon } from "./Icon";
@@ -66,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
               href="/auth/signup"
               className="bg-accent text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-accent/90 hover:-translate-y-0.5 transition-all flex items-center gap-2"
             >
-              <Icon icon={faPlus} className="text-xs" />
+              <Icon icon={faBolt} className="text-xs" />
               <span>ابدأ الآن</span>
             </Link>
           </Fragment>

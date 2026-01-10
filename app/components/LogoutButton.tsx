@@ -12,7 +12,7 @@ export const LogoutButton: React.FC = () => {
 
   const logout = async () => {
     try {
-      await NextClient("/logout", {
+      await NextClient("/auth/logout", {
         method: "POST",
       });
 
