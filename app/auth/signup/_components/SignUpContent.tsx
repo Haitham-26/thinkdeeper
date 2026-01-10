@@ -53,7 +53,7 @@ export const SignUpContent: React.FC = () => {
       title="انضم إلينا"
       subtitle="أنشئ حسابك وابدأ في استقبال المصارحات من أصدقائك"
     >
-      <div className="space-y-1">
+      <div className="flex flex-col gap-4">
         <Controller
           control={control}
           name="username"
