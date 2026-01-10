@@ -68,6 +68,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         `/replies/${question._id}/all`,
         {
           method: "POST",
+          data: { userId },
         }
       );
 
@@ -92,6 +93,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           `/replies/${question._id}/all`,
           {
             method: "POST",
+            data: { userId },
           }
         );
 
@@ -103,7 +105,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       }
     };
     fetchReplies();
-  }, [question._id, setReplies]);
+  }, [question._id, setReplies, userId]);
 
   return (
     <div className="bg-surface rounded-[2.5rem] border-2 border-border p-6 md:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5">

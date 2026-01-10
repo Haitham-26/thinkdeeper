@@ -10,5 +10,6 @@ export async function POST(req: NextRequest, context: Context) {
 
   return await proxyRequest(`/replies/${id}/all`, {
     method: "POST",
+    data: await req.json(),
   });
 }
