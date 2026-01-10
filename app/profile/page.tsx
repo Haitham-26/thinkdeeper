@@ -5,9 +5,11 @@ import getToken from "@/tools/getToken";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons/faCalendarAlt";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
-import { faLink } from "@fortawesome/free-solid-svg-icons/faLink";
 import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import { faFingerprint } from "@fortawesome/free-solid-svg-icons/faFingerprint";
+import { faShieldHeart } from "@fortawesome/free-solid-svg-icons/faShieldHeart";
+import { faChartSimple } from "@fortawesome/free-solid-svg-icons/faChartSimple";
+import { faAt } from "@fortawesome/free-solid-svg-icons/faAt";
 import { Button } from "@/app/components/Button";
 import { Icon } from "../components/Icon";
 
@@ -20,13 +22,20 @@ export default async function Page() {
     token
   );
 
-  const profileUrl = `sarhne.com/u/${user._id}`;
+  const profileUrl = `thinkdeeper.vercel.app/${
+    user.username || user._id
+  }/message`;
 
   const infoRows = [
     {
-      label: "الاسم المستعار",
+      label: "الاسم الكامل",
       icon: faUserCircle,
       value: user.name,
+    },
+    {
+      label: "اسم المستخدم",
+      icon: faAt,
+      value: `@${user.username}`,
     },
     {
       label: "البريد الإلكتروني",
@@ -41,106 +50,127 @@ export default async function Page() {
   ];
 
   return (
-    <div className="min-h-screen bg-background pt-28 pb-12 px-4 w-full">
-      <div className="max-w-4xl mx-auto">
-        <div className="relative group">
-          <div
-            className="h-48 md:h-64 rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/10 relative"
-            style={{
-              backgroundImage:
-                "linear-gradient(to bottom, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
-
-          <div className="absolute -bottom-12 right-12 flex items-end gap-6">
-            <div className="p-2 bg-background rounded-[2rem]">
-              <div className="w-24 h-24 md:w-32 md:h-32 bg-surface rounded-[1.8rem] flex items-center justify-center border-4 border-surface shadow-xl">
+    <div className="min-h-screen bg-background pt-32 pb-20 px-4 w-full">
+      <div className="max-w-5xl mx-auto space-y-8">
+        <div className="relative p-8 md:p-12 bg-primary rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/20">
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 text-right">
+            <div className="relative">
+              <div className="w-32 h-32 md:w-40 md:h-40 bg-surface rounded-[2.5rem] flex items-center justify-center border-8 border-white/10 shadow-inner overflow-hidden">
                 <Icon
                   icon={faUserCircle}
-                  className="text-accent text-7xl md:text-8xl"
+                  className="text-accent text-8xl md:text-9xl"
                 />
               </div>
+              <div className="absolute -bottom-2 -right-2 bg-accent w-10 h-10 rounded-full border-4 border-primary flex items-center justify-center">
+                <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+              </div>
             </div>
-            <div className="pb-14 hidden md:block">
-              <h1 className="text-3xl font-black text-white drop-shadow-md">
-                {user.name}
-              </h1>
-              <p className="text-white/80 font-medium">عضو في صراحة</p>
+
+            <div className="text-center md:text-right space-y-2">
+              <div className="flex flex-col gap-1">
+                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                  {user.name}
+                </h1>
+                <p className="text-accent font-mono text-xl dir-ltr">
+                  @{user.username}
+                </p>
+              </div>
+              <p className="text-white/60 text-lg font-medium">
+                عضو في صراحة منذ {formattedDate(user.createdAt)}
+              </p>
             </div>
+          </div>
+
+          <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+            <div className="absolute top-[-10%] left-[-5%] w-64 h-64 bg-accent rounded-full blur-[100px]" />
+            <div className="absolute bottom-[-10%] right-[10%] w-64 h-64 bg-accent rounded-full blur-[100px]" />
           </div>
         </div>
 
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 space-y-6">
-            <div className="bg-surface rounded-[2.5rem] border-2 border-border p-8 shadow-sm">
-              <h2 className="text-xl font-black mb-6 flex items-center gap-3">
-                <Icon icon={faFingerprint} className="text-accent" />
-                المعلومات الأساسية
-              </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-8 space-y-8">
+            <div className="bg-surface rounded-[2.5rem] border-2 border-border p-8 md:p-10 shadow-sm relative group overflow-hidden">
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
+                    <Icon icon={faShareNodes} className="text-xl" />
+                  </div>
+                  <h3 className="text-2xl font-black text-text-primary">
+                    رابط الصراحة الخاص بك
+                  </h3>
+                </div>
 
-              <div className="space-y-6">
+                <div className="flex flex-col md:flex-row gap-4 p-2 bg-surface-muted rounded-2xl border-2 border-border/50">
+                  <div className="flex-grow flex items-center gap-3 px-6 py-4 font-mono text-text-primary [direction:ltr]">
+                    <span className="truncate">{profileUrl}</span>
+                  </div>
+                  <Button className="shadow-none shrink-0">نسخ</Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-surface rounded-[2.5rem] border-2 border-border p-8 md:p-10 shadow-sm">
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
+                  <Icon icon={faFingerprint} className="text-xl" />
+                </div>
+                <h2 className="text-2xl font-black text-text-primary">
+                  بيانات الحساب
+                </h2>
+              </div>
+
+              <div className="grid gap-6">
                 {infoRows.map(({ icon, label, value }) => (
                   <div
                     key={label}
-                    className="flex items-center justify-between py-1"
+                    className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-surface-muted/50 rounded-2xl border border-transparent hover:border-border transition-all"
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-surface-muted rounded-xl flex items-center justify-center text-text-muted">
+                    <div className="flex items-center gap-4 mb-2 md:mb-0">
+                      <div className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center text-text-muted border border-border">
                         <Icon icon={icon} />
                       </div>
                       <span className="text-text-muted font-bold">{label}</span>
                     </div>
-                    <span className="text-text-primary font-black">
+                    <span
+                      className={`font-black text-lg ${
+                        label === "اسم المستخدم"
+                          ? "text-accent dir-ltr"
+                          : "text-text-primary"
+                      }`}
+                    >
                       {value}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
-
-            <div className="bg-primary rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
-              <div className="relative z-10">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
-                  <Icon icon={faShareNodes} className="text-accent" />
-                  رابطك الخاص
-                </h3>
-                <p className="text-white/70 mb-6 leading-relaxed">
-                  شارك هذا الرابط مع أصدقائك لاستقبال رسائل مجهولة وصريحة منهم.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <div className="flex-grow bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-5 py-3.5 font-mono text-sm flex items-center justify-between dir-ltr">
-                    <span className="truncate">{profileUrl}</span>
-                    <Icon icon={faLink} className="text-white/40" />
-                  </div>
-                  <Button
-                    variant="primary"
-                    className="whitespace-nowrap h-auto"
-                  >
-                    نسخ الرابط
-                  </Button>
-                </div>
-              </div>
-              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-accent/20 to-transparent pointer-events-none" />
-            </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-surface rounded-[2.5rem] border-2 border-border p-8 text-center">
-              <div className="text-4xl font-black text-accent mb-2">0</div>
-              <p className="text-text-muted font-bold text-sm uppercase tracking-widest">
-                إجمالي الرسائل
-              </p>
+          <div className="lg:col-span-4 space-y-8">
+            <div className="bg-surface rounded-[2.5rem] border-2 border-border p-10 text-center relative overflow-hidden group">
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-accent mx-auto mb-6">
+                  <Icon icon={faChartSimple} className="text-2xl" />
+                </div>
+                <div className="text-5xl font-black text-text-primary mb-2 tracking-tighter">
+                  0
+                </div>
+                <p className="text-text-muted font-black text-sm uppercase tracking-[0.2em]">
+                  رسالة واردة
+                </p>
+              </div>
             </div>
 
-            <div className="bg-accent/5 rounded-[2.5rem] border-2 border-accent/10 p-8">
-              <h4 className="font-black text-text-primary mb-4">
-                نصيحة الأمان
-              </h4>
-              <p className="text-sm text-text-muted leading-relaxed">
-                لا تشارك معلوماتك الشخصية الحساسة في ردودك العامة للحفاظ على
-                خصوصيتك.
+            <div className="bg-accent/5 rounded-[2.5rem] border-2 border-accent/20 p-10 relative overflow-hidden">
+              <div className="flex items-center gap-3 mb-6">
+                <Icon icon={faShieldHeart} className="text-accent text-2xl" />
+                <h4 className="font-black text-text-primary text-xl">
+                  الخصوصية
+                </h4>
+              </div>
+              <p className="text-text-muted leading-relaxed font-medium">
+                اسم المستخدم الخاص بك هو هويتك العامة. يمكنك استخدامه بدلاً من
+                المعرف الرقمي الطويل في روابطك.
               </p>
             </div>
           </div>

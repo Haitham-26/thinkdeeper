@@ -3,7 +3,7 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "./Icon";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  title: string;
+  title?: string;
   valid?: boolean;
   errorMessage?: string;
   labelClassName?: string;
@@ -15,6 +15,7 @@ export const Input: React.FC<InputProps> = ({
   errorMessage,
   className,
   labelClassName,
+  required,
   ...props
 }) => {
   const forceLTR = () => {
@@ -30,16 +31,19 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <div className="flex flex-col gap-1.5 w-full group">
-      <label
-        htmlFor={props.id || props.name}
-        className={`text-sm font-bold tracking-tight transition-colors duration-200 px-1 ${
-          valid
-            ? "text-text-primary group-focus-within:text-accent"
-            : "text-danger"
-        } ${labelClassName || ""}`}
-      >
-        {title}
-      </label>
+      {title ? (
+        <label
+          htmlFor={props.id || props.name}
+          className={`text-sm font-bold tracking-tight transition-colors duration-200 px-1 ${
+            valid
+              ? "text-text-primary group-focus-within:text-accent"
+              : "text-danger"
+          } ${labelClassName || ""}`}
+        >
+          {title}
+          {required && <span className="text-danger"> *</span>}
+        </label>
+      ) : null}
 
       <div className="relative">
         <input
@@ -71,13 +75,19 @@ export const Input: React.FC<InputProps> = ({
         )}
       </div>
 
-      <div className="min-h-[20px] px-1">
-        {!valid && errorMessage && (
+      {!valid && errorMessage && (
+        <div className="min-h-[20px] px-1">
           <p className="text-danger text-xs font-semibold animate-in fade-in slide-in-from-top-1 duration-200">
             {errorMessage}
           </p>
-        )}
-      </div>
+        </div>
+      )}
+
+      {props.maxLength ? (
+        <span className={`block ms-auto text-xs font-black text-text-muted`}>
+          {props.value?.toString().length || 0} / {props.maxLength}
+        </span>
+      ) : null}
     </div>
   );
 };

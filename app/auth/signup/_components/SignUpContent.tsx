@@ -23,7 +23,7 @@ export const SignUpContent: React.FC = () => {
   const [email, setEmail] = useState("");
 
   const { control, handleSubmit, getValues } = useForm<SignUpDto>({
-    defaultValues: { name: "", email: "", password: "" },
+    defaultValues: { username: "", name: "", email: "", password: "" },
   });
 
   const onSubmit = async () => {
@@ -56,7 +56,25 @@ export const SignUpContent: React.FC = () => {
       <div className="space-y-1">
         <Controller
           control={control}
+          name="username"
+          rules={{ required: "اسم المستخدم مطلوب" }}
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
+            <Input
+              title="اسم المستخدم"
+              placeholder="مثال: ahmad_mohamad"
+              value={value}
+              onChange={onChange}
+              valid={!error}
+              errorMessage={error?.message}
+              required
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
           name="name"
+          rules={{ required: "الاسم الكامل مطلوب" }}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <Input
               title="الاسم الكامل"
@@ -65,6 +83,7 @@ export const SignUpContent: React.FC = () => {
               onChange={onChange}
               valid={!error}
               errorMessage={error?.message}
+              required
             />
           )}
         />
@@ -72,6 +91,7 @@ export const SignUpContent: React.FC = () => {
         <Controller
           control={control}
           name="email"
+          rules={{ required: "البريد الإلكتروني مطلوب" }}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <Input
               title="البريد الإلكتروني"
@@ -81,6 +101,7 @@ export const SignUpContent: React.FC = () => {
               valid={!error}
               errorMessage={error?.message}
               type="email"
+              required
             />
           )}
         />
@@ -96,6 +117,7 @@ export const SignUpContent: React.FC = () => {
               onChange={onChange}
               valid={!error}
               errorMessage={error?.message}
+              required
               type="password"
             />
           )}

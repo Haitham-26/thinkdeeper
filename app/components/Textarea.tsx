@@ -57,13 +57,19 @@ export const Textarea: React.FC<TextareaProps> = ({
         ) : null}
       </div>
 
-      <div className="min-h-[20px] px-1">
-        {!valid && errorMessage ? (
+      {!valid && errorMessage ? (
+        <div className="min-h-[20px] px-1">
           <p className="text-danger text-xs font-semibold animate-in fade-in slide-in-from-top-1 duration-200">
             {errorMessage}
           </p>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
+
+      {props.maxLength ? (
+        <span className={`block ms-auto text-xs font-black text-text-muted`}>
+          {props.value?.toString().length || 0} / {props.maxLength}
+        </span>
+      ) : null}
     </div>
   );
 };

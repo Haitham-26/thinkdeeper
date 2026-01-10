@@ -10,10 +10,12 @@ export class Toast {
   }
 
   static apiError(error: any) {
-    if (typeof error.response?.data?.error === "string") {
-      return toast.error(error.response?.data?.error);
-    } else if (typeof error.response?.data?.error?.message === "string") {
-      return toast.error(error.response?.data?.error?.message);
+    const message = error.response?.data?.message;
+
+    console.log(message);
+
+    if (typeof message === "string") {
+      return toast.error(message);
     }
 
     return toast.error("حدث خطأ في السيرفر");

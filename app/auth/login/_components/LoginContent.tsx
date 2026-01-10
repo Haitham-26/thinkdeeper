@@ -17,7 +17,7 @@ export const LoginContent: React.FC = () => {
   const router = useRouter();
 
   const { control, handleSubmit, getValues } = useForm<LoginDto>({
-    defaultValues: { email: "", password: "" },
+    defaultValues: { identifier: "", password: "" },
   });
 
   const onSubmit = async () => {
@@ -49,16 +49,16 @@ export const LoginContent: React.FC = () => {
       <div className="space-y-4">
         <Controller
           control={control}
-          name="email"
+          name="identifier"
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <Input
-              title="البريد الإلكتروني"
-              placeholder="name@example.com"
+              title="البريد الإلكتروني أو اسم المستخدم"
+              placeholder="name@example.com / abc123"
               value={value}
               onChange={onChange}
               valid={!error}
               errorMessage={error?.message}
-              type="email"
+              required
             />
           )}
         />
@@ -76,6 +76,7 @@ export const LoginContent: React.FC = () => {
                 valid={!error}
                 errorMessage={error?.message}
                 type="password"
+                required
               />
             )}
           />

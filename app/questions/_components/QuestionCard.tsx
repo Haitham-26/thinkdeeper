@@ -21,6 +21,7 @@ import { Icon } from "@/app/components/Icon";
 import { Textarea } from "@/app/components/Textarea";
 import { Empty } from "@/app/components/Empty";
 import { Toast } from "@/tools/Toast";
+import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 
 type QuestionCardProps = {
   question: Question;
@@ -196,7 +197,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     className="peer appearance-none w-6 h-6 border-2 border-border rounded-lg checked:bg-accent checked:border-accent transition-all cursor-pointer"
                   />
                   <Icon
-                    icon={faPaperPlane}
+                    icon={faCheck}
                     className="absolute left-1.5 text-[10px] text-white opacity-0 peer-checked:opacity-100 transition-opacity"
                   />
                 </div>

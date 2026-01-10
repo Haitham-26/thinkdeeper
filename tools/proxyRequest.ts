@@ -14,9 +14,8 @@ export async function proxyRequest(
 
     return NextResponse.json(data);
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error?.response?.data || "Server error" },
-      { status: error?.response?.status || 500 }
-    );
+    return NextResponse.json(error?.response?.data || "حدث خطأ في الخادم", {
+      status: error?.response?.status || 500,
+    });
   }
 }
