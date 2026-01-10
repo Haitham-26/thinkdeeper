@@ -27,9 +27,9 @@ export const LogoutButton: React.FC = () => {
     <Button
       onClick={logout}
       icon={faRightFromBracket}
-      className="!bg-danger text-secondary hover:!bg-danger/90"
+      className="!bg-danger !p-5 w-10 h-10 md:w-auto md:h-12 text-secondary hover:!bg-danger/90 shadow-none"
     >
-      تسجيل الخروج
+      <span className="hidden md:inline">تسجيل الخروج</span>
     </Button>
   );
 };

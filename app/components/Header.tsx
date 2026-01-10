@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { LogoutButton } from "./LogoutButton";
 import { usePathname } from "next/navigation";
+import { Drawer } from "./Drawer";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
-
-import { Icon } from "./Icon";
 import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
+import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons/faBarsStaggered";
+import { Icon } from "./Icon";
+import { Button } from "./Button";
 
 type HeaderProps = {
   token?: string;
@@ -18,9 +20,10 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ token }) => {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   const navLinkClass = (path: string) => `
-    relative px-5 py-2 rounded-xl font-bold transition-all duration-300 flex items-center gap-2
+    relative px-5 py-3 md:py-2 rounded-xl font-bold transition-all duration-300 flex items-center gap-3 w-full md:w-auto
     ${
       pathname === path
         ? "bg-accent/10 text-accent"
@@ -28,9 +31,38 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
     }
   `;
 
+  const NavContent = () => (
+    <Fragment>
+      <Link
+        href="/messages"
+        className={navLinkClass("/messages")}
+        onClick={() => setOpen(false)}
+      >
+        <Icon icon={faMessage} className="text-sm" />
+        <span>الرسائل الواردة</span>
+      </Link>
+      <Link
+        href="/questions"
+        className={navLinkClass("/questions")}
+        onClick={() => setOpen(false)}
+      >
+        <Icon icon={faComments} className="text-sm" />
+        <span>أسئلتي</span>
+      </Link>
+      <Link
+        href="/profile"
+        className={navLinkClass("/profile")}
+        onClick={() => setOpen(false)}
+      >
+        <Icon icon={faUserCircle} className="text-sm" />
+        <span>الملف الشخصي</span>
+      </Link>
+    </Fragment>
+  );
+
   return (
     <header className="fixed top-0 w-full z-50 px-4 md:px-10 h-20 flex items-center justify-between bg-surface/80 backdrop-blur-md border-b border-border/50">
-      <div className="flex items-center">
+      <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30 group-hover:rotate-12 transition-transform duration-300">
             <Icon icon={faPaperPlane} className="text-white text-lg -mr-1" />
@@ -42,19 +74,8 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
       </div>
 
       {token ? (
-        <nav className="hidden md:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
-          <Link href="/messages" className={navLinkClass("/messages")}>
-            <Icon icon={faMessage} className="text-sm" />
-            <span>الرسائل الواردة</span>
-          </Link>
-          <Link href="/questions" className={navLinkClass("/questions")}>
-            <Icon icon={faComments} className="text-sm" />
-            <span>أسئلتي</span>
-          </Link>
-          <Link href="/profile" className={navLinkClass("/profile")}>
-            <Icon icon={faUserCircle} className="text-sm" />
-            <span>الملف الشخصي</span>
-          </Link>
+        <nav className="hidden lg:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
+          <NavContent />
         </nav>
       ) : null}
 
@@ -76,12 +97,28 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
             </Link>
           </Fragment>
         ) : (
-          <div className="flex items-center gap-4">
-            <div className="h-8 w-[1px] bg-border mx-2 hidden sm:block"></div>
-            <LogoutButton />
-          </div>
+          <Fragment>
+            <div className="flex items-center gap-4">
+              <div className="h-8 w-[1px] bg-border mx-2 hidden sm:block"></div>
+              <LogoutButton />
+            </div>
+
+            {token ? (
+              <Button
+                onClick={() => setOpen(true)}
+                icon={faBarsStaggered}
+                className="lg:hidden w-10 h-10 !p-5 rounded-xl !bg-surface-muted !text-text-primary border !border-border shadow-none"
+              />
+            ) : null}
+          </Fragment>
         )}
       </div>
+
+      <Drawer onClose={() => setOpen(false)} open={open} title="صراحة">
+        <div className="flex flex-col gap-2">
+          <NavContent />
+        </div>
+      </Drawer>
     </header>
   );
 };
