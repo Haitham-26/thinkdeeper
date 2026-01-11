@@ -11,10 +11,12 @@ export async function POST(req: NextRequest) {
 
   const response = NextResponse.json({ success: true });
 
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
+
   response.cookies.set("token", token, {
     httpOnly: true,
-    secure: process.env.NEXT_PUBLIC_NODE_ENV === "production",
-    sameSite: "none",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
     path: "/",
     maxAge: 60 * 60 * 24,
   });
