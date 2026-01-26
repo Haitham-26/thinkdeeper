@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Toast } from "@/tools/Toast";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightToBracket";
 import { NextClient } from "@/tools/NextClient";
+import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
 
 export const LoginContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -106,6 +107,8 @@ export const LoginContent: React.FC = () => {
           <span className="flex-shrink mx-4 text-text-muted text-sm">أو</span>
           <div className="flex-grow border-t border-border"></div>
         </div>
+
+        <GoogleLoginButton />
 
         <Link
           href="/auth/signup"

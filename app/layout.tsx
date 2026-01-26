@@ -6,6 +6,8 @@ import getToken from "@/tools/getToken";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Toaster } from "react-hot-toast";
+import { Providers } from "./Providers";
+
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
@@ -27,7 +29,9 @@ export default async function RootLayout({
         className={`${cairoFont.className} min-h-screen flex flex-col overflow-y-auto bg-secondary`}
       >
         <Header token={token} />
-        <main className="pt-16 flex-grow flex">{children}</main>
+        <main className="pt-16 flex-grow flex">
+          <Providers>{children}</Providers>
+        </main>
         <Toaster position="top-left" />
       </body>
     </html>
