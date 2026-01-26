@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "./Icon";
+import { Button } from "./Button";
+import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { faEyeSlash } from "@fortawesome/free-solid-svg-icons/faEyeSlash";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   title?: string;
@@ -18,6 +21,10 @@ export const Input: React.FC<InputProps> = ({
   required,
   ...props
 }) => {
+  const [type, setType] = useState<HTMLInputElement["type"]>(
+    props?.type || "text",
+  );
+
   const forceLTR = () => {
     switch (props?.type) {
       case "email":
@@ -46,6 +53,15 @@ export const Input: React.FC<InputProps> = ({
       ) : null}
 
       <div className="relative">
+        {props.type === "password" ? (
+          <Button
+            className="shadow-none !bg-transparent !p-2 !text-accent !absolute top-1/2 right-3 -translate-y-1/2"
+            icon={type === "text" ? faEye : faEyeSlash}
+            onClick={() =>
+              setType((prev) => (prev === "password" ? "text" : "password"))
+            }
+          />
+        ) : null}
         <input
           id={props.id || props.name}
           autoComplete="off"
@@ -54,18 +70,18 @@ export const Input: React.FC<InputProps> = ({
             bg-surface border-2 text-text-primary placeholder:text-text-muted/50
             
             ${valid ? "border-border shadow-sm" : "border-danger bg-danger/5"}
-            
             ${
               valid
                 ? "focus:border-accent focus:ring-4 focus:ring-accent/10 focus:shadow-md"
                 : "focus:ring-4 focus:ring-danger/10"
             }
-            
+            ${props.type === "password" ? "pr-12" : ""}
             ${forceLTR() ? "[direction:ltr] placeholder:text-right" : ""}
             
             ${className || ""}
           `}
           {...props}
+          type={type}
         />
 
         {!valid && (
