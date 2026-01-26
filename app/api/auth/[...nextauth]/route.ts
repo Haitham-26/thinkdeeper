@@ -6,8 +6,8 @@ import { cookies } from "next/headers";
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
@@ -33,7 +33,7 @@ const handler = NextAuth({
       return token;
     },
   },
-  secret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+  secret: process.env.GOOGLE_CLIENT_SECRET,
 });
 
 export { handler as GET, handler as POST };
