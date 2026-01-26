@@ -81,14 +81,14 @@ export const LoginContent: React.FC = () => {
               />
             )}
           />
-          <div className="flex justify-end px-1">
+          {/* <div className="flex justify-end px-1">
             <Link
               href="/auth/forgot-password"
               className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
             >
               نسيت كلمة المرور؟
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
 
