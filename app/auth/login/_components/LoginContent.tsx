@@ -108,7 +108,7 @@ export const LoginContent: React.FC = () => {
           <div className="flex-grow border-t border-border"></div>
         </div>
 
-        <GoogleLoginButton />
+        <GoogleLoginButton title="تسجيل دخول باستخدام جوجل" />
 
         <Link
           href="/auth/signup"

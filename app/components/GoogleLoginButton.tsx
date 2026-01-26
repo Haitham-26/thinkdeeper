@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { Button } from "./Button";
+import Image from "next/image";
 
-export const GoogleLoginButton: React.FC = () => {
+type Props = {
+  title: string;
+};
+
+export const GoogleLoginButton: React.FC<Props> = ({ title }) => {
   const [loading, setLoading] = useState(false);
 
   const onLoginWithGoogle = async () => {
@@ -24,7 +29,9 @@ export const GoogleLoginButton: React.FC = () => {
       loading={loading}
       className="bg-white !text-black border !border-gray-300 hover:!bg-gray-50 shadow-none"
     >
-      Login with Google
+      {title}
+
+      <Image src={"/images/google.svg"} width={25} height={25} alt="" />
     </Button>
   );
 };

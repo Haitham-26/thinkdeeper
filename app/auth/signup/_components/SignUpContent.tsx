@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "@/app/components/Icon";
 import { NextClient } from "@/tools/NextClient";
+import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
 
 export const SignUpContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -139,6 +140,8 @@ export const SignUpContent: React.FC = () => {
           <span className="flex-shrink mx-4 text-text-muted text-sm">أو</span>
           <div className="flex-grow border-t border-border"></div>
         </div>
+
+        <GoogleLoginButton title="تسجيل باستخدام جوجل" />
 
         <Link
           href="/auth/login"
