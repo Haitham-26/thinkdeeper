@@ -7,10 +7,17 @@ export async function POST(req: NextRequest) {
     data: await req.json(),
   });
 
-  const { token } = await expressRes.json();
+  const data = await expressRes.json();
 
+  if (!expressRes.ok) {
+    return NextResponse.json(
+      { message: data.message || "حدث خطأ ما", field: data.field },
+      { status: expressRes.status },
+    );
+  }
+
+  const { token } = data;
   const response = NextResponse.json({ success: true });
-
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
 
   response.cookies.set("token", token, {

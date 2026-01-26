@@ -16,6 +16,7 @@ import {
 import { Icon } from "@/app/components/Icon";
 import { NextClient } from "@/tools/NextClient";
 import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
+import { Info } from "@/app/components/Info";
 
 export const SignUpContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -54,7 +55,12 @@ export const SignUpContent: React.FC = () => {
       title="انضم إلينا"
       subtitle="أنشئ حسابك وابدأ في استقبال المصارحات من أصدقائك"
     >
-      <div className="flex flex-col gap-4">
+      <Info>
+        التسجيل باستخدام البريد الإلكتروني وكلمة المرور غير متوفر بعد لأسباب
+        تقنية، يرجى التسجيل باستخدام جوجل.
+      </Info>
+
+      <div className="flex flex-col gap-4 opacity-50">
         <Controller
           control={control}
           name="username"
@@ -68,6 +74,7 @@ export const SignUpContent: React.FC = () => {
               valid={!error}
               errorMessage={error?.message}
               required
+              disabled
             />
           )}
         />
@@ -85,6 +92,7 @@ export const SignUpContent: React.FC = () => {
               valid={!error}
               errorMessage={error?.message}
               required
+              disabled
             />
           )}
         />
@@ -103,6 +111,7 @@ export const SignUpContent: React.FC = () => {
               errorMessage={error?.message}
               type="email"
               required
+              disabled
             />
           )}
         />
@@ -120,6 +129,7 @@ export const SignUpContent: React.FC = () => {
               errorMessage={error?.message}
               required
               type="password"
+              disabled
             />
           )}
         />
@@ -130,6 +140,7 @@ export const SignUpContent: React.FC = () => {
           loading={loading}
           onClick={handleSubmit(onSubmit)}
           className="w-full h-14 rounded-2xl bg-accent text-white font-bold text-lg shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+          disabled
         >
           <span>إنشاء حساب جديد</span>
           <Icon icon={faUserPlus} className="text-sm" />

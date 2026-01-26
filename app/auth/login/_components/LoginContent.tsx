@@ -12,6 +12,7 @@ import { Toast } from "@/tools/Toast";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightToBracket";
 import { NextClient } from "@/tools/NextClient";
 import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
+import { Info } from "@/app/components/Info";
 
 export const LoginContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,12 @@ export const LoginContent: React.FC = () => {
       title="مرحباً بعودتك"
       subtitle="سجل دخولك لمتابعة المصارحات والرسائل الجديدة"
     >
-      <div className="space-y-4">
+      <Info>
+        تسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور غير متوفر بعد
+        لأسباب تقنية، يرجى تسجيل الدخول باستخدام جوجل.
+      </Info>
+
+      <div className="space-y-4 opacity-50">
         <Controller
           control={control}
           name="identifier"
@@ -60,6 +66,7 @@ export const LoginContent: React.FC = () => {
               valid={!error}
               errorMessage={error?.message}
               required
+              disabled
             />
           )}
         />
@@ -78,6 +85,7 @@ export const LoginContent: React.FC = () => {
                 errorMessage={error?.message}
                 type="password"
                 required
+                disabled
               />
             )}
           />
@@ -98,6 +106,7 @@ export const LoginContent: React.FC = () => {
           onClick={handleSubmit(onSubmit)}
           className="w-full h-14 rounded-2xl bg-accent text-white font-bold text-lg shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
           icon={faArrowRightToBracket}
+          disabled
         >
           تسجيل الدخول
         </Button>
