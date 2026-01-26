@@ -9,7 +9,7 @@ export default function NotFound() {
       <p className="text-accent">الصفحة المطلوبة غير موجودة أو تم حذفها</p>
 
       <Link
-        href="/auth/signup"
+        href="/"
         className="py-4 px-12 rounded-2xl font-bold text-lg bg-accent text-white shadow-xl shadow-accent/30 hover:-translate-y-1 transition-all duration-300"
       >
         العودة للرئيسية
