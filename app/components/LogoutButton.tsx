@@ -16,7 +16,7 @@ export const LogoutButton: React.FC = () => {
         method: "POST",
       });
 
-      router.refresh();
+      router.push("/");
     } catch (e) {
       console.log(e);
       Toast.apiError(e);

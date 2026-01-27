@@ -27,8 +27,6 @@ export const GoogleAuth = () => {
             withCredentials: true,
           },
         );
-
-        router.refresh();
       } catch (e) {
         console.log(e);
       }
