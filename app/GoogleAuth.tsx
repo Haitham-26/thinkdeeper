@@ -3,11 +3,9 @@
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 export const GoogleAuth = () => {
   const { data: session } = useSession();
-  const router = useRouter();
 
   useEffect(() => {
     if (!session?.user) {
@@ -33,7 +31,7 @@ export const GoogleAuth = () => {
     };
 
     login();
-  }, [session, router]);
+  }, [session]);
 
   return null;
 };
