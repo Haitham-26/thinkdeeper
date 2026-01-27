@@ -8,7 +8,6 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
 import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import { faFingerprint } from "@fortawesome/free-solid-svg-icons/faFingerprint";
 import { faShieldHeart } from "@fortawesome/free-solid-svg-icons/faShieldHeart";
-import { faChartSimple } from "@fortawesome/free-solid-svg-icons/faChartSimple";
 import { faAt } from "@fortawesome/free-solid-svg-icons/faAt";
 import { Icon } from "../components/Icon";
 import { CopyButton } from "../components/CopyButton";
@@ -164,20 +163,6 @@ export default async function Page() {
           </div>
 
           <div className="lg:col-span-4 space-y-8">
-            <div className="bg-surface rounded-[2.5rem] border-2 border-border p-10 text-center relative overflow-hidden group">
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-accent mx-auto mb-6">
-                  <Icon icon={faChartSimple} className="text-2xl" />
-                </div>
-                <div className="text-5xl font-black text-text-primary mb-2 tracking-tighter">
-                  0
-                </div>
-                <p className="text-text-muted font-black text-sm uppercase tracking-[0.2em]">
-                  رسالة واردة
-                </p>
-              </div>
-            </div>
-
             <div className="bg-accent/5 rounded-[2.5rem] border-2 border-accent/20 p-10 relative overflow-hidden">
               <div className="flex items-center gap-3 mb-6">
                 <Icon icon={faShieldHeart} className="text-accent text-2xl" />
