@@ -46,7 +46,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const onShare = () => {
     navigator.clipboard.writeText(
-      `${window.location.origin}/questions/${question._id}`
+      `${window.location.origin}/questions/${question._id}`,
     );
     Toast.success("تم نسخ الرابط بنجاح");
   };
@@ -70,7 +70,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         {
           method: "POST",
           data: { userId },
-        }
+        },
       );
 
       setReplies(data);
@@ -95,7 +95,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           {
             method: "POST",
             data: { userId },
-          }
+          },
         );
 
         setReplies(data);
@@ -237,7 +237,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           icon={faShareNodes}
           className="shadow-none !bg-transparent flex items-center gap-2 px-5 py-2.5 rounded-xl !text-text-muted font-bold hover:!bg-accent/10 hover:!text-accent transition-all"
         >
-          مشاركة السؤال
+          مشاركة
         </Button>
 
         {isOnProfilePage ? (

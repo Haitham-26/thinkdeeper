@@ -34,6 +34,15 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   const NavContent = () => (
     <Fragment>
       <Link
+        href="/profile"
+        className={navLinkClass("/profile")}
+        onClick={() => setOpen(false)}
+      >
+        <Icon icon={faUserCircle} className="text-sm" />
+        <span>الملف الشخصي</span>
+      </Link>
+
+      <Link
         href="/messages"
         className={navLinkClass("/messages")}
         onClick={() => setOpen(false)}
@@ -48,14 +57,6 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
       >
         <Icon icon={faComments} className="text-sm" />
         <span>أسئلتي</span>
-      </Link>
-      <Link
-        href="/profile"
-        className={navLinkClass("/profile")}
-        onClick={() => setOpen(false)}
-      >
-        <Icon icon={faUserCircle} className="text-sm" />
-        <span>الملف الشخصي</span>
       </Link>
     </Fragment>
   );

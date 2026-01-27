@@ -61,6 +61,10 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
           </Button>
         </header>
 
+        <p className="text-text-muted mb-5">
+          اضغط على السؤال لترى الردود الخاصة به
+        </p>
+
         <div className="grid gap-6">
           {questions.length > 0 ? (
             questions.map((question) => (

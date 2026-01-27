@@ -8,6 +8,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import { faShieldHeart } from "@fortawesome/free-solid-svg-icons/faShieldHeart";
 import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { User } from "@/model/user/User";
+import Image from "next/image";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -21,6 +22,7 @@ export default async function Page({ params }: Props) {
   }
 
   let user: User | null = null;
+  let profile: GetMessageRecipientProfileResponseDto | null = null;
 
   try {
     const { data } = await AuthClient<User>(`/user`, { method: "POST" }, token);
@@ -34,23 +36,47 @@ export default async function Page({ params }: Props) {
     redirect("/");
   }
 
-  const { data: profile } =
-    await AuthClient<GetMessageRecipientProfileResponseDto>(
-      `/message/${username}/profile`,
-      { method: "GET" },
-      token
-    );
+  try {
+    const { data, status } =
+      await AuthClient<GetMessageRecipientProfileResponseDto>(
+        `/message/${username}/profile`,
+        { method: "GET" },
+      );
+
+    profile = data;
+
+    if (status !== 200) {
+      redirect("/");
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  if (!profile) {
+    redirect("/");
+  }
 
   return (
     <div className="min-h-screen bg-background pt-32 pb-20 px-4 w-full">
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center text-center mb-12">
           <div className="relative mb-8">
-            <div className="w-32 h-32 md:w-40 md:h-40 bg-surface rounded-[3rem] flex items-center justify-center border-8 border-surface shadow-2xl shadow-primary/10">
-              <Icon
-                icon={faUserCircle}
-                className="text-accent text-8xl md:text-9xl"
-              />
+            <div className="w-32 h-32 md:w-40 md:h-40 bg-surface rounded-xl flex items-center justify-center border-8 border-surface shadow-2xl shadow-primary/10">
+              {profile?.avatar ? (
+                <Image
+                  src={profile.avatar}
+                  alt={profile.name}
+                  width={128}
+                  height={128}
+                  quality={100}
+                  className="w-full h-full rounded-xl"
+                />
+              ) : (
+                <Icon
+                  icon={faUserCircle}
+                  className="text-accent text-8xl md:text-9xl"
+                />
+              )}
             </div>
             <div className="absolute -bottom-2 -right-2 bg-accent w-12 h-12 rounded-2xl flex items-center justify-center text-white border-4 border-background rotate-12">
               <Icon icon={faBolt} />

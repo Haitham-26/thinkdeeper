@@ -10,8 +10,9 @@ import { faFingerprint } from "@fortawesome/free-solid-svg-icons/faFingerprint";
 import { faShieldHeart } from "@fortawesome/free-solid-svg-icons/faShieldHeart";
 import { faChartSimple } from "@fortawesome/free-solid-svg-icons/faChartSimple";
 import { faAt } from "@fortawesome/free-solid-svg-icons/faAt";
-import { Button } from "@/app/components/Button";
 import { Icon } from "../components/Icon";
+import { CopyButton } from "../components/CopyButton";
+import Image from "next/image";
 
 export default async function Page() {
   const token = await getToken();
@@ -19,7 +20,7 @@ export default async function Page() {
   const { data: user } = await AuthClient<User>(
     `/user`,
     { method: "POST" },
-    token
+    token,
   );
 
   const profileUrl = `thinkdeeper.vercel.app/${
@@ -56,10 +57,21 @@ export default async function Page() {
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 text-right">
             <div className="relative">
               <div className="w-32 h-32 md:w-40 md:h-40 bg-surface rounded-[2.5rem] flex items-center justify-center border-8 border-white/10 shadow-inner overflow-hidden">
-                <Icon
-                  icon={faUserCircle}
-                  className="text-accent text-8xl md:text-9xl"
-                />
+                {user?.avatar ? (
+                  <Image
+                    src={user.avatar}
+                    alt={user.name}
+                    width={128}
+                    height={128}
+                    quality={100}
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <Icon
+                    icon={faUserCircle}
+                    className="text-accent text-8xl md:text-9xl"
+                  />
+                )}
               </div>
               <div className="absolute -bottom-2 -right-2 bg-accent w-10 h-10 rounded-full border-4 border-primary flex items-center justify-center">
                 <div className="w-2 h-2 bg-white rounded-full animate-ping" />
@@ -76,7 +88,7 @@ export default async function Page() {
                 </p>
               </div>
               <p className="text-white/60 text-lg font-medium">
-                عضو في صراحةب منذ {formattedDate(user.createdAt)}
+                عضو منذ {formattedDate(user.createdAt)}
               </p>
             </div>
           </div>
@@ -100,11 +112,16 @@ export default async function Page() {
                   </h3>
                 </div>
 
+                <p className="mb-4 text-text-muted">
+                  شارك هذا الرابط مع أصدقاءك ليرسلوا لك رسائل سرية.
+                </p>
+
                 <div className="flex flex-col md:flex-row gap-4 p-2 bg-surface-muted rounded-2xl border-2 border-border/50">
-                  <div className="flex-grow flex items-center gap-3 px-6 py-4 font-mono text-text-primary [direction:ltr]">
+                  <div className="flex-grow flex items-center gap-3 px-6 py-4 font-mono text-text-primary [direction:ltr] max-w-full md:max-w-9/12">
                     <span className="truncate">{profileUrl}</span>
                   </div>
-                  <Button className="shadow-none shrink-0">نسخ</Button>
+
+                  <CopyButton text={profileUrl} className="md:ms-auto" />
                 </div>
               </div>
             </div>
