@@ -16,7 +16,10 @@ export const LogoutButton: React.FC = () => {
         method: "POST",
       });
 
+      localStorage.removeItem("google-authanticated");
+
       router.push("/");
+      router.refresh();
     } catch (e) {
       console.log(e);
       Toast.apiError(e);

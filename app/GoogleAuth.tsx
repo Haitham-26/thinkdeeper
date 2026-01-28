@@ -1,37 +1,43 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect, useRef } from "react";
+import { NextClient } from "@/tools/NextClient";
+import { useRouter } from "next/navigation";
 
 export const GoogleAuth = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const hasLoggedRef = useRef(false);
 
   useEffect(() => {
-    if (!session?.user) {
+    if (!session?.user || status !== "authenticated" || hasLoggedRef.current) {
       return;
     }
 
     const login = async () => {
       try {
-        await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/google-login`,
-          {
+        await NextClient("/auth/google-login", {
+          method: "POST",
+          data: {
             email: session.user?.email,
             name: session.user?.name,
             avatar: session.user?.image,
           },
-          {
-            withCredentials: true,
-          },
-        );
+          withCredentials: true,
+        });
+
+        hasLoggedRef.current = true;
+
+        router.refresh();
       } catch (e) {
         console.log(e);
+        hasLoggedRef.current = false;
       }
     };
 
     login();
-  }, [session]);
+  }, [status, session?.user, router]);
 
   return null;
 };
