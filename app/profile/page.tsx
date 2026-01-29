@@ -7,7 +7,6 @@ import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons/faCalendarAlt";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons/faEnvelope";
 import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import { faFingerprint } from "@fortawesome/free-solid-svg-icons/faFingerprint";
-import { faShieldHeart } from "@fortawesome/free-solid-svg-icons/faShieldHeart";
 import { faAt } from "@fortawesome/free-solid-svg-icons/faAt";
 import { Icon } from "../components/Icon";
 import { CopyButton } from "../components/CopyButton";
@@ -157,21 +156,6 @@ export default async function Page() {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-4 space-y-8">
-            <div className="bg-accent/5 rounded-[2.5rem] border-2 border-accent/20 p-10 relative overflow-hidden">
-              <div className="flex items-center gap-3 mb-6">
-                <Icon icon={faShieldHeart} className="text-accent text-2xl" />
-                <h4 className="font-black text-text-primary text-xl">
-                  الخصوصية
-                </h4>
-              </div>
-              <p className="text-text-muted leading-relaxed font-medium">
-                اسم المستخدم الخاص بك هو هويتك العامة. يمكنك استخدامه بدلاً من
-                المعرف الرقمي الطويل في روابطك.
-              </p>
             </div>
           </div>
         </div>
