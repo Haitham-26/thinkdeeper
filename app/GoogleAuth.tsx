@@ -1,17 +1,16 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { NextClient } from "@/tools/NextClient";
 import { useRouter } from "next/navigation";
 
 export const GoogleAuth = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const hasLoggedRef = useRef(false);
 
   useEffect(() => {
-    if (!session?.user || status !== "authenticated" || hasLoggedRef.current) {
+    if (!session?.user || status !== "authenticated") {
       return;
     }
 
@@ -27,12 +26,16 @@ export const GoogleAuth = () => {
           withCredentials: true,
         });
 
-        hasLoggedRef.current = true;
+        const redirect = localStorage.getItem("redirect");
+
+        if (redirect) {
+          localStorage.removeItem("redirect");
+          router.push(redirect);
+        }
 
         router.refresh();
       } catch (e) {
         console.log(e);
-        hasLoggedRef.current = false;
       }
     };
 

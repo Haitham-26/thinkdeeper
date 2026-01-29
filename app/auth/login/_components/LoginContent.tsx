@@ -122,7 +122,7 @@ export const LoginContent: React.FC = () => {
 
         <Link
           href="/auth/signup"
-          className="group text-center py-5 px-5 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
+          className="group text-center py-5 px-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
         >
           <span className="text-slate-400 font-medium">ليس لديك حساب؟ </span>
           <span className="text-accent font-black group-hover:underline decoration-accent decoration-2 underline-offset-4">

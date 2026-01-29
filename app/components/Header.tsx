@@ -102,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         onClick={() => setOpen(false)}
       >
         <Icon icon={faBolt} className="text-xs" />
-        <span>ابدأ الآن (حساب جديد)</span>
+        <span>إنشاء حساب</span>
       </Link>
     </div>
   );
@@ -139,8 +139,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
               href="/auth/signup"
               className="hidden sm:flex bg-accent text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-accent/20 hover:bg-accent/90 hover:-translate-y-0.5 transition-all items-center gap-2"
             >
-              <Icon icon={faBolt} className="text-xs" />
-              <span>ابدأ الآن</span>
+              إنشاء حساب
             </Link>
 
             <Button

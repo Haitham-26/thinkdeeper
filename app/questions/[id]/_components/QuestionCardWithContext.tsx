@@ -5,12 +5,12 @@ import { QuestionsRepliesProvider } from "../../context/questions-replies-contex
 import { QuestionCard } from "../../_components/QuestionCard";
 import { Question } from "@/model/question/Question";
 import { Modal } from "@/app/components/Modal";
-import { Button } from "@/app/components/Button";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
+import { Icon } from "@/app/components/Icon";
+import { Button } from "@/app/components/Button";
+import { useRouter } from "next/navigation";
 
 type QuestionCardWithContextProps = {
   question: Question;
@@ -21,6 +21,14 @@ export const QuestionCardWithContext: React.FC<
   QuestionCardWithContextProps
 > = ({ question, userId }) => {
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
+
+  const router = useRouter();
+
+  const navigaettWithRedirection = (path: string) => {
+    localStorage.setItem("redirect", `/questions/${question._id}`);
+    router.push(`/auth/${path}`);
+    setRegisterModalVisible(false);
+  };
 
   return (
     <QuestionsRepliesProvider>
@@ -38,10 +46,10 @@ export const QuestionCardWithContext: React.FC<
         <div className="flex flex-col items-center text-center">
           <div className="flex gap-4 mb-6">
             <div className="w-14 h-14 bg-accent/10 text-accent rounded-2xl flex items-center justify-center -rotate-12">
-              <FontAwesomeIcon icon={faHeart} className="text-2xl" />
+              <Icon icon={faHeart} className="text-2xl" />
             </div>
             <div className="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center rotate-12">
-              <FontAwesomeIcon icon={faComments} className="text-2xl" />
+              <Icon icon={faComments} className="text-2xl" />
             </div>
           </div>
 
@@ -55,22 +63,20 @@ export const QuestionCardWithContext: React.FC<
           </p>
 
           <div className="flex flex-col gap-3 w-full">
-            <Link href="/auth/signup" className="w-full">
-              <Button
-                variant="primary"
-                className="w-full h-14 rounded-2xl text-lg shadow-xl shadow-accent/20"
-                icon={faUserPlus}
-              >
-                إنشاء حساب جديد
-              </Button>
-            </Link>
+            <Button
+              icon={faUserPlus}
+              onClick={() => navigaettWithRedirection("signup")}
+              className="w-full bg-accent text-white p-4"
+            >
+              إنشاء حساب جديد
+            </Button>
 
-            <Link
-              href="/auth/login"
-              className="w-full h-14 rounded-2xl font-bold text-text-muted hover:text-text-primary hover:bg-surface-muted transition-colors duration-300 flex items-center justify-center gap-2"
+            <Button
+              onClick={() => navigaettWithRedirection("login")}
+              className="w-full !bg-transparent font-bold !text-text-muted hover:!text-text-primary hover:!bg-surface-muted shadow-none"
             >
               لديك حساب بالفعل؟ تسجيل الدخول
-            </Link>
+            </Button>
           </div>
 
           <p className="mt-6 text-xs text-text-muted/60 font-medium">
