@@ -5,8 +5,9 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faAt } from "@fortawesome/free-solid-svg-icons/faAt";
 import { faQuoteRight } from "@fortawesome/free-solid-svg-icons/faQuoteRight";
 import { faReply } from "@fortawesome/free-solid-svg-icons/faReply";
+import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons/faCircleQuestion";
 
-export default function HomePage() {
+export default function Page() {
   return (
     <div className="w-full bg-background text-text-primary selection:bg-accent/20">
       <section className="relative pt-16 pb-20 overflow-hidden">
@@ -31,6 +32,13 @@ export default function HomePage() {
               >
                 ابدأ الآن
                 <Icon icon={faArrowLeft} />
+              </Link>
+              <Link
+                href="/how-it-works"
+                className="h-16 px-10 bg-surface border border-border text-primary rounded-2xl flex items-center justify-center gap-3 font-black text-lg hover:bg-surface-muted transition-all"
+              >
+                <Icon icon={faCircleQuestion} className="text-accent" />
+                كيف أستخدمه؟
               </Link>
             </div>
           </div>
