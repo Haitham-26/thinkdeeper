@@ -35,57 +35,79 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   }, [userId, setQuestions]);
 
   return (
-    <section className="min-h-screen bg-background pt-32 pb-20 px-4 w-full">
-      <div className="max-w-4xl mx-auto">
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-accent/10 text-accent text-sm font-bold">
-              <Icon icon={faComments} />
-              <span>إدارة المحتوى</span>
-            </div>
-            <h1 className="my-6 text-4xl md:text-5xl font-black text-text-primary tracking-tight">
-              أسئلتي
-            </h1>
-            <p className="text-text-muted text-lg font-medium max-w-md">
-              تابع الأسئلة التي طرحتها وشاهد إجابات أصدقائك وتفاعلهم معك.
-            </p>
-          </div>
+    <div className="w-full min-h-screen bg-surface-muted p-4 pt-6 md:p-8 lg:p-12">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <aside className="lg:col-span-4 space-y-6">
+          <div className="bg-primary rounded-[2.5rem] p-8 text-secondary shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-[-20%] right-[-20%] w-40 h-40 bg-accent rounded-full blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
 
-          <Button
-            onClick={() => setCreateQuestionModalVisible(true)}
-            variant="primary"
-            className="h-14 px-8 shadow-xl shadow-accent/20"
-            icon={faPlus}
-          >
-            سؤال جديد
-          </Button>
-        </header>
-
-        <p className="text-text-muted mb-5">
-          اضغط على السؤال لترى الردود الخاصة به
-        </p>
-
-        <div className="grid gap-6">
-          {questions.length > 0 ? (
-            questions.map((question) => (
-              <div
-                key={question._id}
-                className="transform transition-all duration-300 hover:-translate-y-1"
-              >
-                <QuestionCard question={question} userId={userId} />
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center p-3 bg-secondary/10 backdrop-blur-md rounded-2xl mb-6">
+                <Icon icon={faComments} className="text-accent text-2xl" />
               </div>
-            ))
-          ) : (
-            <Empty
-              title="لا توجد أسئلة حالياً"
-              description="لم تقم بإضافة أي سؤال بعد، قم بمشاركة أول سؤال لك الآن."
-              action={{
-                title: "أضف سؤالًا جديدًا",
-                onClick: () => setCreateQuestionModalVisible(true),
-              }}
-            />
-          )}
-        </div>
+              <h1 className="text-4xl font-black mb-4 leading-tight">
+                مركز الأسئلة
+              </h1>
+              <p className="text-secondary/60 font-medium text-sm leading-relaxed mb-8">
+                قم بإدارة تساؤلاتك، وتابع تفاعل أصدقائك مع المواضيع التي تطرحها.
+              </p>
+
+              <div className="flex items-baseline gap-2 mb-8">
+                <span className="text-6xl font-black text-accent">
+                  {questions.length}
+                </span>
+                <span className="text-secondary/40 text-sm font-bold tracking-widest uppercase">
+                  سؤال نشط
+                </span>
+              </div>
+
+              <Button
+                onClick={() => setCreateQuestionModalVisible(true)}
+                className="w-full !h-14 !rounded-2xl !bg-accent !text-secondary font-black shadow-lg shadow-accent/20 hover:scale-[1.02] transition-transform"
+                icon={faPlus}
+              >
+                طرح سؤال جديد
+              </Button>
+            </div>
+          </div>
+        </aside>
+
+        <main className="lg:col-span-8">
+          <div className="bg-surface border border-border rounded-[3rem] shadow-sm min-h-[600px] flex flex-col overflow-hidden">
+            <div className="px-8 py-6 border-b border-border flex justify-between items-center bg-white/50 backdrop-blur-sm">
+              <h2 className="font-bold text-text-primary flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                قائمة الأسئلة
+              </h2>
+            </div>
+
+            <div className="flex-1 p-6 md:p-8">
+              {questions.length > 0 ? (
+                <div className="space-y-6 group/list">
+                  {questions.map((question) => (
+                    <div
+                      key={question._id}
+                      className="transition-all duration-500 hover:!blur-none group-hover/list:blur-[2px] group-hover/list:opacity-50 hover:!opacity-100 hover:scale-[1.01]"
+                    >
+                      <QuestionCard question={question} userId={userId} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center py-20">
+                  <Empty
+                    title="لا توجد أسئلة حالياً"
+                    description="لم تقم بإضافة أي سؤال بعد. ابدأ الآن وشارك أول تساؤل لك مع العالم!"
+                    action={{
+                      title: "أضف سؤالك الأول",
+                      onClick: () => setCreateQuestionModalVisible(true),
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </main>
       </div>
 
       <QuestionCreateModal
@@ -93,6 +115,6 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
         open={createQuestionModalVisible}
         onClose={() => setCreateQuestionModalVisible(false)}
       />
-    </section>
+    </div>
   );
 };

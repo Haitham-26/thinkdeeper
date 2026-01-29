@@ -50,7 +50,7 @@ export default async function Page() {
   ];
 
   return (
-    <div className="min-h-screen bg-background pt-32 pb-20 px-4 w-full">
+    <div className="w-full min-h-screen bg-background p-4 pt-6 md:p-8 lg:p-12">
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="relative p-8 md:p-12 bg-primary rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/20">
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 text-right">

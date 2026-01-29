@@ -31,57 +31,74 @@ export default function Message({ message }: Props) {
   }, [message.message]);
 
   return (
-    <div className="group bg-surface rounded-[2.5rem] border-2 border-border p-6 md:p-8 hover:border-accent/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
-      <div className="flex items-center gap-4 mb-4">
-        <div
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${
-            isAnonymous
-              ? "bg-surface-muted text-text-muted"
-              : "bg-accent/10 text-accent"
-          }`}
-        >
-          <Icon
-            icon={isAnonymous ? faUserSecret : faCircleUser}
-            className="text-xl"
-          />
-        </div>
-        <div>
-          <h4 className="text-base font-black text-text-primary">
-            {message.name || "مجهول الهوية"}
-          </h4>
-          <div className="flex items-center gap-2 text-[11px] text-text-muted font-bold">
-            <Icon icon={faCalendar} className="text-[10px]" />
-            <span className="dir-ltr">{formattedDate(message.createdAt)}</span>
+    <div className="relative group">
+      <div className="absolute top-0 right-0 -mr-2 mt-2 w-full h-full bg-accent/5 rounded-[2rem] transition-transform group-hover:translate-x-1 group-hover:translate-y-1"></div>
+
+      <div className="relative bg-surface border border-border rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-lg">
+        <div className="flex flex-col md:flex-row">
+          <div
+            className={`md:w-48 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-l border-border transition-colors ${isAnonymous ? "bg-surface-muted/30" : "bg-accent/[0.02]"}`}
+          >
+            <div
+              className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-sm transition-transform group-hover:scale-110 ${
+                isAnonymous
+                  ? "bg-white text-text-muted"
+                  : "bg-accent text-secondary"
+              }`}
+            >
+              <Icon
+                icon={isAnonymous ? faUserSecret : faCircleUser}
+                className="text-2xl"
+              />
+            </div>
+
+            <h4 className="text-sm font-black text-text-primary text-center mb-1 line-clamp-1">
+              {message.name || "مجهول الهوية"}
+            </h4>
+
+            <div className="flex items-center gap-1.5 text-[10px] text-text-muted font-bold tracking-tight">
+              <Icon icon={faCalendar} className="text-[9px] opacity-70" />
+              <span className="dir-ltr">
+                {formattedDate(message.createdAt)}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex-1 p-6 md:p-8 relative">
+            <div
+              className={`relative overflow-hidden transition-all duration-500 ease-in-out ${
+                isCollapsible && !isExpanded ? "max-h-32" : "max-h-[2000px]"
+              }`}
+            >
+              <p
+                ref={textRef}
+                className="text-base md:text-lg text-text-primary leading-relaxed font-medium whitespace-pre-wrap [word-break:break-word]"
+              >
+                {message.message}
+              </p>
+
+              {isCollapsible && !isExpanded && (
+                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-surface to-transparent" />
+              )}
+            </div>
+
+            {isCollapsible && (
+              <div className="mt-6 flex justify-end">
+                <Button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className={`group/btn !bg-surface-muted !text-text-primary border border-border px-4 py-2 rounded-xl text-xs font-black transition-all hover:!bg-accent hover:!text-secondary hover:!border-accent flex items-center gap-2`}
+                >
+                  <span>{isExpanded ? "طي الرسالة" : "قراءة المزيد"}</span>
+                  <Icon
+                    icon={isExpanded ? faChevronUp : faChevronDown}
+                    className={`transition-transform duration-300 ${!isExpanded && "group-hover/btn:translate-y-0.5"}`}
+                  />
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      <div className="relative">
-        <p
-          ref={textRef}
-          className={`ps-0 md:ps-16 text-lg md:text-xl text-text-primary leading-relaxed font-medium whitespace-pre-wrap [word-break:break-word] transition-all duration-500 overflow-hidden ${
-            isCollapsible && !isExpanded ? "max-h-40" : "max-h-[2000px]"
-          }`}
-        >
-          {message.message}
-        </p>
-
-        {isCollapsible && !isExpanded ? (
-          <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-surface to-transparent pointer-events-none" />
-        ) : null}
-      </div>
-
-      {isCollapsible ? (
-        <Button
-          onClick={() => setIsExpanded(!isExpanded)}
-          icon={isExpanded ? faChevronUp : faChevronDown}
-          className={`!bg-transparent !text-accent shadow-none mt-4 ms-0 md:ms-16 flex items-center gap-2 font-black text-sm hover:underline underline-offset-4 [&_svg]:transition-transform [&_svg]:duration-300 ${
-            isExpanded ? "" : "[&_svg]:animate-bounce"
-          }`}
-        >
-          {isExpanded ? "عرض أقل" : "قراءة المزيد"}
-        </Button>
-      ) : null}
     </div>
   );
 }
