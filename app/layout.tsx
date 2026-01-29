@@ -38,7 +38,8 @@ export default async function RootLayout({
             <GoogleAuth />
           </Providers>
         </main>
-        <Footer />
+        {!token ? <Footer /> : null}
+
         <Toaster position="top-left" />
       </body>
     </html>
