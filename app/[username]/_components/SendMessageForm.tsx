@@ -8,6 +8,7 @@ import { Toast } from "@/tools/Toast";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons/faUserSecret";
+import { faPenNib } from "@fortawesome/free-solid-svg-icons/faPenNib";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Textarea } from "@/app/components/Textarea";
@@ -62,11 +63,11 @@ export const SendMessageForm: React.FC<Props> = ({ username }) => {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="relative">
-        <div className="flex items-center gap-3 mb-4 text-text-primary font-black text-lg">
-          <Icon icon={faPaperPlane} className="text-accent" />
-          <span>رسالتك</span>
+    <div className="flex flex-col gap-6">
+      <div className="relative group">
+        <div className="flex items-center gap-3 mb-4 text-slate-300 font-bold text-sm uppercase tracking-widest">
+          <Icon icon={faPenNib} className="text-accent text-xs" />
+          <span>محتوى الرسالة</span>
         </div>
 
         <Controller
@@ -82,12 +83,12 @@ export const SendMessageForm: React.FC<Props> = ({ username }) => {
               onChange={onChange}
               placeholder="اكتب شيئاً لا تستطيع قوله في العلن..."
               className={`
-                  w-full min-h-[220px] p-6 rounded-[2rem] border-2 outline-none transition-all duration-300 resize-none text-lg font-medium
-                  bg-surface-muted/30 text-text-primary placeholder:text-text-muted/40
+                  w-full min-h-[220px] p-8 rounded-[2.5rem] border outline-none transition-all duration-500 resize-none text-lg font-medium
+                  bg-white/[0.03] text-white placeholder:text-slate-600
                   ${
                     error
-                      ? "border-danger focus:ring-4 focus:ring-danger/10"
-                      : "border-border focus:border-accent focus:ring-4 focus:ring-accent/10"
+                      ? "border-red-500/50 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
+                      : "border-white/10 focus:border-accent focus:ring-4 focus:ring-accent/10 focus:bg-white/[0.05]"
                   }
                 `}
               valid={!error}
@@ -98,15 +99,15 @@ export const SendMessageForm: React.FC<Props> = ({ username }) => {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 bg-surface-muted/50 rounded-3xl border-2 border-border/50">
-        <div className="flex flex-wrap items-center gap-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 bg-white/[0.02] rounded-[2rem] border border-white/5">
+        <div className="flex flex-wrap items-center gap-8">
           <label className="flex items-center gap-3 cursor-pointer group">
             <div className="relative flex items-center">
               <input
                 type="checkbox"
                 checked={asAnnonymous}
                 onChange={(e) => onCheckAnonymous(e.target.checked)}
-                className="peer appearance-none w-6 h-6 border-2 border-border rounded-lg checked:bg-accent checked:border-accent transition-all cursor-pointer"
+                className="peer appearance-none w-6 h-6 border border-white/20 rounded-lg checked:bg-accent checked:border-accent transition-all cursor-pointer"
               />
               <Icon
                 icon={faCheck}
@@ -116,28 +117,28 @@ export const SendMessageForm: React.FC<Props> = ({ username }) => {
             <div className="flex items-center gap-2">
               <Icon
                 icon={faUserSecret}
-                className={`text-sm ${
-                  asAnnonymous ? "text-accent" : "text-text-muted"
+                className={`text-sm transition-colors ${
+                  asAnnonymous ? "text-accent" : "text-slate-500"
                 }`}
               />
-              <span className="text-sm font-black text-text-primary">
-                إرسال بهوية مجهولة
+              <span className="text-sm font-bold text-slate-300">
+                إرسال مجهول
               </span>
             </div>
           </label>
 
           {!asAnnonymous ? (
-            <div className="w-full md:w-fit animate-in fade-in zoom-in-95 duration-300">
+            <div className="w-full md:w-fit animate-in fade-in slide-in-from-right-2 duration-300">
               <Controller
                 control={control}
                 name="name"
                 rules={{ maxLength: 32 }}
                 render={({ field: { value, onChange } }) => (
                   <Input
-                    placeholder="اسمك المستعار"
+                    placeholder="ضع اسماً مستعاراً"
                     value={value}
                     onChange={onChange}
-                    className="px-4 py-2 h-10 text-sm w-full md:w-48"
+                    className="!bg-white/5 !border-white/10 !text-white h-11 px-6 rounded-xl text-sm w-full md:w-52 focus:!border-accent/50"
                   />
                 )}
               />
@@ -148,11 +149,10 @@ export const SendMessageForm: React.FC<Props> = ({ username }) => {
         <Button
           onClick={handleSubmit(onSubmit)}
           loading={loading}
-          variant="primary"
-          className="h-14 px-10 rounded-2xl text-lg shadow-xl shadow-accent/20"
-          icon={faPaperPlane}
+          className="h-14 px-12 !bg-accent hover:!bg-accent/90 text-white rounded-2xl font-black text-lg shadow-2xl shadow-accent/20 transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-3"
         >
-          إرسال الآن
+          <span>إرسال</span>
+          <Icon icon={faPaperPlane} className="text-sm" />
         </Button>
       </div>
     </div>
