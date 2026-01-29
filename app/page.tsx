@@ -27,7 +27,7 @@ export default function Page() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link
-                href="/register"
+                href="/auth/signup"
                 className="h-16 px-10 bg-primary text-secondary rounded-2xl flex items-center justify-center gap-3 font-black text-lg hover:bg-accent transition-all shadow-xl shadow-primary/20"
               >
                 ابدأ الآن

@@ -11,9 +11,16 @@ import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
 import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons/faBarsStaggered";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons/faRightToBracket";
+import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
+import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons/faCircleQuestion";
 import { Icon } from "./Icon";
 import { Button } from "./Button";
 import Image from "next/image";
+
+const publicLinks = [
+  { title: "الرئيسية", path: "/", icon: faHouse },
+  { title: "كيفية الاستخدام", path: "/how-it-works", icon: faCircleQuestion },
+];
 
 type HeaderProps = {
   token?: string;
@@ -31,6 +38,22 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         : "text-slate-300 hover:text-white hover:bg-white/5"
     }
   `;
+
+  const PublicNavContent = () => (
+    <Fragment>
+      {publicLinks.map((link) => (
+        <Link
+          key={link.path}
+          href={link.path}
+          className={navLinkClass(link.path)}
+          onClick={() => setOpen(false)}
+        >
+          <Icon icon={link.icon} className="text-sm" />
+          <span>{link.title}</span>
+        </Link>
+      ))}
+    </Fragment>
+  );
 
   const NavContent = () => (
     <Fragment>
@@ -63,9 +86,11 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
   const GuestNavContent = () => (
     <div className="flex flex-col gap-3 mt-4">
+      <PublicNavContent />
+      <div className="h-[1px] bg-white/10 my-2"></div>
       <Link
         href="/auth/login"
-        className={`${navLinkClass("/auth/login")} border border-white/10`}
+        className={`${navLinkClass("/auth/login")} border border-white/10 justify-center`}
         onClick={() => setOpen(false)}
       >
         <Icon icon={faRightToBracket} className="text-sm" />
@@ -84,7 +109,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
   return (
     <header className="fixed top-0 w-full z-50 px-4 md:px-10 h-20 flex items-center justify-between bg-[#0f172a]/95 backdrop-blur-md border-b border-white/10">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-2 group">
           <Image
             src="/images/logo.png"
@@ -92,16 +117,14 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
             width={160}
             height={35}
             quality={100}
-            className="brightness-110" // تفتيح اللوجو قليلاً ليبرز أكثر
+            className="brightness-110"
           />
         </Link>
       </div>
 
-      {token ? (
-        <nav className="hidden lg:flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10">
-          <NavContent />
-        </nav>
-      ) : null}
+      <nav className="hidden lg:flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10">
+        {token ? <NavContent /> : <PublicNavContent />}
+      </nav>
 
       <div className="flex items-center gap-3">
         {!token ? (
@@ -123,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
             <Button
               onClick={() => setOpen(true)}
               icon={faBarsStaggered}
-              className="sm:hidden w-10 h-10 !p-5 rounded-xl !bg-white/5 !text-white border !border-white/10 shadow-none hover:!bg-white/10"
+              className="lg:hidden w-10 h-10 !p-5 rounded-xl !bg-white/5 !text-white border !border-white/10 shadow-none hover:!bg-white/10"
             />
           </Fragment>
         ) : (
