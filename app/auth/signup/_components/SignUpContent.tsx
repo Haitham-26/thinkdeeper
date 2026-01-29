@@ -9,14 +9,18 @@ import { Button } from "@/app/components/Button";
 import { SignUpDto } from "@/model/auth/signup/SignUpDto";
 import { Toast } from "@/tools/Toast";
 import { SignUpTokenModal } from "./SignUpTokenModal";
-import {
-  faArrowRightToBracket,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
+
 import { Icon } from "@/app/components/Icon";
 import { NextClient } from "@/tools/NextClient";
 import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
 import { Info } from "@/app/components/Info";
+
+const disabledInputClass = `
+    !bg-white/[0.03] !border-white/10 !rounded-2xl !h-14 
+    !text-slate-400 placeholder:!text-slate-600 
+    !shadow-none cursor-not-allowed opacity-60
+  `;
 
 export const SignUpContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -72,6 +76,8 @@ export const SignUpContent: React.FC = () => {
               errorMessage={error?.message}
               required
               disabled
+              className={disabledInputClass}
+              labelClassName="!text-slate-300 !font-black !text-xs !uppercase !tracking-widest"
             />
           )}
         />
@@ -90,6 +96,8 @@ export const SignUpContent: React.FC = () => {
               errorMessage={error?.message}
               required
               disabled
+              className={disabledInputClass}
+              labelClassName="!text-slate-300 !font-black !text-xs !uppercase !tracking-widest"
             />
           )}
         />
@@ -109,6 +117,8 @@ export const SignUpContent: React.FC = () => {
               type="email"
               required
               disabled
+              className={disabledInputClass}
+              labelClassName="!text-slate-300 !font-black !text-xs !uppercase !tracking-widest"
             />
           )}
         />
@@ -127,6 +137,8 @@ export const SignUpContent: React.FC = () => {
               required
               type="password"
               disabled
+              className={disabledInputClass}
+              labelClassName="!text-slate-300 !font-black !text-xs !uppercase !tracking-widest"
             />
           )}
         />
@@ -143,24 +155,23 @@ export const SignUpContent: React.FC = () => {
           <Icon icon={faUserPlus} className="text-sm" />
         </Button>
 
-        <div className="relative flex items-center py-2">
-          <div className="flex-grow border-t border-border"></div>
-          <span className="flex-shrink mx-4 text-text-muted text-sm">أو</span>
-          <div className="flex-grow border-t border-border"></div>
+        <div className="relative flex items-center py-4">
+          <div className="flex-grow border-t border-white/10"></div>
+          <span className="flex-shrink mx-4 text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
+            أو المتابعة عبر
+          </span>
+          <div className="flex-grow border-t border-white/10"></div>
         </div>
 
         <GoogleLoginButton title="تسجيل باستخدام جوجل" />
 
         <Link
           href="/auth/login"
-          className="group text-center py-4 px-5 rounded-2xl border-2 border-transparent hover:border-border hover:bg-surface-muted transition-all duration-300"
+          className="group text-center py-5 px-5 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
         >
-          <span className="text-text-muted font-medium">
-            لديك حساب بالفعل؟{" "}
-          </span>
-          <span className="text-accent font-bold group-hover:underline inline-flex items-center gap-2">
+          <span className="text-slate-400 font-medium">لديك حساب بالفعل؟ </span>
+          <span className="text-accent font-black group-hover:underline decoration-accent decoration-2 underline-offset-4">
             تسجيل الدخول
-            <Icon icon={faArrowRightToBracket} className="text-xs rotate-180" />
           </span>
         </Link>
       </div>

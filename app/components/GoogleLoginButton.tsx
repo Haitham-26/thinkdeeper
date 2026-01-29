@@ -27,11 +27,10 @@ export const GoogleLoginButton: React.FC<Props> = ({ title }) => {
     <Button
       onClick={onLoginWithGoogle}
       loading={loading}
-      className="bg-white !text-black border !border-gray-300 hover:!bg-gray-50 shadow-none"
+      className="w-full !h-14 !rounded-2xl !bg-white !text-primary !font-black !text-sm border-none shadow-xl hover:!bg-slate-100 transition-all flex items-center justify-center gap-3 active:scale-95"
     >
-      {title}
-
-      <Image src={"/images/google.svg"} width={25} height={25} alt="" />
+      <Image src={"/images/google.svg"} width={20} height={20} alt="Google" />
+      <span>{title}</span>
     </Button>
   );
 };

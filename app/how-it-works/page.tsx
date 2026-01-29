@@ -3,9 +3,9 @@ import { faLink } from "@fortawesome/free-solid-svg-icons/faLink";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons/faUserSecret";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
-import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import Link from "next/link";
+import { faLightbulb } from "@fortawesome/free-solid-svg-icons/faLightbulb";
 
 export default function HowItWorks() {
   const userSteps = [
@@ -82,19 +82,15 @@ export default function HowItWorks() {
           <aside className="space-y-8 lg:sticky lg:top-24">
             <div className="bg-primary rounded-[3rem] p-10 text-secondary relative overflow-hidden shadow-2xl">
               <div className="relative z-10 space-y-6">
-                <Icon icon={faShareNodes} className="text-accent text-4xl" />
-                <h4 className="text-2xl font-black">نصيحة للمحترفين</h4>
+                <div className="flex items-center gap-3">
+                  <Icon icon={faLightbulb} className="text-accent text-4xl" />
+                  <h4 className="text-2xl font-black">نصيحة</h4>
+                </div>
                 <p className="text-secondary/70 leading-relaxed font-medium">
                   للحصول على أكبر عدد من الرسائل، قم بالرد على بعض الأسئلة علناً
                   وشارك لقطة شاشة (Screenshot) لها في &apos;ستوري&apos;
                   الإنستجرام. هذا يشجع الآخرين على المشاركة والمصارحة!
                 </p>
-                <div className="pt-4 border-t border-white/10 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">
-                    التفاعل يزيد بنسبة 70%
-                  </span>
-                </div>
               </div>
               <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-accent rounded-full blur-[60px] opacity-20" />
             </div>

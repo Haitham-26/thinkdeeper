@@ -14,6 +14,12 @@ import { NextClient } from "@/tools/NextClient";
 import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
 import { Info } from "@/app/components/Info";
 
+const disabledInputClass = `
+    !bg-white/[0.03] !border-white/10 !rounded-2xl !h-14 
+    !text-slate-400 placeholder:!text-slate-600 
+    !shadow-none cursor-not-allowed opacity-60
+  `;
+
 export const LoginContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -50,7 +56,7 @@ export const LoginContent: React.FC = () => {
         لأسباب تقنية، يرجى تسجيل الدخول باستخدام جوجل في الأسفل.
       </Info>
 
-      <div className="space-y-4 opacity-50">
+      <div className="space-y-4">
         <Controller
           control={control}
           name="identifier"
@@ -62,6 +68,8 @@ export const LoginContent: React.FC = () => {
               onChange={onChange}
               valid={!error}
               errorMessage={error?.message}
+              className={disabledInputClass}
+              labelClassName="!text-slate-300 !font-black !text-xs !uppercase !tracking-widest"
               required
               disabled
             />
@@ -81,19 +89,13 @@ export const LoginContent: React.FC = () => {
                 valid={!error}
                 errorMessage={error?.message}
                 type="password"
+                className={disabledInputClass}
+                labelClassName="!text-slate-300 !font-black !text-xs !uppercase !tracking-widest"
                 required
                 disabled
               />
             )}
           />
-          {/* <div className="flex justify-end px-1">
-            <Link
-              href="/auth/forgot-password"
-              className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
-            >
-              نسيت كلمة المرور؟
-            </Link>
-          </div> */}
         </div>
       </div>
 
@@ -101,27 +103,29 @@ export const LoginContent: React.FC = () => {
         <Button
           loading={loading}
           onClick={handleSubmit(onSubmit)}
-          className="w-full h-14 rounded-2xl bg-accent text-white font-bold text-lg shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+          className="w-full h-14 rounded-2xl bg-accent text-white font-bold text-lg shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
           icon={faArrowRightToBracket}
           disabled
         >
           تسجيل الدخول
         </Button>
 
-        <div className="relative flex items-center py-2">
-          <div className="flex-grow border-t border-border"></div>
-          <span className="flex-shrink mx-4 text-text-muted text-sm">أو</span>
-          <div className="flex-grow border-t border-border"></div>
+        <div className="relative flex items-center py-4">
+          <div className="flex-grow border-t border-white/10"></div>
+          <span className="flex-shrink mx-4 text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
+            أو المتابعة عبر
+          </span>
+          <div className="flex-grow border-t border-white/10"></div>
         </div>
 
         <GoogleLoginButton title="تسجيل دخول باستخدام جوجل" />
 
         <Link
           href="/auth/signup"
-          className="group text-center py-4 px-5 rounded-2xl border-2 border-transparent hover:border-border hover:bg-surface-muted transition-all duration-300"
+          className="group text-center py-5 px-5 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
         >
-          <span className="text-text-muted font-medium">ليس لديك حساب؟ </span>
-          <span className="text-accent font-bold group-hover:underline">
+          <span className="text-slate-400 font-medium">ليس لديك حساب؟ </span>
+          <span className="text-accent font-black group-hover:underline decoration-accent decoration-2 underline-offset-4">
             أنشئ حساباً الآن
           </span>
         </Link>
