@@ -59,14 +59,14 @@ export default function HowItWorks() {
             {userSteps.map((step, i) => (
               <div
                 key={i}
-                className="group bg-surface border border-border p-8 rounded-[2.5rem] flex gap-6 items-start hover:border-accent/30 transition-all shadow-sm"
+                className="relative group bg-surface border border-border p-8 rounded-[2.5rem] flex flex-col md:flex-row gap-6 items-start hover:border-accent/30 transition-all shadow-sm"
               >
                 <div className="w-14 h-14 shrink-0 bg-primary text-secondary rounded-2xl flex items-center justify-center text-xl shadow-lg">
                   <Icon icon={step.icon} />
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-2xl font-black text-primary flex items-center gap-3">
-                    <span className="text-accent text-sm opacity-50">
+                    <span className="text-white bg-accent rounded-full w-8 h-8 aspect-square flex items-center justify-center text-sm absolute top-0 start-0">
                       0{i + 1}
                     </span>
                     {step.title}
