@@ -95,7 +95,7 @@ export default async function Page() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 gap-8">
           <div className="lg:col-span-8 space-y-8">
             <div className="bg-surface rounded-[2.5rem] border-2 border-border p-8 md:p-10 shadow-sm relative group overflow-hidden">
               <div className="relative z-10">
