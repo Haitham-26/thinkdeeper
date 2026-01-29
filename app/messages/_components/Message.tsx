@@ -24,7 +24,7 @@ export default function Message({ message }: Props) {
   useEffect(() => {
     if (textRef.current) {
       const height = textRef.current.scrollHeight;
-      if (height > 160) {
+      if (height > 100) {
         setIsCollapsible(true);
       }
     }
@@ -32,70 +32,75 @@ export default function Message({ message }: Props) {
 
   return (
     <div className="relative group">
-      <div className="absolute top-0 right-0 -mr-2 mt-2 w-full h-full bg-accent/5 rounded-[2rem] transition-transform group-hover:translate-x-1 group-hover:translate-y-1"></div>
+      <div className="absolute top-0 right-0 -mr-1 mt-1 w-full h-full bg-accent/5 rounded-2xl md:rounded-[2rem] transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5"></div>
 
-      <div className="relative bg-surface border border-border rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-lg">
+      <div className="relative bg-surface border border-border rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-lg">
         <div className="flex flex-col md:flex-row">
           <div
-            className={`md:w-48 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-l border-border transition-colors ${isAnonymous ? "bg-surface-muted/30" : "bg-accent/[0.02]"}`}
+            className={`flex items-center justify-between md:flex-col md:justify-center md:w-48 p-3 md:p-6 border-b md:border-b-0 md:border-l border-border transition-colors ${
+              isAnonymous ? "bg-surface-muted/30" : "bg-accent/[0.02]"
+            }`}
           >
-            <div
-              className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-sm transition-transform group-hover:scale-110 ${
-                isAnonymous
-                  ? "bg-white text-text-muted"
-                  : "bg-accent text-secondary"
-              }`}
-            >
-              <Icon
-                icon={isAnonymous ? faUserSecret : faCircleUser}
-                className="text-2xl"
-              />
+            <div className="flex items-center gap-3 md:flex-col md:gap-0">
+              <div
+                className={`flex-shrink-0 w-9 h-9 md:w-14 md:h-14 rounded-lg md:rounded-2xl flex items-center justify-center md:mb-3 shadow-sm ${
+                  isAnonymous
+                    ? "bg-white text-text-muted"
+                    : "bg-accent text-secondary"
+                }`}
+              >
+                <Icon
+                  icon={isAnonymous ? faUserSecret : faCircleUser}
+                  className="text-lg md:text-2xl"
+                />
+              </div>
+              <h4 className="text-[13px] md:text-sm font-black text-text-primary truncate max-w-[120px] md:max-w-full md:text-center">
+                {message.name || "مجهول الهوية"}
+              </h4>
             </div>
 
-            <h4 className="text-sm font-black text-text-primary text-center mb-1 line-clamp-1">
-              {message.name || "مجهول الهوية"}
-            </h4>
-
-            <div className="flex items-center gap-1.5 text-[10px] text-text-muted font-bold tracking-tight">
-              <Icon icon={faCalendar} className="text-[9px] opacity-70" />
-              <span className="dir-ltr">
-                {formattedDate(message.createdAt)}
+            <div className="flex items-center gap-1 text-[9px] md:text-[10px] text-text-muted font-bold md:mt-1 opacity-80">
+              <Icon icon={faCalendar} className="text-[8px] md:text-[9px]" />
+              <span className="dir-ltr whitespace-nowrap">
+                {formattedDate(message.createdAt, true)}
               </span>
             </div>
           </div>
 
-          <div className="flex-1 p-6 md:p-8 relative">
+          <div className="flex-1 p-4 md:p-8 relative">
             <div
               className={`relative overflow-hidden transition-all duration-500 ease-in-out ${
-                isCollapsible && !isExpanded ? "max-h-32" : "max-h-[2000px]"
+                isCollapsible && !isExpanded
+                  ? "max-h-20 md:max-h-32"
+                  : "max-h-[2000px]"
               }`}
             >
               <p
                 ref={textRef}
-                className="text-base md:text-lg text-text-primary leading-relaxed font-medium whitespace-pre-wrap [word-break:break-word]"
+                className="text-sm md:text-base text-text-primary leading-relaxed font-medium whitespace-pre-wrap [word-break:break-word]"
               >
                 {message.message}
               </p>
 
-              {isCollapsible && !isExpanded && (
-                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-surface to-transparent" />
-              )}
+              {isCollapsible && !isExpanded ? (
+                <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-surface to-transparent" />
+              ) : null}
             </div>
 
-            {isCollapsible && (
-              <div className="mt-6 flex justify-end">
+            {isCollapsible ? (
+              <div className="mt-2 md:mt-6 flex justify-end">
                 <Button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className={`group/btn !bg-surface-muted !text-text-primary border border-border px-4 py-2 rounded-xl text-xs font-black transition-all hover:!bg-accent hover:!text-secondary hover:!border-accent flex items-center gap-2`}
+                  className="!bg-transparent !text-text-primary border border-border px-3 py-1 rounded-lg text-[10px] md:text-xs font-black flex items-center gap-2 shadow-none"
                 >
-                  <span>{isExpanded ? "طي الرسالة" : "قراءة المزيد"}</span>
+                  <span>{isExpanded ? "طي" : "المزيد"}</span>
                   <Icon
                     icon={isExpanded ? faChevronUp : faChevronDown}
-                    className={`transition-transform duration-300 ${!isExpanded && "group-hover/btn:translate-y-0.5"}`}
+                    className="text-[8px]"
                   />
                 </Button>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
