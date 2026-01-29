@@ -22,9 +22,7 @@ export default async function Page() {
     token,
   );
 
-  const profileUrl = `thinkdeeper.vercel.app/${
-    user.username || user._id
-  }/message`;
+  const profileUrl = `besaraha.vercel.app/${user.username || user._id}/message`;
 
   const infoRows = [
     {
