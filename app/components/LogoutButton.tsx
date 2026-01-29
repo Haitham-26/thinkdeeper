@@ -3,23 +3,18 @@
 import React from "react";
 import { Button } from "./Button";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
-import { useRouter } from "next/navigation";
 import { NextClient } from "@/tools/NextClient";
 import { Toast } from "@/tools/Toast";
+import { signOut } from "next-auth/react";
 
 export const LogoutButton: React.FC = () => {
-  const router = useRouter();
-
   const logout = async () => {
     try {
       await NextClient("/auth/logout", {
         method: "POST",
       });
 
-      localStorage.removeItem("google-authanticated");
-
-      router.push("/");
-      router.refresh();
+      signOut({ callbackUrl: "/", redirect: true });
     } catch (e) {
       console.log(e);
       Toast.apiError(e);
