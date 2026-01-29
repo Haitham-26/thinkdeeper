@@ -5,6 +5,7 @@ import { faUserSecret } from "@fortawesome/free-solid-svg-icons/faUserSecret";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
+import Link from "next/link";
 
 export default function HowItWorks() {
   const userSteps = [
@@ -136,9 +137,13 @@ export default function HowItWorks() {
             حقاً. لا تتردد، انضم إلينا الآن.
           </p>
           <div className="flex justify-center">
-            <button className="h-16 px-16 bg-primary text-secondary rounded-2xl font-black text-lg hover:bg-accent hover:scale-105 transition-all shadow-2xl shadow-primary/20">
+            <Link
+              href="/auth/signup"
+              target="_blank"
+              className="px-16 py-4 bg-primary text-secondary rounded-2xl font-black text-lg hover:bg-accent hover:scale-105 transition-all shadow-2xl shadow-primary/20"
+            >
               أنشئ حسابك الآن
-            </button>
+            </Link>
           </div>
         </div>
       </main>

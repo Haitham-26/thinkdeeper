@@ -8,6 +8,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "./Providers";
 import { GoogleAuth } from "./GoogleAuth";
+import Footer from "./components/Footer";
 
 config.autoAddCss = false;
 
@@ -37,6 +38,7 @@ export default async function RootLayout({
             <GoogleAuth />
           </Providers>
         </main>
+        <Footer />
         <Toaster position="top-left" />
       </body>
     </html>
