@@ -44,13 +44,10 @@ export const LoginContent: React.FC = () => {
   };
 
   return (
-    <AuthFormContainer
-      title="مرحباً بعودتك"
-      subtitle="سجل دخولك لمتابعة المصارحات والرسائل الجديدة"
-    >
+    <AuthFormContainer title="تسجيل الدخول">
       <Info>
         تسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور غير متوفر بعد
-        لأسباب تقنية، يرجى تسجيل الدخول باستخدام جوجل.
+        لأسباب تقنية، يرجى تسجيل الدخول باستخدام جوجل في الأسفل.
       </Info>
 
       <div className="space-y-4 opacity-50">

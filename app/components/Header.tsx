@@ -10,6 +10,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import { faBolt } from "@fortawesome/free-solid-svg-icons/faBolt";
 import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
 import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons/faBarsStaggered";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons/faRightToBracket";
 import { Icon } from "./Icon";
 import { Button } from "./Button";
 import Image from "next/image";
@@ -26,8 +27,8 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
     relative px-5 py-3 md:py-2 rounded-xl font-bold transition-all duration-300 flex items-center gap-3 w-full md:w-auto
     ${
       pathname === path
-        ? "bg-accent/10 text-accent"
-        : "text-text-muted hover:text-text-primary hover:bg-surface-muted"
+        ? "bg-accent/20 text-accent"
+        : "text-slate-300 hover:text-white hover:bg-white/5"
     }
   `;
 
@@ -41,7 +42,6 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         <Icon icon={faUserCircle} className="text-sm" />
         <span>الملف الشخصي</span>
       </Link>
-
       <Link
         href="/messages"
         className={navLinkClass("/messages")}
@@ -61,22 +61,44 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
     </Fragment>
   );
 
+  const GuestNavContent = () => (
+    <div className="flex flex-col gap-3 mt-4">
+      <Link
+        href="/auth/login"
+        className={`${navLinkClass("/auth/login")} border border-white/10`}
+        onClick={() => setOpen(false)}
+      >
+        <Icon icon={faRightToBracket} className="text-sm" />
+        <span>تسجيل الدخول</span>
+      </Link>
+      <Link
+        href="/auth/signup"
+        className="bg-accent text-white font-bold px-5 py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-accent/20"
+        onClick={() => setOpen(false)}
+      >
+        <Icon icon={faBolt} className="text-xs" />
+        <span>ابدأ الآن (حساب جديد)</span>
+      </Link>
+    </div>
+  );
+
   return (
-    <header className="fixed top-0 w-full z-50 px-4 md:px-10 h-20 flex items-center justify-between bg-surface/80 backdrop-blur-md border-b border-border/50">
+    <header className="fixed top-0 w-full z-50 px-4 md:px-10 h-20 flex items-center justify-between bg-[#0f172a]/95 backdrop-blur-md border-b border-white/10">
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2 group">
           <Image
             src="/images/logo.png"
             alt="بصراحة"
-            width={200}
-            height={40}
+            width={160}
+            height={35}
             quality={100}
+            className="brightness-110" // تفتيح اللوجو قليلاً ليبرز أكثر
           />
         </Link>
       </div>
 
       {token ? (
-        <nav className="hidden lg:flex items-center gap-2 bg-surface-muted/50 p-1.5 rounded-2xl border border-border/50">
+        <nav className="hidden lg:flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10">
           <NavContent />
         </nav>
       ) : null}
@@ -86,32 +108,36 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
           <Fragment>
             <Link
               href="/auth/login"
-              className="hidden sm:block text-text-primary font-bold px-6 py-2.5 hover:text-accent transition-colors"
+              className="hidden sm:block text-slate-300 font-bold px-6 py-2.5 hover:text-white transition-colors"
             >
               تسجيل الدخول
             </Link>
             <Link
               href="/auth/signup"
-              className="bg-accent text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-accent/90 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+              className="hidden sm:flex bg-accent text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-accent/20 hover:bg-accent/90 hover:-translate-y-0.5 transition-all items-center gap-2"
             >
               <Icon icon={faBolt} className="text-xs" />
               <span>ابدأ الآن</span>
             </Link>
+
+            <Button
+              onClick={() => setOpen(true)}
+              icon={faBarsStaggered}
+              className="sm:hidden w-10 h-10 !p-5 rounded-xl !bg-white/5 !text-white border !border-white/10 shadow-none hover:!bg-white/10"
+            />
           </Fragment>
         ) : (
           <Fragment>
             <div className="flex items-center gap-4">
-              <div className="h-8 w-[1px] bg-border mx-2 hidden sm:block"></div>
+              <div className="h-8 w-[1px] bg-white/10 mx-2 hidden sm:block"></div>
               <LogoutButton />
             </div>
 
-            {token ? (
-              <Button
-                onClick={() => setOpen(true)}
-                icon={faBarsStaggered}
-                className="lg:hidden w-10 h-10 !p-5 rounded-xl !bg-surface-muted !text-text-primary border !border-border shadow-none"
-              />
-            ) : null}
+            <Button
+              onClick={() => setOpen(true)}
+              icon={faBarsStaggered}
+              className="lg:hidden w-10 h-10 !p-5 rounded-xl !bg-white/5 !text-white border !border-white/10 shadow-none hover:!bg-white/10"
+            />
           </Fragment>
         )}
       </div>
@@ -120,17 +146,11 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         onClose={() => setOpen(false)}
         open={open}
         title={
-          <Image
-            src="/images/logo.png"
-            alt="بصراحة"
-            width={200}
-            height={40}
-            quality={100}
-          />
+          <Image src="/images/logo.png" alt="بصراحة" width={140} height={30} />
         }
       >
         <div className="flex flex-col gap-2">
-          <NavContent />
+          {token ? <NavContent /> : <GuestNavContent />}
         </div>
       </Drawer>
     </header>

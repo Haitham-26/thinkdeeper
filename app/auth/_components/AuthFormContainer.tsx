@@ -2,13 +2,11 @@ import React from "react";
 
 type AuthFormContainerProps = {
   title: string;
-  subtitle?: string;
   children: React.ReactNode | React.ReactNode[];
 };
 
 export const AuthFormContainer: React.FC<AuthFormContainerProps> = ({
   title,
-  subtitle,
   children,
 }) => {
   return (
@@ -17,20 +15,22 @@ export const AuthFormContainer: React.FC<AuthFormContainerProps> = ({
 
       <div className="w-full max-w-lg">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-black text-text-primary mb-3">
-            {title}
+          <h1 className="text-4xl md:text-5xl font-black text-accent mb-3">
+            مرحباً بك في بصراحة
           </h1>
-          {subtitle && (
-            <p className="text-text-muted text-lg font-medium">{subtitle}</p>
-          )}
         </div>
 
         <div className="bg-surface border-2 border-border shadow-2xl shadow-primary/5 rounded-[2.5rem] p-8 md:p-12 transition-all duration-300 hover:border-accent/20">
-          <div className="flex flex-col gap-6">{children}</div>
+          <div className="flex flex-col gap-6">
+            <h2 className="text-2xl font-bold text-text-primary text-center">
+              {title}
+            </h2>
+            {children}
+          </div>
         </div>
 
         <p className="mt-8 text-center text-sm text-text-muted">
-          بشرائك أو تسجيلك، أنت توافق على{" "}
+          بتسجيل الدخول أنت توافق على{" "}
           <span className="text-accent underline cursor-pointer">
             شروط الاستخدام
           </span>

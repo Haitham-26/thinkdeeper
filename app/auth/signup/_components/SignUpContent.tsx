@@ -51,13 +51,10 @@ export const SignUpContent: React.FC = () => {
   };
 
   return (
-    <AuthFormContainer
-      title="انضم إلينا"
-      subtitle="أنشئ حسابك وابدأ في استقبال المصارحات من أصدقائك"
-    >
+    <AuthFormContainer title="إنشاء حساب">
       <Info>
         التسجيل باستخدام البريد الإلكتروني وكلمة المرور غير متوفر بعد لأسباب
-        تقنية، يرجى التسجيل باستخدام جوجل.
+        تقنية، يرجى التسجيل باستخدام جوجل في الأسفل.
       </Info>
 
       <div className="flex flex-col gap-4 opacity-50">
