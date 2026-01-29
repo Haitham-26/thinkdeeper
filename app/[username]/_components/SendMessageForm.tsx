@@ -54,7 +54,7 @@ export const SendMessageForm: React.FC<Props> = ({ username }) => {
         data: dto,
       });
       reset();
-      Toast.success("تم إرسال رسالتك الصريحة بنجاح");
+      Toast.success("تم إرسال رسالتك بنجاح");
     } catch (e) {
       Toast.apiError(e);
     } finally {
