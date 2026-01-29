@@ -20,7 +20,7 @@ export default async function Page() {
   const messagesCount = data.messages?.length || 0;
 
   return (
-    <div className="w-full min-h-screen bg-surface-muted p-4 md:p-8 lg:p-12">
+    <div className="w-full min-h-screen bg-surface-muted p-4 pt-6 md:p-8 lg:p-12">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         <aside className="lg:col-span-4 space-y-6">
           <div className="bg-primary rounded-[2.5rem] p-8 text-secondary shadow-2xl relative overflow-hidden group">
