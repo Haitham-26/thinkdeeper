@@ -1,6 +1,7 @@
 import MessagesList from "./_components/MessagesList";
 import MessagesCounter from "./_components/MessagesCounter";
 import MessagesFetcher from "./_components/MessagesFetcher";
+import DeleteAllMessages from "./_components/DeleteAllMessages"; // Import it here
 
 export default async function Page() {
   return (
@@ -19,6 +20,8 @@ export default async function Page() {
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
                 الرسائل الأخيرة
               </h2>
+
+              <DeleteAllMessages />
             </div>
 
             <div className="flex-1 p-6 md:p-8">
