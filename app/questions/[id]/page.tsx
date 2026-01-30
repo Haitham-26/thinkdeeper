@@ -1,5 +1,5 @@
 import { Question } from "@/model/question/Question";
-import { QuestionCardWithContext } from "./_components/QuestionCardWithContext";
+import { QuestionCardWithSignupModal } from "./_components/QuestionCardWithSignupModal";
 import getToken from "@/tools/getToken";
 import { User } from "@/model/user/User";
 import { notFound } from "next/navigation";
@@ -23,7 +23,7 @@ export default async function Page(props: Props) {
       {
         method: "GET",
       },
-      token
+      token,
     );
 
     question = data;
@@ -37,7 +37,7 @@ export default async function Page(props: Props) {
       {
         method: "POST",
       },
-      token
+      token,
     );
 
     user = data;
@@ -50,7 +50,7 @@ export default async function Page(props: Props) {
   return (
     <main className="px-4 md:px-8 py-6 flex-1">
       <div className="md:max-w-2xl mx-auto">
-        <QuestionCardWithContext
+        <QuestionCardWithSignupModal
           question={question}
           userId={user?._id || null}
         />

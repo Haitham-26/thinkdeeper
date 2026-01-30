@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { QuestionsRepliesProvider } from "../../context/global-context";
+import React, { Fragment, useState } from "react";
 import { QuestionCard } from "../../_components/QuestionCard";
 import { Question } from "@/model/question/Question";
 import { Modal } from "@/app/components/Modal";
@@ -12,13 +11,13 @@ import { Icon } from "@/app/components/Icon";
 import { Button } from "@/app/components/Button";
 import { useRouter } from "next/navigation";
 
-type QuestionCardWithContextProps = {
+type QuestionCardWithSignupModalProps = {
   question: Question;
   userId: string | null;
 };
 
-export const QuestionCardWithContext: React.FC<
-  QuestionCardWithContextProps
+export const QuestionCardWithSignupModal: React.FC<
+  QuestionCardWithSignupModalProps
 > = ({ question, userId }) => {
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
 
@@ -31,7 +30,7 @@ export const QuestionCardWithContext: React.FC<
   };
 
   return (
-    <QuestionsRepliesProvider>
+    <Fragment>
       <QuestionCard
         question={question}
         userId={userId}
@@ -84,6 +83,6 @@ export const QuestionCardWithContext: React.FC<
           </p>
         </div>
       </Modal>
-    </QuestionsRepliesProvider>
+    </Fragment>
   );
 };
