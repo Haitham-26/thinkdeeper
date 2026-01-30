@@ -7,7 +7,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import Link from "next/link";
 import { faLightbulb } from "@fortawesome/free-solid-svg-icons/faLightbulb";
 
-export default function HowItWorks() {
+export default function Page() {
   const userSteps = [
     {
       icon: faUserCircle,
@@ -129,14 +129,14 @@ export default function HowItWorks() {
             هل أنت مستعد لتسمع الحقيقة؟
           </h2>
           <p className="text-text-muted text-xl max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
-            الآلاف يستخدمون Think Deeper يومياً لاكتشاف ما يفكر فيه أصدقاؤهم
-            حقاً. لا تتردد، انضم إلينا الآن.
+            الآلاف يستخدمون بصراحة يومياً لاكتشاف ما يفكر فيه أصدقاؤهم حقاً. لا
+            تتردد، انضم إلينا الآن.
           </p>
           <div className="flex justify-center">
             <Link
               href="/auth/signup"
               target="_blank"
-              className="px-16 py-4 bg-primary text-secondary rounded-2xl font-black text-lg hover:bg-accent hover:scale-105 transition-all shadow-2xl shadow-primary/20"
+              className="px-16 py-4 bg-primary text-secondary rounded-2xl font-black text-base hover:bg-accent hover:scale-105 transition-all shadow-2xl shadow-primary/20"
             >
               أنشئ حسابك الآن
             </Link>

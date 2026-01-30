@@ -64,7 +64,6 @@ export const Input: React.FC<InputProps> = ({
         ) : null}
         <input
           id={props.id || props.name}
-          autoComplete="off"
           className={`
             w-full py-3.5 px-5 rounded-2xl outline-none transition-all duration-300
             bg-surface border-2 text-text-primary placeholder:text-text-muted/50

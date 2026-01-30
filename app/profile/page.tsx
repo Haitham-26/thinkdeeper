@@ -11,6 +11,7 @@ import { faAt } from "@fortawesome/free-solid-svg-icons/faAt";
 import { Icon } from "../components/Icon";
 import { CopyButton } from "../components/CopyButton";
 import Image from "next/image";
+import { ProfileUpdateModalAndButton } from "./_components/ProfileUpdateModalAndButton";
 
 export default async function Page() {
   const token = await getToken();
@@ -21,7 +22,7 @@ export default async function Page() {
     token,
   );
 
-  const profileUrl = `besaraha.vercel.app/${user.username || user._id}/message`;
+  const profileUrl = `${process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, "")}/${user.username || user._id}/message`;
 
   const infoRows = [
     {
@@ -79,13 +80,15 @@ export default async function Page() {
                 <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
                   {user.name}
                 </h1>
-                <p className="text-accent font-mono text-xl dir-ltr">
+                <p className="text-accent font-mono text-xl [dir:ltr] mt-2">
                   @{user.username}
                 </p>
               </div>
-              <p className="text-white/60 text-lg font-medium">
+              <p className="text-white/60 text-base font-medium">
                 عضو منذ {formattedDate(user.createdAt)}
               </p>
+
+              <ProfileUpdateModalAndButton user={user} />
             </div>
           </div>
 
@@ -113,11 +116,11 @@ export default async function Page() {
                 </p>
 
                 <div className="flex flex-col md:flex-row gap-4 p-2 bg-surface-muted rounded-2xl border-2 border-border/50">
-                  <div className="flex-grow flex items-center gap-3 px-6 py-4 font-mono text-text-primary [direction:ltr] max-w-full md:max-w-9/12">
-                    <span className="truncate">{profileUrl}</span>
+                  <div className="px-6 py-4 font-mono text-text-primary [direction:ltr] max-w-full text-start truncate ps-0">
+                    {profileUrl}
                   </div>
 
-                  <CopyButton text={profileUrl} className="md:ms-auto" />
+                  <CopyButton text={profileUrl} />
                 </div>
               </div>
             </div>
