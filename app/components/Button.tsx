@@ -1,7 +1,7 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import React from "react";
 import { Icon } from "./Icon";
+import { Spinner } from "./Spinner";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: React.ReactNode;
@@ -46,11 +46,7 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
       disabled={isDisabled}
     >
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-inherit">
-          <Icon icon={faCircleNotch} className="animate-spin text-xl" />
-        </div>
-      )}
+      {loading ? <Spinner /> : null}
 
       <div
         className={`flex items-center justify-center gap-2 transition-all ${
@@ -58,7 +54,7 @@ export const Button: React.FC<ButtonProps> = ({
         }`}
       >
         {children}
-        {icon && <Icon icon={icon} className="text-sm" />}
+        {icon ? <Icon icon={icon} className="text-sm" /> : null}
       </div>
     </button>
   );

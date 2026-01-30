@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { QuestionsRepliesProvider } from "../../context/questions-replies-context";
+import { QuestionsRepliesProvider } from "../../context/global-context";
 import { QuestionCard } from "../../_components/QuestionCard";
 import { Question } from "@/model/question/Question";
 import { Modal } from "@/app/components/Modal";

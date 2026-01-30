@@ -8,8 +8,16 @@ import { faCircleUser } from "@fortawesome/free-solid-svg-icons/faCircleUser";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons/faCalendar";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons/faEllipsisVertical";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/app/components/Button";
+import { Dropdown } from "@/app/components/Dropdown";
+import { WarningModal } from "@/app/components/WarningModal";
+import { Toast } from "@/tools/Toast";
+import { NextClient } from "@/tools/NextClient";
+import { useGlobalContext } from "@/app/questions/context/global-context";
+import { GetMessagesResponseDto } from "@/model/message/GetMessagesResponseDto";
 
 type Props = {
   message: MessageModel;
@@ -19,14 +27,47 @@ export default function Message({ message }: Props) {
   const isAnonymous = !message.name;
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const { setMessages } = useGlobalContext();
+
   const textRef = useRef<HTMLParagraphElement>(null);
+
+  const deleteMessage = async () => {
+    try {
+      setDeleteLoading(true);
+
+      await NextClient("/message/delete", {
+        method: "DELETE",
+        data: {
+          messageId: message._id,
+        },
+      });
+
+      const {
+        data: { messages },
+      } = await NextClient<GetMessagesResponseDto>("/message/messages", {
+        method: "POST",
+      });
+
+      setMessages(messages || []);
+
+      setDeleteModalVisible(false);
+
+      Toast.success("تم حذف الرسالة بنجاح");
+    } catch (e) {
+      console.log(e);
+      Toast.apiError(e);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (textRef.current) {
       const height = textRef.current.scrollHeight;
-      if (height > 70) {
-        setIsCollapsible(true);
-      }
+      if (height > 70) setIsCollapsible(true);
     }
   }, [message.message]);
 
@@ -51,11 +92,30 @@ export default function Message({ message }: Props) {
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[10px] font-bold text-text-muted opacity-80">
-            <Icon icon={faCalendar} className="text-[9px]" />
-            <span className="dir-ltr whitespace-nowrap">
-              {formattedDate(message.createdAt, true)}
-            </span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-text-muted opacity-80">
+              <Icon icon={faCalendar} className="text-[9px]" />
+              <span className="dir-ltr whitespace-nowrap">
+                {formattedDate(message.createdAt, true)}
+              </span>
+            </div>
+
+            <Dropdown
+              items={[
+                {
+                  title: "حذف الرسالة",
+                  icon: faTrash,
+                  className: "text-danger hover:!bg-danger/5",
+                  onClick: deleteMessage,
+                },
+              ]}
+            >
+              <Button
+                icon={faEllipsisVertical}
+                loading={deleteLoading}
+                className="!w-8 !h-8 aspect-square rounded-full !bg-transparent hover:!bg-border/50 !text-text-muted shadow-none !p-3"
+              />
+            </Dropdown>
           </div>
         </div>
 
@@ -71,7 +131,6 @@ export default function Message({ message }: Props) {
             >
               {message.message}
             </p>
-
             {isCollapsible && !isExpanded ? (
               <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-surface to-transparent" />
             ) : null}
@@ -91,6 +150,14 @@ export default function Message({ message }: Props) {
           ) : null}
         </div>
       </div>
+
+      <WarningModal
+        title="حذف الرسالة"
+        description="بمجرد حذف الرسالة لا يمكن استرجاعها لاحقًا."
+        open={deleteModalVisible}
+        onClose={() => setDeleteModalVisible(false)}
+        onConfirm={deleteMessage}
+      />
     </div>
   );
 }

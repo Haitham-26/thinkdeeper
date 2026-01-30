@@ -6,7 +6,7 @@ import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import React, { Fragment, useState } from "react";
-import { useQuestionsReplies } from "../context/questions-replies-context";
+import { useGlobalContext } from "../context/global-context";
 import { Toast } from "@/tools/Toast";
 
 type DeleteQuestionProps = {
@@ -17,7 +17,7 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({ question }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { setQuestions } = useQuestionsReplies();
+  const { setQuestions } = useGlobalContext();
 
   const onDelete = async () => {
     try {
@@ -31,7 +31,7 @@ export const DeleteQuestion: React.FC<DeleteQuestionProps> = ({ question }) => {
         {
           method: "POST",
           data: { userId: question.userId },
-        }
+        },
       );
 
       setQuestions(updatedQuestions);

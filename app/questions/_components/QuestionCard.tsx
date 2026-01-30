@@ -16,7 +16,7 @@ import { faQuoteRight } from "@fortawesome/free-solid-svg-icons/faQuoteRight";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
 import { faReply } from "@fortawesome/free-solid-svg-icons/faReply";
 import { DeleteQuestion } from "./DeleteQuestion";
-import { useQuestionsReplies } from "../context/questions-replies-context";
+import { useGlobalContext } from "../context/global-context";
 import { Icon } from "@/app/components/Icon";
 import { Textarea } from "@/app/components/Textarea";
 import { Empty } from "@/app/components/Empty";
@@ -40,7 +40,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const [name, setName] = useState("");
   const [repliesLoading, setRepliesLoading] = useState(false);
 
-  const { replies, setReplies } = useQuestionsReplies();
+  const { replies, setReplies } = useGlobalContext();
   const pathname = usePathname();
   const isOnProfilePage = !Boolean(pathname.replace("/questions", "").length);
 

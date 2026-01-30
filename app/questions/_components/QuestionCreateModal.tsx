@@ -6,7 +6,7 @@ import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useQuestionsReplies } from "../context/questions-replies-context";
+import { useGlobalContext } from "../context/global-context";
 import { Modal } from "@/app/components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons/faCircleQuestion";
@@ -31,7 +31,7 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
       defaultValues: { question: "", userId: userId || "" },
     });
 
-  const { setQuestions } = useQuestionsReplies();
+  const { setQuestions } = useGlobalContext();
 
   const onSubmit = async () => {
     try {

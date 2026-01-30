@@ -1,7 +1,7 @@
 import { User } from "@/model/user/User";
 import { AuthClient } from "@/tools/AuthClient";
 import getToken from "@/tools/getToken";
-import { QuestionContainerWithContext } from "./_components/QuestionContainerWithContext";
+import { QuestionsContainer } from "./_components/QuestionsContainer";
 
 export default async function Page() {
   const token = await getToken();
@@ -13,7 +13,7 @@ export default async function Page() {
       const { data } = await AuthClient<User>(
         `/user`,
         { method: "POST" },
-        token
+        token,
       );
 
       user = data;
@@ -22,5 +22,5 @@ export default async function Page() {
     }
   }
 
-  return <QuestionContainerWithContext userId={user?._id || null} />;
+  return <QuestionsContainer userId={user?._id || null} />;
 }

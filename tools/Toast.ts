@@ -12,8 +12,6 @@ export class Toast {
   static apiError(error: any) {
     const message = error.response?.data?.message;
 
-    console.log(message);
-
     if (typeof message === "string") {
       return toast.error(message);
     }

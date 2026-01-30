@@ -5,7 +5,7 @@ import { Question } from "@/model/question/Question";
 import { QuestionCreateModal } from "./QuestionCreateModal";
 import { QuestionCard } from "./QuestionCard";
 import { NextClient } from "@/tools/NextClient";
-import { useQuestionsReplies } from "../context/questions-replies-context";
+import { useGlobalContext } from "../context/global-context";
 import { Button } from "@/app/components/Button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
@@ -21,7 +21,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
 }) => {
   const [createQuestionModalVisible, setCreateQuestionModalVisible] =
     useState(false);
-  const { questions, setQuestions } = useQuestionsReplies();
+  const { questions, setQuestions } = useGlobalContext();
 
   useEffect(() => {
     const fetchQuestions = async () => {
