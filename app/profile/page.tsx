@@ -116,7 +116,7 @@ export default async function Page() {
                 </p>
 
                 <div className="flex flex-col md:flex-row gap-4 p-2 bg-surface-muted rounded-2xl border-2 border-border/50">
-                  <div className="px-6 py-4 font-mono text-text-primary [direction:ltr] max-w-full text-start truncate ps-0">
+                  <div className="grow px-6 py-4 font-mono text-text-primary [direction:ltr] max-w-full text-start truncate ps-0">
                     {profileUrl}
                   </div>
 
