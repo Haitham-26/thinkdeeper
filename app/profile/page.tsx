@@ -22,7 +22,7 @@ export default async function Page() {
     token,
   );
 
-  const profileUrl = `${process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, "")}/${user.username || user._id}/message`;
+  const profileUrl = `besaraha.vercel.app/${user.username || user._id}/message`;
 
   const infoRows = [
     {
