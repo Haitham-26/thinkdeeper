@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { AuthFormContainer } from "../../_components/AuthFormContainer";
+import React, { Fragment, useState } from "react";
 import { Input } from "@/app/components/Input";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
@@ -14,7 +13,6 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 import { Icon } from "@/app/components/Icon";
 import { NextClient } from "@/tools/NextClient";
 import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
-import { Info } from "@/app/components/Info";
 
 const disabledInputClass = `
     !bg-white/[0.03] !border-white/10 !rounded-2xl !h-14 
@@ -55,12 +53,7 @@ export const SignUpContent: React.FC = () => {
   };
 
   return (
-    <AuthFormContainer title="إنشاء حساب">
-      <Info>
-        التسجيل باستخدام البريد الإلكتروني وكلمة المرور غير متوفر بعد لأسباب
-        تقنية، يرجى التسجيل باستخدام جوجل في الأسفل.
-      </Info>
-
+    <Fragment>
       <div className="flex flex-col gap-4 opacity-50">
         <Controller
           control={control}
@@ -177,6 +170,6 @@ export const SignUpContent: React.FC = () => {
       </div>
 
       <SignUpTokenModal open={verificationModalVisible} email={email} />
-    </AuthFormContainer>
+    </Fragment>
   );
 };

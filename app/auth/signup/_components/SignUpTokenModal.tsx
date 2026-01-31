@@ -41,7 +41,7 @@ export const SignUpTokenModal: React.FC<SignUpTokenModalProps> = ({
       });
 
       Toast.success("تم تفعيل حسابك بنجاح");
-      router.push("/questions");
+      router.replace("/questions");
       router.refresh();
     } catch (e) {
       console.log(e);

@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { AuthFormContainer } from "../../_components/AuthFormContainer";
+import React, { Fragment, useState } from "react";
 import { Input } from "@/app/components/Input";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
@@ -12,7 +11,6 @@ import { Toast } from "@/tools/Toast";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightToBracket";
 import { NextClient } from "@/tools/NextClient";
 import { GoogleLoginButton } from "@/app/components/GoogleLoginButton";
-import { Info } from "@/app/components/Info";
 
 const disabledInputClass = `
     !bg-white/[0.03] !border-white/10 !rounded-2xl !h-14 
@@ -39,7 +37,7 @@ export const LoginContent: React.FC = () => {
         withCredentials: true,
       });
 
-      router.push("/questions");
+      router.replace("/questions");
       router.refresh();
     } catch (e) {
       console.log(e);
@@ -50,12 +48,7 @@ export const LoginContent: React.FC = () => {
   };
 
   return (
-    <AuthFormContainer title="تسجيل الدخول">
-      <Info>
-        تسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور غير متوفر بعد
-        لأسباب تقنية، يرجى تسجيل الدخول باستخدام جوجل في الأسفل.
-      </Info>
-
+    <Fragment>
       <div className="space-y-4">
         <Controller
           control={control}
@@ -76,7 +69,7 @@ export const LoginContent: React.FC = () => {
           )}
         />
 
-        <div className="space-y-1">
+        <div className="flex flex-col gap-1 items-end">
           <Controller
             control={control}
             name="password"
@@ -96,6 +89,13 @@ export const LoginContent: React.FC = () => {
               />
             )}
           />
+
+          <Link
+            href={"/auth/forgot-password/email"}
+            className="text-accent text-xs ms-auto inline-block"
+          >
+            نسيت كلمة السر؟
+          </Link>
         </div>
       </div>
 
@@ -130,6 +130,6 @@ export const LoginContent: React.FC = () => {
           </span>
         </Link>
       </div>
-    </AuthFormContainer>
+    </Fragment>
   );
 };
