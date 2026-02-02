@@ -5,6 +5,7 @@ export interface Question {
   userId: string;
   question: string;
   replies: Reply[];
+  isPublic: boolean;
   createdAt: string;
   updatedAt: string;
 }

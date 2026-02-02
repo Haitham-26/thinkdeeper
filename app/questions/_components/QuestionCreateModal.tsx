@@ -4,14 +4,17 @@ import { Button } from "@/app/components/Button";
 import { CreateQuestionDto } from "@/model/question/dto/CreateQuestionDto";
 import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useGlobalContext } from "../context/global-context";
 import { Modal } from "@/app/components/Modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons/faCircleQuestion";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
+import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
+import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons/faEarthAmericas";
 import { Toast } from "@/tools/Toast";
+import { Textarea } from "@/app/components/Textarea";
+import { Icon } from "@/app/components/Icon";
 
 type QuestionCreateModalProps = {
   userId: string | null;
@@ -28,7 +31,11 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
 
   const { control, handleSubmit, getValues, reset } =
     useForm<CreateQuestionDto>({
-      defaultValues: { question: "", userId: userId || "" },
+      defaultValues: {
+        question: "",
+        userId: userId || "",
+        isPublic: false,
+      },
     });
 
   const { setQuestions } = useGlobalContext();
@@ -39,7 +46,7 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
 
       await NextClient<Question>("/questions/create", {
         method: "POST",
-        data: { userId, question: getValues("question") },
+        data: { ...getValues(), userId },
       });
 
       const { data: questions } = await NextClient<Question[]>("/questions", {
@@ -47,12 +54,11 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
         data: { userId },
       });
 
-      reset({ question: "", userId: userId || "" });
+      reset({ question: "", userId: userId || "", isPublic: false });
       setQuestions(questions);
       Toast.success("تم نشر سؤالك بنجاح");
       onClose();
     } catch (e: any) {
-      console.log(e);
       Toast.apiError(e);
     } finally {
       setLoading(false);
@@ -64,14 +70,14 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-4 bg-accent/5 p-4 rounded-2xl border border-accent/10">
           <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-white shadow-lg shadow-accent/20">
-            <FontAwesomeIcon icon={faCircleQuestion} className="text-xl" />
+            <Icon icon={faCircleQuestion} className="text-xl" />
           </div>
           <div>
             <h4 className="text-sm font-black text-text-primary">
               ماذا يدور في ذهنك؟
             </h4>
             <p className="text-xs text-text-muted font-medium">
-              سيظهر هذا السؤال للجميع وسيتمكن الجميع من الرد عليه كذلك.
+              سيتمكن الجميع من الرد على سؤالك فور نشره.
             </p>
           </div>
         </div>
@@ -85,10 +91,8 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
           }}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-bold text-text-primary px-1">
-                نص السؤال
-              </label>
-              <textarea
+              <Textarea
+                title="نص السؤال"
                 value={value}
                 onChange={onChange}
                 placeholder="مثال: ما هو أفضل كتاب قرأته هذا العام؟"
@@ -101,15 +105,68 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
                       : "border-border focus:border-accent focus:ring-4 focus:ring-accent/10"
                   }
                 `}
+                errorMessage={error?.message}
               />
-              {error && (
-                <p className="text-danger text-xs font-bold px-1 animate-in fade-in slide-in-from-top-1">
-                  {error.message}
-                </p>
-              )}
             </div>
           )}
         />
+
+        <div className="flex flex-col gap-3">
+          <label className="text-sm font-bold text-text-primary px-1">
+            خصوصية السؤال
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <Controller
+              control={control}
+              name="isPublic"
+              render={({ field: { value, onChange } }) => (
+                <Fragment>
+                  <button
+                    type="button"
+                    onClick={() => onChange(false)}
+                    className={`cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border-2 text-right transition-all ${
+                      !value
+                        ? "border-accent bg-accent/5 ring-4 ring-accent/5"
+                        : "border-border bg-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Icon
+                        icon={faLock}
+                        className={!value ? "text-accent" : "text-text-muted"}
+                      />
+                      <span className="font-bold text-sm">سؤال خاص</span>
+                    </div>
+                    <p className="text-[10px] leading-relaxed text-text-muted">
+                      يظهر فقط لمن يملك الرابط المباشر
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => onChange(true)}
+                    className={`cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border-2 text-right transition-all ${
+                      value
+                        ? "border-accent bg-accent/5 ring-4 ring-accent/5"
+                        : "border-border bg-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Icon
+                        icon={faEarthAmericas}
+                        className={value ? "text-accent" : "text-text-muted"}
+                      />
+                      <span className="font-bold text-sm">سؤال عام</span>
+                    </div>
+                    <p className="text-[10px] leading-relaxed text-text-muted">
+                      يظهر في صفحة الأسئلة العامة للجميع
+                    </p>
+                  </button>
+                </Fragment>
+              )}
+            />
+          </div>
+        </div>
 
         <div className="flex flex-col gap-3 pt-2">
           <Button

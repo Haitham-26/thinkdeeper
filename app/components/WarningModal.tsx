@@ -13,6 +13,8 @@ type WarningModalProps = {
   onClose: VoidFunction;
   open: boolean;
   loading?: boolean;
+  confirmText?: string;
+  cancelText?: string;
 };
 
 export const WarningModal: React.FC<WarningModalProps> = ({
@@ -22,6 +24,8 @@ export const WarningModal: React.FC<WarningModalProps> = ({
   onClose,
   open,
   loading = false,
+  confirmText = "تأكيد",
+  cancelText = "إلغاء",
 }) => {
   return (
     <Modal open={open} onClose={onClose} title={title}>
@@ -34,22 +38,22 @@ export const WarningModal: React.FC<WarningModalProps> = ({
           {description}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 w-full">
+        <div className="flex gap-3 w-full">
           <Button
             onClick={onConfirm}
             loading={loading}
             variant="primary"
-            className="flex-1 !bg-danger hover:!bg-danger/90 shadow-danger/20 h-14 rounded-2xl order-2 sm:order-1"
+            className="flex-1 !bg-danger hover:!bg-danger/90 shadow-danger/20 h-14 rounded-2xl"
           >
-            تأكيد الحذف
+            {confirmText}
           </Button>
 
           <Button
             onClick={onClose}
             variant="outline"
-            className="flex-1 h-14 rounded-2xl border-border text-text-muted hover:bg-surface-muted order-1 sm:order-2"
+            className="flex-1 h-14 rounded-2xl border-border text-text-muted hover:bg-surface-muted"
           >
-            إلغاء الأمر
+            {cancelText}
           </Button>
         </div>
       </div>

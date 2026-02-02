@@ -15,13 +15,15 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 import { faQuoteRight } from "@fortawesome/free-solid-svg-icons/faQuoteRight";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
 import { faReply } from "@fortawesome/free-solid-svg-icons/faReply";
-import { DeleteQuestion } from "./DeleteQuestion";
 import { useGlobalContext } from "../context/global-context";
 import { Icon } from "@/app/components/Icon";
 import { Textarea } from "@/app/components/Textarea";
 import { Empty } from "@/app/components/Empty";
 import { Toast } from "@/tools/Toast";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
+import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
+import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons/faEarthAmericas";
+import { QuestionActions } from "./QuestionActions";
 
 type QuestionCardProps = {
   question: Question;
@@ -57,7 +59,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   const onReply = async () => {
-    if (!reply.trim()) return;
+    if (!reply.trim()) {
+      return;
+    }
+
     try {
       setReplyLoading(true);
       await NextClient(`/replies/${question._id}/reply`, {
@@ -112,17 +117,34 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     <div className="relative group/card">
       <div className="absolute top-0 right-0 -mr-1.5 mt-1.5 w-full h-full bg-primary/5 rounded-[2.5rem] transition-transform group-hover/card:translate-x-1"></div>
 
-      <div className="relative bg-surface border border-border rounded-[2.5rem] overflow-hidden transition-all duration-300 hover:shadow-lg">
+      <div className="relative bg-surface border border-border rounded-[2.5rem] transition-all duration-300 hover:shadow-lg">
         <div className="p-6 md:p-8">
           <div className="flex items-start justify-between gap-4 mb-6">
             <div className="w-12 h-12 shrink-0 bg-accent/5 text-accent rounded-2xl flex items-center justify-center">
               <Icon icon={faQuoteRight} className="text-xl" />
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-muted rounded-full border border-border/50 text-text-muted text-[10px] font-black uppercase tracking-tight">
-              <Icon icon={faClock} className="text-[9px]" />
-              <span className="dir-ltr">
-                {formattedDate(question.createdAt)}
-              </span>
+
+            <div className="flex items-center gap-2">
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-tight transition-colors ${
+                  question.isPublic
+                    ? "bg-accent/5 border-accent/20 text-accent"
+                    : "bg-surface-muted border-border/50 text-text-muted"
+                }`}
+              >
+                <Icon
+                  icon={question.isPublic ? faEarthAmericas : faLock}
+                  className="text-[9px]"
+                />
+                <span>{question.isPublic ? "عام" : "خاص"}</span>
+              </div>
+
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-muted rounded-full border border-border/50 text-text-muted text-[10px] font-black uppercase tracking-tight">
+                <Icon icon={faClock} className="text-[9px]" />
+                <span className="dir-ltr">
+                  {formattedDate(question.createdAt)}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -146,7 +168,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             )}
           </div>
 
-          {!isOnProfilePage && (
+          {!isOnProfilePage ? (
             <div className="mb-8 space-y-4">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-px flex-1 bg-border/50"></div>
@@ -182,9 +204,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 </div>
               )}
             </div>
-          )}
+          ) : null}
 
-          {!isOnProfilePage && userId !== question.userId && (
+          {!isOnProfilePage && userId !== question.userId ? (
             <div className="bg-surface-muted/30 rounded-[2rem] p-5 border border-border/50">
               <div className="flex items-center gap-2 mb-4 text-xs font-black text-text-primary uppercase tracking-wider">
                 <Icon icon={faReply} className="text-accent" />
@@ -224,14 +246,14 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     </span>
                   </label>
 
-                  {!replyAsAnnonymous && (
+                  {!replyAsAnnonymous ? (
                     <input
                       placeholder="اسمك المستعار"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="bg-white border border-border rounded-lg px-3 py-1.5 text-xs focus:border-accent outline-none w-32 animate-in fade-in slide-in-from-right-1"
                     />
-                  )}
+                  ) : null}
                 </div>
 
                 <Button
@@ -244,7 +266,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 </Button>
               </div>
             </div>
-          )}
+          ) : null}
 
           <div className="flex items-center justify-between mt-8 pt-6 border-t border-border/40">
             <Button
@@ -255,11 +277,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               مشاركة
             </Button>
 
-            {isOnProfilePage && (
-              <div className="scale-90 hover:scale-95 transition-transform">
-                <DeleteQuestion question={question} />
-              </div>
-            )}
+            {isOnProfilePage ? <QuestionActions question={question} /> : null}
           </div>
         </div>
       </div>
