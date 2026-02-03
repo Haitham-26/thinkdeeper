@@ -186,64 +186,62 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 )}
               </div>
 
-              {!isOwner && (
-                <div className="bg-surface-muted/40 p-1.5 rounded-[2rem] border border-border/40">
-                  <div className="bg-surface rounded-[1.8rem] p-4">
-                    <Textarea
-                      value={reply}
-                      onChange={(e) => setReply(e.target.value)}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" &&
-                        !e.shiftKey &&
-                        (e.preventDefault(), onReply())
-                      }
-                      placeholder="اكتب ردك هنا..."
-                    />
-                    <div className="flex items-center justify-between border-t border-border/30 pt-3">
-                      <div className="flex items-center gap-4">
-                        <label className="flex items-center gap-2 cursor-pointer group/anon">
-                          <div className="relative w-5 h-5 border-2 border-border rounded-lg group-hover/anon:border-accent transition-all peer-checked:bg-accent">
-                            <input
-                              type="checkbox"
-                              checked={replyAsAnnonymous}
-                              onChange={(e) => {
-                                setReplyAsAnonymous(e.target.checked);
-                                setName("");
-                              }}
-                              className="absolute inset-0 opacity-0 cursor-pointer"
-                            />
-                            {replyAsAnnonymous && (
-                              <Icon
-                                icon={faCheck}
-                                className="absolute inset-0 m-auto text-[8px] text-white"
-                              />
-                            )}
-                          </div>
-                          <span className="text-[11px] font-bold text-text-muted group-hover/anon:text-text-primary">
-                            هوية مجهولة
-                          </span>
-                        </label>
-                        {!replyAsAnnonymous && (
+              <div className="bg-surface-muted/40 p-1.5 rounded-[2rem] border border-border/40">
+                <div className="bg-surface rounded-[1.8rem] p-4">
+                  <Textarea
+                    value={reply}
+                    onChange={(e) => setReply(e.target.value)}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" &&
+                      !e.shiftKey &&
+                      (e.preventDefault(), onReply())
+                    }
+                    placeholder="اكتب ردك هنا..."
+                  />
+                  <div className="flex items-center justify-between border-t border-border/30 pt-3">
+                    <div className="flex items-center gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer group/anon">
+                        <div className="relative w-5 h-5 border-2 border-border rounded-lg group-hover/anon:border-accent transition-all peer-checked:bg-accent">
                           <input
-                            placeholder="اسمك المستعار"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="bg-surface-muted border-none rounded-lg px-3 py-1 text-[11px] focus:ring-1 focus:ring-accent outline-none w-28 animate-in fade-in zoom-in-95"
+                            type="checkbox"
+                            checked={replyAsAnnonymous}
+                            onChange={(e) => {
+                              setReplyAsAnonymous(e.target.checked);
+                              setName("");
+                            }}
+                            className="absolute inset-0 opacity-0 cursor-pointer"
                           />
-                        )}
-                      </div>
-                      <Button
-                        loading={replyLoading}
-                        onClick={onReply}
-                        className="!h-9 !px-5 !rounded-xl !text-[11px] !font-black !bg-primary !text-secondary hover:!bg-accent transition-all"
-                        icon={faPaperPlane}
-                      >
-                        إرسال
-                      </Button>
+                          {replyAsAnnonymous && (
+                            <Icon
+                              icon={faCheck}
+                              className="absolute inset-0 m-auto text-[8px] text-white"
+                            />
+                          )}
+                        </div>
+                        <span className="text-[11px] font-bold text-text-muted group-hover/anon:text-text-primary">
+                          هوية مجهولة
+                        </span>
+                      </label>
+                      {!replyAsAnnonymous && (
+                        <input
+                          placeholder="اسمك المستعار"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="bg-surface-muted border-none rounded-lg px-3 py-1 text-[11px] focus:ring-1 focus:ring-accent outline-none w-28 animate-in fade-in zoom-in-95"
+                        />
+                      )}
                     </div>
+                    <Button
+                      loading={replyLoading}
+                      onClick={onReply}
+                      className="!h-9 !px-5 !rounded-xl !text-[11px] !font-black !bg-primary !text-secondary hover:!bg-accent transition-all"
+                      icon={faPaperPlane}
+                    >
+                      إرسال
+                    </Button>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           )}
 
