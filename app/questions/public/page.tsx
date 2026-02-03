@@ -93,8 +93,12 @@ export default function Page() {
         <h1 className="text-3xl font-black text-text-primary mb-2">
           الأسئلة العامة
         </h1>
-        <p className="text-slate-500 mb-8">
+        <p className="text-slate-500 mb-4">
           استكشف آخر الأسئلة التي تمت مشاركتها من قبل المجتمع
+        </p>
+
+        <p className="text-slate-500 text-sm mb-8">
+          انقر على السؤال لمشاهدة الردود الخاصة به.
         </p>
       </div>
 
