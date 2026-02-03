@@ -42,15 +42,12 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
         data: { isPublic: newStatus },
       });
 
-      const { data: updatedQuestions } = await NextClient<Question[]>(
-        "/questions",
-        {
-          method: "POST",
-          data: { userId: question.userId },
-        },
-      );
+      const { data } = await NextClient("/questions", {
+        method: "POST",
+        data: { userId: question.userId },
+      });
 
-      setQuestions(updatedQuestions);
+      setQuestions(data as any);
 
       setTogglePrivacyModalVisible(false);
 
@@ -69,15 +66,12 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
       await NextClient(`/questions/${question._id}/delete`, {
         method: "DELETE",
       });
-      const { data: updatedQuestions } = await NextClient<Question[]>(
-        "/questions",
-        {
-          method: "POST",
-          data: { userId: question.userId },
-        },
-      );
+      const { data } = await NextClient("/questions", {
+        method: "POST",
+        data: { userId: question.userId },
+      });
 
-      setQuestions(updatedQuestions);
+      setQuestions(data as any);
 
       setDeleteModalVisible(false);
 

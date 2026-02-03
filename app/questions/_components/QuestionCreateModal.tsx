@@ -51,14 +51,14 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
         data: { ...getValues(), userId },
       });
 
-      const { data: questions } = await NextClient<Question[]>("/questions", {
+      const { data } = await NextClient("/questions", {
         method: "POST",
         data: { userId },
       });
 
       reset({ question: "", userId: userId || "", isPublic: false });
 
-      setQuestions(questions);
+      setQuestions(data as any);
 
       Toast.success("تم نشر سؤالك بنجاح");
       onClose();
