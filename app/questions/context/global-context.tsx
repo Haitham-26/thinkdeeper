@@ -11,13 +11,23 @@ interface DataWithMeta<T> {
   meta: PageMeta;
 }
 
+const defaultDataWithMeta = {
+  data: [],
+  meta: {
+    currentPage: 1,
+    hasNext: false,
+    totalPages: 1,
+    total: 0,
+  },
+};
+
 type GlobalContextType = {
   questions: DataWithMeta<Question>;
   setQuestions: (questions: DataWithMeta<Question>) => void;
   replies: Reply[];
   setReplies: (replies: Reply[]) => void;
-  messages: Message[];
-  setMessages: (messages: Message[]) => void;
+  messages: DataWithMeta<Message>;
+  setMessages: (messages: DataWithMeta<Message>) => void;
   messagesLoading: boolean;
   setMessagesLoading: (loading: boolean) => void;
 };
@@ -25,17 +35,11 @@ type GlobalContextType = {
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-  const [questions, setQuestions] = useState<DataWithMeta<Question>>({
-    data: [],
-    meta: {
-      currentPage: 1,
-      hasNext: false,
-      totalPages: 1,
-      total: 0,
-    },
-  });
+  const [questions, setQuestions] =
+    useState<DataWithMeta<Question>>(defaultDataWithMeta);
   const [replies, setReplies] = useState<Reply[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] =
+    useState<DataWithMeta<Message>>(defaultDataWithMeta);
 
   const [messagesLoading, setMessagesLoading] = useState(false);
 

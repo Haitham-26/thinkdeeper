@@ -4,39 +4,19 @@ import MessagesList from "./_components/MessagesList";
 import MessagesCounter from "./_components/MessagesCounter";
 import DeleteAllMessages from "./_components/DeleteAllMessages";
 import { useGlobalContext } from "../questions/context/global-context";
-import { Spinner } from "../components/Spinner";
-import { GetMessagesResponseDto } from "@/model/message/GetMessagesResponseDto";
-import { NextClient } from "@/tools/NextClient";
-import { useEffect } from "react";
+import { useMemo } from "react";
+import { Pagination } from "../components/Pagination";
 
 export default function Page() {
-  const { messagesLoading, setMessagesLoading, setMessages } =
-    useGlobalContext();
+  const { setMessagesLoading, setMessages } = useGlobalContext();
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        setMessagesLoading(true);
-
-        const { data } = await NextClient<GetMessagesResponseDto>(
-          `/message/messages`,
-          { method: "POST" },
-        );
-
-        setMessages(data.messages || []);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setMessagesLoading(false);
-      }
-    };
-
-    fetchMessages();
-  }, [setMessages, setMessagesLoading]);
-
-  if (messagesLoading) {
-    return <Spinner className="text-accent" />;
-  }
+  const paginationAction = useMemo(
+    () => ({
+      endpoint: "/message/messages",
+      method: "POST" as const,
+    }),
+    [],
+  );
 
   return (
     <div className="w-full bg-surface-muted p-4 pt-6 md:p-8 lg:p-12 relative">
@@ -45,7 +25,7 @@ export default function Page() {
           <MessagesCounter />
         </aside>
 
-        <main className="lg:col-span-8">
+        <div className="lg:col-span-8">
           <div className="bg-surface border border-border rounded-[3rem] shadow-sm min-h-[600px] flex flex-col overflow-hidden">
             <div className="px-8 py-6 border-b border-border flex justify-between items-center bg-white/50 backdrop-blur-sm">
               <h2 className="font-bold text-text-primary flex items-center gap-2">
@@ -58,9 +38,16 @@ export default function Page() {
 
             <div className="flex-1 p-6 md:p-8">
               <MessagesList />
+
+              <Pagination
+                setData={setMessages}
+                setLoading={setMessagesLoading}
+                action={paginationAction}
+                limit={10}
+              />
             </div>
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );

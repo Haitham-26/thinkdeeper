@@ -21,7 +21,10 @@ export default function DeleteAllMessages() {
         method: "DELETE",
       });
 
-      setMessages([]);
+      setMessages({
+        data: [],
+        meta: { total: 0, currentPage: 1, hasNext: false, totalPages: 1 },
+      });
 
       setOpen(false);
       Toast.success("تم حذف جميع الرسائل بنجاح");
@@ -39,12 +42,12 @@ export default function DeleteAllMessages() {
         className="!py-2 !px-4 !text-[10px] md:!text-xs !bg-danger/10 !text-danger hover:!bg-danger hover:!text-white shadow-none"
         icon={faTrash}
         loading={loading}
-        disabled={!messages?.length}
+        disabled={!messages?.data?.length}
       >
         حذف الكل
       </Button>
 
-      {messages?.length ? (
+      {messages?.data?.length ? (
         <WarningModal
           open={open}
           onClose={() => setOpen(false)}
