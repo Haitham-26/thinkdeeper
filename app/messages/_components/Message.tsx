@@ -17,7 +17,6 @@ import { WarningModal } from "@/app/components/WarningModal";
 import { Toast } from "@/tools/Toast";
 import { NextClient } from "@/tools/NextClient";
 import { useGlobalContext } from "@/app/questions/context/global-context";
-import { GetMessagesResponseDto } from "@/model/message/GetMessagesResponseDto";
 
 type Props = {
   message: MessageModel;
@@ -47,13 +46,11 @@ export default function Message({ message }: Props) {
 
       setMessagesLoading(true);
 
-      const {
-        data: { messages },
-      } = await NextClient<GetMessagesResponseDto>("/message/messages", {
+      const { data } = await NextClient("/message/messages", {
         method: "POST",
       });
 
-      setMessages(messages || []);
+      setMessages(data as any);
 
       setDeleteModalVisible(false);
 
