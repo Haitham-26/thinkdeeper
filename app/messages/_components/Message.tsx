@@ -30,7 +30,7 @@ export default function Message({ message }: Props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const { setMessages } = useGlobalContext();
+  const { setMessages, setMessagesLoading } = useGlobalContext();
 
   const textRef = useRef<HTMLParagraphElement>(null);
 
@@ -44,6 +44,8 @@ export default function Message({ message }: Props) {
           messageId: message._id,
         },
       });
+
+      setMessagesLoading(true);
 
       const {
         data: { messages },
@@ -61,6 +63,7 @@ export default function Message({ message }: Props) {
       Toast.apiError(e);
     } finally {
       setDeleteLoading(false);
+      setMessagesLoading(false);
     }
   };
 

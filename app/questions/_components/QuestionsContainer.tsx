@@ -11,6 +11,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { Icon } from "@/app/components/Icon";
 import { Empty } from "@/app/components/Empty";
+import { Spinner } from "@/app/components/Spinner";
 
 type QuestionsContainerProps = {
   userId: string | null;
@@ -21,18 +22,27 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
 }) => {
   const [createQuestionModalVisible, setCreateQuestionModalVisible] =
     useState(false);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
   const { questions, setQuestions } = useGlobalContext();
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      setQuestionsLoading(true);
+
       const { data } = await NextClient<Array<Question>>("/questions", {
         method: "POST",
         data: { userId },
       });
       setQuestions(data);
+
+      setQuestionsLoading(false);
     };
     fetchQuestions();
   }, [userId, setQuestions]);
+
+  if (questionsLoading) {
+    return <Spinner className="text-accent" />;
+  }
 
   return (
     <div className="w-full min-h-screen bg-surface-muted p-4 pt-6 md:p-8 lg:p-12">

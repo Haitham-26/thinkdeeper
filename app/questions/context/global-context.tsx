@@ -12,6 +12,8 @@ type GlobalContextType = {
   setReplies: (replies: Reply[]) => void;
   messages: Message[];
   setMessages: (messages: Message[]) => void;
+  messagesLoading: boolean;
+  setMessagesLoading: (loading: boolean) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -20,6 +22,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [replies, setReplies] = useState<Reply[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
+
+  const [messagesLoading, setMessagesLoading] = useState(false);
 
   return (
     <GlobalContext.Provider
@@ -30,6 +34,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setReplies,
         messages,
         setMessages,
+        messagesLoading,
+        setMessagesLoading,
       }}
     >
       {children}
