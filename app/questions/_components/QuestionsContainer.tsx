@@ -53,7 +53,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
 
               <div className="flex items-baseline gap-2 mb-8">
                 <span className="text-6xl font-black text-accent">
-                  {questions.meta.total}
+                  {questions?.meta?.total || 0}
                 </span>
                 <span className="text-secondary/40 text-sm font-bold tracking-widest uppercase">
                   سؤال نشط

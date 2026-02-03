@@ -20,7 +20,7 @@ export default function MessagesCounter() {
         </h1>
         <div className="flex items-baseline gap-2">
           <span className="text-6xl font-black text-accent">
-            {messages.meta.total}
+            {messages?.meta?.total || 0}
           </span>
           <span className="text-secondary/40 text-sm font-bold tracking-widest uppercase">
             رسالة واردة
