@@ -91,10 +91,11 @@ export default function Page() {
     <div className="max-w-6xl mx-auto p-4 md:p-8 pt-6">
       <div>
         <h1 className="text-3xl font-black text-text-primary mb-2">
-          الأسئلة العامة
+          أسئلة المنتدى
         </h1>
         <p className="text-slate-500 mb-4">
-          استكشف آخر الأسئلة التي تمت مشاركتها من قبل المجتمع
+          استكشف آخر الأسئلة التي تمت مشاركتها من قبل مجتمع
+          <span className="text-accent"> بصراحة</span>
         </p>
 
         <p className="text-slate-500 text-sm mb-8">

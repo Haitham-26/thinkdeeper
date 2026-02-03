@@ -4,16 +4,14 @@ import React, { useEffect, useState } from "react";
 import { Question } from "@/model/question/Question";
 import { Reply } from "@/model/reply/Reply";
 import { Button } from "@/app/components/Button";
-import {
-  faShareNodes,
-  faPaperPlane,
-  faAngleLeft,
-  faQuoteRight,
-  faClock,
-  faCheck,
-  faLock,
-  faEarthAmericas,
-} from "@fortawesome/free-solid-svg-icons";
+import { faShareNodes } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import { faQuoteRight } from "@fortawesome/free-solid-svg-icons/faQuoteRight";
+import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
+import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
+import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons/faEarthAmericas";
+
 import { usePathname } from "next/navigation";
 import { formattedDate } from "@/tools/Date";
 import { QuestionReply } from "./QuestionReply";
@@ -198,10 +196,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     }
                     placeholder="اكتب ردك هنا..."
                   />
-                  <div className="flex items-center justify-between border-t border-border/30 pt-3">
+                  <div className="flex justify-between border-t border-border/30 pt-3">
                     <div className="flex items-center gap-4">
-                      <label className="flex items-center gap-2 cursor-pointer group/anon">
-                        <div className="relative w-5 h-5 border-2 border-border rounded-lg group-hover/anon:border-accent transition-all peer-checked:bg-accent">
+                      <div className="flex flex-col gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer group/anon">
                           <input
                             type="checkbox"
                             checked={replyAsAnnonymous}
@@ -209,32 +207,35 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                               setReplyAsAnonymous(e.target.checked);
                               setName("");
                             }}
-                            className="absolute inset-0 opacity-0 cursor-pointer"
                           />
-                          {replyAsAnnonymous && (
-                            <Icon
-                              icon={faCheck}
-                              className="absolute inset-0 m-auto text-[8px] text-white"
-                            />
-                          )}
-                        </div>
-                        <span className="text-[11px] font-bold text-text-muted group-hover/anon:text-text-primary">
-                          هوية مجهولة
-                        </span>
-                      </label>
-                      {!replyAsAnnonymous && (
+                          <span className="text-[11px] font-bold text-text-muted group-hover/anon:text-text-primary">
+                            هوية مجهولة
+                          </span>
+                        </label>
+
+                        {!replyAsAnnonymous ? (
+                          <input
+                            placeholder="اسمك المستعار"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="sm:hidden mt-2 bg-surface-muted border-none rounded-lg px-3 py-2 text-[11px] focus:ring-1 focus:ring-accent outline-none w-28 animate-in fade-in zoom-in-95"
+                          />
+                        ) : null}
+                      </div>
+
+                      {!replyAsAnnonymous ? (
                         <input
                           placeholder="اسمك المستعار"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="bg-surface-muted border-none rounded-lg px-3 py-1 text-[11px] focus:ring-1 focus:ring-accent outline-none w-28 animate-in fade-in zoom-in-95"
+                          className="hidden sm:inline bg-surface-muted border-none rounded-lg px-3 py-2 text-[11px] focus:ring-1 focus:ring-accent outline-none w-28 animate-in fade-in zoom-in-95"
                         />
-                      )}
+                      ) : null}
                     </div>
                     <Button
                       loading={replyLoading}
                       onClick={onReply}
-                      className="!h-9 !px-5 !rounded-xl !text-[11px] !font-black !bg-primary !text-secondary hover:!bg-accent transition-all"
+                      className="!h-10 !px-3 !rounded-xl !text-xs !font-black !bg-primary !text-secondary hover:!bg-accent transition-all"
                       icon={faPaperPlane}
                     >
                       إرسال
