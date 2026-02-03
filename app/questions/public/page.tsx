@@ -2,13 +2,13 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { NextClient } from "@/tools/NextClient";
-import { Spinner } from "@/app/components/Spinner";
 import { QuestionCard } from "../_components/QuestionCard";
 import { GetPublicQuestionsResponseDto } from "@/model/question/dto/GetPublicQuestionsResponseDto";
 import { Question } from "@/model/question/Question";
 import { User } from "@/model/user/User";
 import { Icon } from "@/app/components/Icon";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
 export default function Page() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -99,7 +99,11 @@ export default function Page() {
       </div>
 
       {loading ? (
-        <Spinner className="!w-10 !h-10 !text-accent" />
+        <div
+          className={`absolute inset-0 flex items-center justify-center bg-inherit text-accent`}
+        >
+          <Icon icon={faCircleNotch} className="animate-spin text-xl" />
+        </div>
       ) : (
         <Fragment>
           <div className="flex flex-col gap-6 mb-12 min-h-[400px]">
