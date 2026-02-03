@@ -101,7 +101,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     <div className="relative group/card max-w-3xl mx-auto w-full">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-[2rem] blur-xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
 
-      <div className="relative bg-surface border border-border/60 rounded-[2.5rem] transition-all duration-300 hover:border-accent/30 hover:shadow-2xl">
+      <div className="relative bg-surface border border-border/60 rounded-[2.5rem] transition-all duration-300 hover:border-accent/30">
         <div className="p-6 md:p-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">

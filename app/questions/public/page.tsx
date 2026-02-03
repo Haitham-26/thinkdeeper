@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NextClient } from "@/tools/NextClient";
 import { QuestionCard } from "../_components/QuestionCard";
 import { User } from "@/model/user/User";
@@ -15,6 +15,13 @@ export default function Page() {
 
   const { setQuestions, questions } = useGlobalContext();
 
+  const paginationAction = useMemo(
+    () => ({
+      endpoint: "/questions/public",
+    }),
+    [],
+  );
+
   useEffect(() => {
     (async () => {
       try {
@@ -27,25 +34,29 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-4 md:p-8 pt-6">
-      <header className="mb-8">
+    <div className="max-w-6xl md:min-w-3xl mx-auto p-4 md:p-8 pt-12">
+      <div className="mb-8">
         <h1 className="text-3xl font-black text-text-primary mb-2">
           أسئلة المنتدى
         </h1>
-        <p className="text-slate-500 text-sm">
+        <p className="text-slate-500 mt-2">
           استكشف آخر الأسئلة من مجتمع{" "}
-          <span className="text-accent">بصراحة</span>
+          <span className="text-accent font-bold">بصراحة</span>
         </p>
-      </header>
+
+        <p className="text-slate-500 mt-4 text-xs">
+          انقر على السؤال لمشاهدة الردود الخاصة به.
+        </p>
+      </div>
 
       {loading ? (
-        <div className="flex items-center justify-center min-h-[400px] text-accent">
+        <div className="flex items-center justify-center text-accent">
           <Icon icon={faCircleNotch} className="animate-spin text-xl" />
         </div>
       ) : (
-        <div className="flex flex-col gap-6 mb-12 min-h-[400px]">
-          {questions.length ? (
-            questions.map((q) => (
+        <div className="flex flex-col gap-6 mb-12">
+          {questions.data.length ? (
+            questions.data.map((q) => (
               <QuestionCard key={q._id} userId={userId} question={q} />
             ))
           ) : (
@@ -57,10 +68,9 @@ export default function Page() {
       )}
 
       <Pagination
-        endpoint="/questions/public"
+        action={paginationAction}
         setData={setQuestions}
         setLoading={setLoading}
-        limit={1}
       />
     </div>
   );

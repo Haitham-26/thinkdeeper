@@ -3,11 +3,17 @@
 import { Message } from "@/model/message/types/Message";
 import { Question } from "@/model/question/Question";
 import { Reply } from "@/model/reply/Reply";
+import { PageMeta } from "@/model/shared/types/PageMeta";
 import { createContext, useContext, useState, ReactNode } from "react";
 
+interface DataWithMeta<T> {
+  data: T[];
+  meta: PageMeta;
+}
+
 type GlobalContextType = {
-  questions: Question[];
-  setQuestions: (questions: Question[]) => void;
+  questions: DataWithMeta<Question>;
+  setQuestions: (questions: DataWithMeta<Question>) => void;
   replies: Reply[];
   setReplies: (replies: Reply[]) => void;
   messages: Message[];
@@ -19,7 +25,15 @@ type GlobalContextType = {
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<DataWithMeta<Question>>({
+    data: [],
+    meta: {
+      currentPage: 1,
+      hasNext: false,
+      totalPages: 1,
+      total: 0,
+    },
+  });
   const [replies, setReplies] = useState<Reply[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
 

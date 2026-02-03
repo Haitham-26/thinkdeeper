@@ -1,5 +1,6 @@
 export interface PageMeta {
-  hasNext: boolean;
   total: number;
+  totalPages: number;
   currentPage: number;
+  hasNext: boolean;
 }

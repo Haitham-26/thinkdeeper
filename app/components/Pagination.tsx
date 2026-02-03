@@ -19,14 +19,18 @@ const getButtonStyles = (active?: boolean) => {
 type PaginationProps = {
   setData: (data: any) => void;
   setLoading: (loading: boolean) => void;
-  endpoint: string;
+  action: {
+    endpoint: string;
+    data?: Record<string, any>;
+    method?: "POST" | "GET";
+  };
   limit?: number;
 };
 
 export const Pagination: React.FC<PaginationProps> = ({
   setData,
   setLoading,
-  endpoint,
+  action,
   limit = 5,
 }) => {
   const [page, setPage] = useState(1);
@@ -43,16 +47,23 @@ export const Pagination: React.FC<PaginationProps> = ({
     async (pageNumber: number) => {
       try {
         setLoading(true);
+
+        const { endpoint, ...restActionProps } = action;
+
         const { data } = await NextClient<{ data: any[]; meta: PageMeta }>(
           endpoint,
-          { params: { page: pageNumber, limit } },
+          {
+            ...restActionProps,
+            data: { ...restActionProps?.data, page: pageNumber, limit },
+            params: { page: pageNumber, limit },
+          },
         );
 
-        setData(data.data);
+        setData(data);
         setHasNext(data.meta?.hasNext);
 
-        if (data.meta?.total) {
-          setTotalPages(Math.ceil(data.meta.total / limit));
+        if (data.meta?.totalPages) {
+          setTotalPages(Math.ceil(data.meta.totalPages));
         }
       } catch (e) {
         console.error(e);
@@ -60,7 +71,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         setLoading(false);
       }
     },
-    [endpoint, limit, setData, setLoading],
+    [action, limit, setData, setLoading],
   );
 
   useEffect(() => {

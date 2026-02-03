@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Question } from "@/model/question/Question";
+import { useMemo, useState } from "react";
 import { QuestionCreateModal } from "./QuestionCreateModal";
 import { QuestionCard } from "./QuestionCard";
-import { NextClient } from "@/tools/NextClient";
 import { useGlobalContext } from "../context/global-context";
 import { Button } from "@/app/components/Button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -12,6 +10,7 @@ import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { Icon } from "@/app/components/Icon";
 import { Empty } from "@/app/components/Empty";
 import { Spinner } from "@/app/components/Spinner";
+import { Pagination } from "@/app/components/Pagination";
 
 type QuestionsContainerProps = {
   userId: string | null;
@@ -25,24 +24,14 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const { questions, setQuestions } = useGlobalContext();
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      setQuestionsLoading(true);
-
-      const { data } = await NextClient<Array<Question>>("/questions", {
-        method: "POST",
-        data: { userId },
-      });
-      setQuestions(data);
-
-      setQuestionsLoading(false);
-    };
-    fetchQuestions();
-  }, [userId, setQuestions]);
-
-  if (questionsLoading) {
-    return <Spinner className="text-accent" />;
-  }
+  const paginationAction = useMemo(
+    () => ({
+      endpoint: "/questions",
+      method: "POST" as const,
+      data: { userId },
+    }),
+    [userId],
+  );
 
   return (
     <div className="w-full min-h-screen bg-surface-muted p-4 pt-6 md:p-8 lg:p-12">
@@ -64,7 +53,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
 
               <div className="flex items-baseline gap-2 mb-8">
                 <span className="text-6xl font-black text-accent">
-                  {questions.length}
+                  {questions.meta.total}
                 </span>
                 <span className="text-secondary/40 text-sm font-bold tracking-widest uppercase">
                   سؤال نشط
@@ -92,19 +81,19 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
             </div>
 
             <div className="flex-1 p-6 md:p-8">
-              {questions.length > 0 ? (
-                <div className="space-y-6 group/list">
-                  {questions.map((question) => (
-                    <div
-                      key={question._id}
-                      className="transition-all duration-500 hover:!blur-none group-hover/list:blur-[2px] group-hover/list:opacity-50 hover:!opacity-100"
-                    >
-                      <QuestionCard question={question} userId={userId} />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="h-full flex flex-col items-center justify-center py-20">
+              {!questionsLoading ? (
+                questions.data.length ? (
+                  <div className="space-y-6 group/list">
+                    {questions.data.map((question) => (
+                      <div
+                        key={question._id}
+                        className="transition-all duration-500 hover:!blur-none group-hover/list:blur-[2px] group-hover/list:opacity-50 hover:!opacity-100"
+                      >
+                        <QuestionCard question={question} userId={userId} />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
                   <Empty
                     title="لا توجد أسئلة حالياً"
                     description="لم تقم بإضافة أي سؤال بعد. ابدأ الآن وشارك أول تساؤل لك مع العالم!"
@@ -113,8 +102,16 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
                       onClick: () => setCreateQuestionModalVisible(true),
                     }}
                   />
-                </div>
+                )
+              ) : (
+                <Spinner className="text-accent static" />
               )}
+
+              <Pagination
+                action={paginationAction}
+                setData={setQuestions}
+                setLoading={setQuestionsLoading}
+              />
             </div>
           </div>
         </main>
