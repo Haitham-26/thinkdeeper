@@ -22,7 +22,13 @@ export default function Page() {
     try {
       setLoading(true);
       const { data } = await NextClient<GetPublicQuestionsResponseDto>(
-        `/questions/public?page=${pageNumber}&limit=3`,
+        `/questions/public`,
+        {
+          params: {
+            page: pageNumber,
+            limit: 3,
+          },
+        },
       );
 
       setQuestions(data.data);
@@ -83,19 +89,17 @@ export default function Page() {
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-8 pt-6">
-      <header className="mb-12 text-center">
+      <div>
         <h1 className="text-3xl font-black text-text-primary mb-2">
           الأسئلة العامة
         </h1>
-        <p className="text-slate-500">
+        <p className="text-slate-500 mb-8">
           استكشف آخر الأسئلة التي تمت مشاركتها من قبل المجتمع
         </p>
-      </header>
+      </div>
 
       {loading ? (
-        <div className="flex justify-center items-center min-h-[400px]">
-          <Spinner className="!w-10 !h-10 text-accent" />
-        </div>
+        <Spinner className="!w-10 !h-10 !text-accent" />
       ) : (
         <Fragment>
           <div className="flex flex-col gap-6 mb-12 min-h-[400px]">
@@ -110,7 +114,7 @@ export default function Page() {
             )}
           </div>
 
-          {totalPages > 1 && (
+          {totalPages > 1 ? (
             <div className="flex items-center justify-center gap-2 mt-8 pb-12">
               <button
                 disabled={page === 1}
@@ -132,7 +136,7 @@ export default function Page() {
                 <Icon icon={faAngleLeft} />
               </button>
             </div>
-          )}
+          ) : null}
         </Fragment>
       )}
     </div>

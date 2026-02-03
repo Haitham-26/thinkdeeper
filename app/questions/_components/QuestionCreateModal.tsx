@@ -4,7 +4,7 @@ import { Button } from "@/app/components/Button";
 import { CreateQuestionDto } from "@/model/question/dto/CreateQuestionDto";
 import { Question } from "@/model/question/Question";
 import { NextClient } from "@/tools/NextClient";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useGlobalContext } from "../context/global-context";
 import { Modal } from "@/app/components/Modal";
@@ -29,7 +29,7 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  const { control, handleSubmit, getValues, reset } =
+  const { control, handleSubmit, getValues, reset, setValue, watch } =
     useForm<CreateQuestionDto>({
       defaultValues: {
         question: "",
@@ -39,6 +39,8 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
     });
 
   const { setQuestions } = useGlobalContext();
+
+  const isPublic = watch("isPublic");
 
   const onSubmit = async () => {
     try {
@@ -55,7 +57,9 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
       });
 
       reset({ question: "", userId: userId || "", isPublic: false });
+
       setQuestions(questions);
+
       Toast.success("تم نشر سؤالك بنجاح");
       onClose();
     } catch (e: any) {
@@ -116,55 +120,49 @@ export const QuestionCreateModal: React.FC<QuestionCreateModalProps> = ({
             خصوصية السؤال
           </label>
           <div className="grid grid-cols-2 gap-3">
-            <Controller
-              control={control}
-              name="isPublic"
-              render={({ field: { value, onChange } }) => (
-                <Fragment>
-                  <button
-                    type="button"
-                    onClick={() => onChange(false)}
-                    className={`cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border-2 text-right transition-all ${
-                      !value
-                        ? "border-accent bg-accent/5 ring-4 ring-accent/5"
-                        : "border-border bg-transparent opacity-60 hover:opacity-100"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Icon
-                        icon={faLock}
-                        className={!value ? "text-accent" : "text-text-muted"}
-                      />
-                      <span className="font-bold text-sm">سؤال خاص</span>
-                    </div>
-                    <p className="text-[10px] leading-relaxed text-text-muted">
-                      يظهر فقط لمن يملك الرابط المباشر
-                    </p>
-                  </button>
+            <button
+              type="button"
+              onClick={() => setValue("isPublic", false)}
+              className={`cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border-2 text-right transition-all ${
+                isPublic === false
+                  ? "border-accent bg-accent/5 ring-4 ring-accent/5"
+                  : "border-border bg-transparent opacity-60 hover:opacity-100"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Icon
+                  icon={faLock}
+                  className={
+                    isPublic === false ? "text-accent" : "text-text-muted"
+                  }
+                />
+                <span className="font-bold text-sm">سؤال خاص</span>
+              </div>
+              <p className="text-[10px] leading-relaxed text-text-muted">
+                يظهر فقط لمن يملك الرابط المباشر
+              </p>
+            </button>
 
-                  <button
-                    type="button"
-                    onClick={() => onChange(true)}
-                    className={`cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border-2 text-right transition-all ${
-                      value
-                        ? "border-accent bg-accent/5 ring-4 ring-accent/5"
-                        : "border-border bg-transparent opacity-60 hover:opacity-100"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Icon
-                        icon={faEarthAmericas}
-                        className={value ? "text-accent" : "text-text-muted"}
-                      />
-                      <span className="font-bold text-sm">سؤال عام</span>
-                    </div>
-                    <p className="text-[10px] leading-relaxed text-text-muted">
-                      يظهر في صفحة الأسئلة العامة للجميع
-                    </p>
-                  </button>
-                </Fragment>
-              )}
-            />
+            <button
+              type="button"
+              onClick={() => setValue("isPublic", true)}
+              className={`cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border-2 text-right transition-all ${
+                isPublic
+                  ? "border-accent bg-accent/5 ring-4 ring-accent/5"
+                  : "border-border bg-transparent opacity-60 hover:opacity-100"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Icon
+                  icon={faEarthAmericas}
+                  className={isPublic ? "text-accent" : "text-text-muted"}
+                />
+                <span className="font-bold text-sm">سؤال عام</span>
+              </div>
+              <p className="text-[10px] leading-relaxed text-text-muted">
+                يظهر في صفحة الأسئلة العامة للجميع
+              </p>
+            </button>
           </div>
         </div>
 

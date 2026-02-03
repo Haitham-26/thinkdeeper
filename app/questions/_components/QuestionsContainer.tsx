@@ -63,7 +63,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
 
               <Button
                 onClick={() => setCreateQuestionModalVisible(true)}
-                className="w-full !h-14 !rounded-2xl !bg-accent !text-secondary font-black shadow-lg shadow-accent/20 hover:scale-[1.02] transition-transform"
+                className="w-full !h-14 !rounded-2xl !bg-accent !text-secondary font-black shadow-lg shadow-accent/20 transition-transform"
                 icon={faPlus}
               >
                 طرح سؤال جديد
@@ -87,7 +87,7 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
                   {questions.map((question) => (
                     <div
                       key={question._id}
-                      className="transition-all duration-500 hover:!blur-none group-hover/list:blur-[2px] group-hover/list:opacity-50 hover:!opacity-100 hover:scale-[1.01]"
+                      className="transition-all duration-500 hover:!blur-none group-hover/list:blur-[2px] group-hover/list:opacity-50 hover:!opacity-100"
                     >
                       <QuestionCard question={question} userId={userId} />
                     </div>

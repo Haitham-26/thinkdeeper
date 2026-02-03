@@ -1,29 +1,30 @@
 "use client";
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Question } from "@/model/question/Question";
 import { Reply } from "@/model/reply/Reply";
 import { Button } from "@/app/components/Button";
-import { faShareNodes } from "@fortawesome/free-solid-svg-icons/faShareNodes";
+import {
+  faShareNodes,
+  faPaperPlane,
+  faAngleLeft,
+  faQuoteRight,
+  faClock,
+  faCheck,
+  faLock,
+  faEarthAmericas,
+} from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
 import { formattedDate } from "@/tools/Date";
 import { QuestionReply } from "./QuestionReply";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 import { NextClient } from "@/tools/NextClient";
 import Link from "next/link";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
-import { faQuoteRight } from "@fortawesome/free-solid-svg-icons/faQuoteRight";
-import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
-import { faReply } from "@fortawesome/free-solid-svg-icons/faReply";
 import { useGlobalContext } from "../context/global-context";
 import { Icon } from "@/app/components/Icon";
-import { Textarea } from "@/app/components/Textarea";
 import { Empty } from "@/app/components/Empty";
 import { Toast } from "@/tools/Toast";
-import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
-import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
-import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons/faEarthAmericas";
 import { QuestionActions } from "./QuestionActions";
+import { Textarea } from "@/app/components/Textarea";
 
 type QuestionCardProps = {
   question: Question;
@@ -46,8 +47,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const pathname = usePathname();
 
   const isOnProfilePage = !Boolean(pathname.replace("/questions", "").length);
-  const isOnPublicPage = pathname === "/questions/public";
-  const isListView = isOnProfilePage || isOnPublicPage;
+  const isListView = isOnProfilePage || pathname === "/questions/public";
   const isOwner = userId === question.userId;
 
   const onShare = () => {
@@ -57,29 +57,18 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     Toast.success("تم نسخ الرابط بنجاح");
   };
 
-  const onCheckAnonymous = (checked: boolean) => {
-    setReplyAsAnonymous(checked);
-    setName("");
-  };
-
   const onReply = async () => {
     if (!reply.trim()) return;
-
     try {
       setReplyLoading(true);
       await NextClient(`/replies/${question._id}/reply`, {
         method: "POST",
         data: { reply, name },
       });
-
       const { data } = await NextClient<Reply[]>(
         `/replies/${question._id}/all`,
-        {
-          method: "POST",
-          data: { userId },
-        },
+        { method: "POST", data: { userId } },
       );
-
       setReplies(data);
       setReply("");
       setName("");
@@ -93,202 +82,182 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   useEffect(() => {
-    if (isListView) {
-      return;
-    }
-
-    const fetchReplies = async () => {
+    if (isListView) return;
+    (async () => {
       try {
         setRepliesLoading(true);
         const { data } = await NextClient<Reply[]>(
           `/replies/${question._id}/all`,
-          {
-            method: "POST",
-            data: { userId },
-          },
+          { method: "POST", data: { userId } },
         );
-
         setReplies(data);
       } catch (err) {
-        console.error("Error fetching replies:", err);
+        console.error(err);
       } finally {
         setRepliesLoading(false);
       }
-    };
-    fetchReplies();
+    })();
   }, [question._id, setReplies, userId, isListView]);
 
   return (
-    <div className="relative group/card">
-      <div className="absolute top-0 right-0 -mr-1.5 mt-1.5 w-full h-full bg-primary/5 rounded-[2.5rem] transition-transform group-hover/card:translate-x-1"></div>
+    <div className="relative group/card max-w-3xl mx-auto w-full">
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-[2rem] blur-xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
 
-      <div className="relative bg-surface border border-border rounded-[2.5rem] transition-all duration-300 hover:shadow-lg">
+      <div className="relative bg-surface border border-border/60 rounded-[2.5rem] transition-all duration-300 hover:border-accent/30 hover:shadow-2xl">
         <div className="p-6 md:p-8">
-          <div className="flex items-start justify-between gap-4 mb-6">
-            <div className="w-12 h-12 shrink-0 bg-accent/5 text-accent rounded-2xl flex items-center justify-center">
-              <Icon icon={faQuoteRight} className="text-xl" />
-            </div>
-
-            <div className="flex items-center gap-2">
-              {isOnProfilePage && isOwner ? (
-                <div
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-tight transition-colors ${
-                    question.isPublic
-                      ? "bg-accent/5 border-accent/20 text-accent"
-                      : "bg-surface-muted border-border/50 text-text-muted"
-                  }`}
-                >
-                  <Icon
-                    icon={question.isPublic ? faEarthAmericas : faLock}
-                    className="text-[9px]"
-                  />
-                  <span>{question.isPublic ? "عام" : "خاص"}</span>
-                </div>
-              ) : null}
-
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-muted rounded-full border border-border/50 text-text-muted text-[10px] font-black uppercase tracking-tight">
-                <Icon icon={faClock} className="text-[9px]" />
-                <span className="dir-ltr">
-                  {formattedDate(question.createdAt)}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-accent/10 text-accent rounded-xl flex items-center justify-center">
+                <Icon icon={faQuoteRight} className="text-lg" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black text-text-muted uppercase tracking-tighter opacity-60">
+                  تاريخ النشر
                 </span>
+                <div className="flex items-center gap-1.5 text-text-primary font-bold text-xs">
+                  <Icon icon={faClock} className="text-[10px] text-accent" />
+                  <span className="dir-ltr">
+                    {formattedDate(question.createdAt)}
+                  </span>
+                </div>
               </div>
             </div>
+
+            {isOnProfilePage && isOwner && (
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-[9px] font-black uppercase ${question.isPublic ? "bg-accent/5 border-accent/20 text-accent" : "bg-surface-muted border-border/50 text-text-muted"}`}
+              >
+                <Icon icon={question.isPublic ? faEarthAmericas : faLock} />
+                <span>{question.isPublic ? "عام" : "خاص"}</span>
+              </div>
+            )}
           </div>
 
-          <div className="mb-8">
+          <div className="mb-6">
             {isListView ? (
               <Link
                 href={`/questions/${question._id}`}
-                className="group/title flex items-center justify-between gap-6"
+                className="group/title flex items-center justify-between gap-4"
               >
-                <h2 className="text-xl md:text-2xl font-black text-text-primary leading-snug group-hover/title:text-accent transition-colors">
+                <h2 className="text-xl md:text-2xl font-black text-text-primary leading-snug group-hover/title:text-accent transition-colors line-clamp-2">
                   {question.question}
                 </h2>
-                <div className="shrink-0 w-10 h-10 rounded-xl bg-surface-muted flex items-center justify-center text-text-muted group-hover/title:bg-accent group-hover/title:text-white transition-all">
-                  <Icon icon={faAngleLeft} />
+                <div className="shrink-0 w-8 h-8 rounded-full bg-surface-muted flex items-center justify-center text-text-muted group-hover/title:bg-accent group-hover/title:text-white transition-all -rotate-45 group-hover/title:rotate-0">
+                  <Icon icon={faAngleLeft} className="text-sm" />
                 </div>
               </Link>
             ) : (
-              <h2 className="text-2xl md:text-3xl font-black text-text-primary leading-tight">
+              <h2 className="text-2xl md:text-4xl font-black text-text-primary leading-tight tracking-tight">
                 {question.question}
               </h2>
             )}
           </div>
 
-          {!isListView ? (
-            <Fragment>
-              <div className="mb-8 space-y-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-px flex-1 bg-border/50"></div>
-                  <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">
-                    الردود
-                  </span>
-                  <div className="h-px flex-1 bg-border/50"></div>
-                </div>
+          {!isListView && (
+            <div className="mt-8 pt-8 border-t border-border/40">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-[10px] font-black text-text-muted uppercase tracking-widest whitespace-nowrap">
+                  الردود المباشرة
+                </span>
+                <div className="h-px w-full bg-gradient-to-r from-border/60 to-transparent" />
+              </div>
 
-                {!repliesLoading ? (
-                  replies.length > 0 ? (
-                    <div className="space-y-4 max-h-[400px] overflow-y-auto pl-2 custom-scrollbar">
-                      {replies.map((reply) => (
-                        <QuestionReply
-                          key={reply._id}
-                          reply={reply}
-                          userId={userId}
-                          openRegisterModal={openRegisterModal}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="py-6 grayscale opacity-60 scale-90">
-                      <Empty
-                        title="لا توجد ردود"
-                        description="كن أول من يترك بصمته هنا."
-                      />
-                    </div>
-                  )
-                ) : (
-                  <div className="flex justify-center py-12">
-                    <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+              <div className="space-y-4 mb-8">
+                {repliesLoading ? (
+                  <div className="flex justify-center py-10">
+                    <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
                   </div>
+                ) : replies.length > 0 ? (
+                  <div className="space-y-4 max-h-[450px] overflow-y-auto custom-scrollbar pr-2">
+                    {replies.map((reply) => (
+                      <QuestionReply
+                        key={reply._id}
+                        reply={reply}
+                        userId={userId}
+                        openRegisterModal={openRegisterModal}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <Empty
+                    title="لا توجد ردود"
+                    description="كن أول من يترك بصمته هنا."
+                  />
                 )}
               </div>
 
-              {!isOwner ? (
-                <div className="bg-surface-muted/30 rounded-[2rem] p-5 border border-border/50">
-                  <div className="flex items-center gap-2 mb-4 text-xs font-black text-text-primary uppercase tracking-wider">
-                    <Icon icon={faReply} className="text-accent" />
-                    <span>شارك برأيك</span>
-                  </div>
-
-                  <Textarea
-                    value={reply}
-                    onChange={(e) => setReply(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        onReply();
+              {!isOwner && (
+                <div className="bg-surface-muted/40 p-1.5 rounded-[2rem] border border-border/40">
+                  <div className="bg-surface rounded-[1.8rem] p-4">
+                    <Textarea
+                      value={reply}
+                      onChange={(e) => setReply(e.target.value)}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" &&
+                        !e.shiftKey &&
+                        (e.preventDefault(), onReply())
                       }
-                    }}
-                    placeholder="اكتب ردك الصريح هنا..."
-                    className="w-full !bg-white !p-4 !rounded-2xl !border-border focus:!border-accent !text-sm !min-h-[100px] !mb-4 transition-all"
-                  />
-
-                  <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-6">
-                      <label className="flex items-center gap-2.5 cursor-pointer group/check">
-                        <div className="relative flex items-center">
+                      placeholder="اكتب ردك هنا..."
+                    />
+                    <div className="flex items-center justify-between border-t border-border/30 pt-3">
+                      <div className="flex items-center gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer group/anon">
+                          <div className="relative w-5 h-5 border-2 border-border rounded-lg group-hover/anon:border-accent transition-all peer-checked:bg-accent">
+                            <input
+                              type="checkbox"
+                              checked={replyAsAnnonymous}
+                              onChange={(e) => {
+                                setReplyAsAnonymous(e.target.checked);
+                                setName("");
+                              }}
+                              className="absolute inset-0 opacity-0 cursor-pointer"
+                            />
+                            {replyAsAnnonymous && (
+                              <Icon
+                                icon={faCheck}
+                                className="absolute inset-0 m-auto text-[8px] text-white"
+                              />
+                            )}
+                          </div>
+                          <span className="text-[11px] font-bold text-text-muted group-hover/anon:text-text-primary">
+                            هوية مجهولة
+                          </span>
+                        </label>
+                        {!replyAsAnnonymous && (
                           <input
-                            type="checkbox"
-                            checked={replyAsAnnonymous}
-                            onChange={(e) => onCheckAnonymous(e.target.checked)}
-                            className="peer appearance-none w-5 h-5 border-2 border-border rounded-lg checked:bg-accent checked:border-accent transition-all cursor-pointer"
+                            placeholder="اسمك المستعار"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="bg-surface-muted border-none rounded-lg px-3 py-1 text-[11px] focus:ring-1 focus:ring-accent outline-none w-28 animate-in fade-in zoom-in-95"
                           />
-                          <Icon
-                            icon={faCheck}
-                            className="absolute left-1.5 text-[8px] text-white opacity-0 peer-checked:opacity-100"
-                          />
-                        </div>
-                        <span className="text-xs font-bold text-text-muted group-hover/check:text-text-primary">
-                          مجهول
-                        </span>
-                      </label>
-
-                      {!replyAsAnnonymous ? (
-                        <input
-                          placeholder="اسمك المستعار"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          className="bg-white border border-border rounded-lg px-3 py-1.5 text-xs focus:border-accent outline-none w-32 animate-in fade-in slide-in-from-right-1"
-                        />
-                      ) : null}
+                        )}
+                      </div>
+                      <Button
+                        loading={replyLoading}
+                        onClick={onReply}
+                        className="!h-9 !px-5 !rounded-xl !text-[11px] !font-black !bg-primary !text-secondary hover:!bg-accent transition-all"
+                        icon={faPaperPlane}
+                      >
+                        إرسال
+                      </Button>
                     </div>
-
-                    <Button
-                      loading={replyLoading}
-                      onClick={onReply}
-                      className="!h-10 !px-6 !rounded-xl !text-xs !font-black !bg-primary !text-secondary hover:!bg-accent transition-colors"
-                      icon={faPaperPlane}
-                    >
-                      إرسال
-                    </Button>
                   </div>
                 </div>
-              ) : null}
-            </Fragment>
-          ) : null}
+              )}
+            </div>
+          )}
 
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-border/40">
-            <Button
+          <div className="flex items-center justify-between mt-6 pt-4 border-t border-border/40">
+            <button
               onClick={onShare}
-              icon={faShareNodes}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl !bg-transparent !text-text-muted hover:!bg-primary/10 shadow-none"
+              className="cursor-pointer flex items-center gap-2 text-[11px] font-black text-text-muted hover:text-accent transition-colors px-2 py-1"
             >
-              مشاركة
-            </Button>
-
-            {isOnProfilePage && isOwner ? (
+              <Icon icon={faShareNodes} />
+              <span>مشاركة</span>
+            </button>
+            {isOnProfilePage && isOwner && (
               <QuestionActions question={question} />
-            ) : null}
+            )}
           </div>
         </div>
       </div>
