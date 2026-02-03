@@ -92,7 +92,7 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
 
   const dropdownItems: DropdownItem[] = [
     {
-      title: question.isPublic ? "جعله خاص" : "جعله عام",
+      title: question.isPublic ? "اجعله خاص" : "اجعله عام",
       icon: question.isPublic ? faLock : faEarthAmericas,
       onClick: () => setTogglePrivacyModalVisible(true),
     },
