@@ -106,13 +106,12 @@ export default function Message({ message }: Props) {
                   title: "حذف الرسالة",
                   icon: faTrash,
                   className: "text-danger hover:!bg-danger/5",
-                  onClick: deleteMessage,
+                  onClick: () => setDeleteModalVisible(true),
                 },
               ]}
             >
               <Button
                 icon={faEllipsisVertical}
-                loading={deleteLoading}
                 className="!w-8 !h-8 aspect-square rounded-full !bg-transparent hover:!bg-border/50 !text-text-muted shadow-none !p-3"
               />
             </Dropdown>
@@ -157,6 +156,7 @@ export default function Message({ message }: Props) {
         open={deleteModalVisible}
         onClose={() => setDeleteModalVisible(false)}
         onConfirm={deleteMessage}
+        loading={deleteLoading}
       />
     </div>
   );
