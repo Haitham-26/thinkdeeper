@@ -26,7 +26,7 @@ export default function Page() {
         {
           params: {
             page: pageNumber,
-            limit: 3,
+            limit: 5,
           },
         },
       );
@@ -35,7 +35,7 @@ export default function Page() {
       setHasNext(data.meta?.hasNext);
 
       if (data.meta?.total) {
-        setTotalPages(Math.ceil(data.meta.total / 3));
+        setTotalPages(Math.ceil(data.meta.total / 5));
       }
     } catch (e) {
       console.error(e);

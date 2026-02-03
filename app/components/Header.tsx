@@ -20,6 +20,14 @@ import Image from "next/image";
 const publicLinks = [
   { title: "الرئيسية", path: "/", icon: faHouse },
   { title: "كيفية الاستخدام", path: "/how-it-works", icon: faCircleQuestion },
+  { title: "أسئلة المنتدى", path: "/questions/public", icon: faBolt },
+];
+
+const privateLinks = [
+  { title: "الملف الشخصي", path: "/profile", icon: faUserCircle },
+  { title: "الرسائل الواردة", path: "/messages", icon: faMessage },
+  { title: "أسئلتي", path: "/questions", icon: faComments },
+  { title: "أسئلة المنتدى", path: "/questions/public", icon: faBolt },
 ];
 
 type HeaderProps = {
@@ -57,30 +65,17 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
   const NavContent = () => (
     <Fragment>
-      <Link
-        href="/profile"
-        className={navLinkClass("/profile")}
-        onClick={() => setOpen(false)}
-      >
-        <Icon icon={faUserCircle} className="text-sm" />
-        <span>الملف الشخصي</span>
-      </Link>
-      <Link
-        href="/messages"
-        className={navLinkClass("/messages")}
-        onClick={() => setOpen(false)}
-      >
-        <Icon icon={faMessage} className="text-sm" />
-        <span>الرسائل الواردة</span>
-      </Link>
-      <Link
-        href="/questions"
-        className={navLinkClass("/questions")}
-        onClick={() => setOpen(false)}
-      >
-        <Icon icon={faComments} className="text-sm" />
-        <span>أسئلتي</span>
-      </Link>
+      {privateLinks.map((link) => (
+        <Link
+          key={link.path}
+          href={link.path}
+          className={navLinkClass(link.path)}
+          onClick={() => setOpen(false)}
+        >
+          <Icon icon={link.icon} className="text-sm" />
+          <span>{link.title}</span>
+        </Link>
+      ))}
     </Fragment>
   );
 
