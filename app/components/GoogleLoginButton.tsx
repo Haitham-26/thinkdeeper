@@ -27,7 +27,7 @@ export const GoogleLoginButton: React.FC<Props> = ({ title }) => {
     <Button
       onClick={onLoginWithGoogle}
       loading={loading}
-      className="w-full !h-14 !rounded-2xl !bg-white !text-primary !font-black !text-sm border-none shadow-xl hover:!bg-slate-100 transition-all flex items-center justify-center gap-3 active:scale-95"
+      className="w-full !h-14 !bg-white !text-primary !font-black !text-sm hover:!bg-slate-100 flex items-center justify-center gap-3 active:scale-95 shadow-none"
     >
       <span>{title}</span>
 

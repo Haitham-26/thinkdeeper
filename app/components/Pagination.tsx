@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "./Button";
 import { NextClient } from "@/tools/NextClient";
 import { PageMeta } from "@/model/shared/types/PageMeta";
+import { useGlobalContext } from "../questions/context/global-context";
 
 const getButtonStyles = (active?: boolean) => {
   const base =
@@ -33,13 +34,11 @@ export const Pagination: React.FC<PaginationProps> = ({
   action,
   limit = 5,
 }) => {
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [hasNext, setHasNext] = useState(false);
+  const { globalMeta, setGlobalMeta } = useGlobalContext();
 
   const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage);
+    if (newPage >= 1 && newPage <= globalMeta.totalPages) {
+      setGlobalMeta((prev) => ({ ...prev, currentPage: newPage }));
     }
   };
 
@@ -60,10 +59,13 @@ export const Pagination: React.FC<PaginationProps> = ({
         );
 
         setData(data);
-        setHasNext(data.meta?.hasNext);
+        setGlobalMeta((prev) => ({ ...prev, hasNext: data.meta?.hasNext }));
 
         if (data.meta?.totalPages) {
-          setTotalPages(Math.ceil(data.meta.totalPages));
+          setGlobalMeta((prev) => ({
+            ...prev,
+            totalPages: Math.ceil(data.meta.totalPages),
+          }));
         }
       } catch (e) {
         console.error(e);
@@ -71,15 +73,15 @@ export const Pagination: React.FC<PaginationProps> = ({
         setLoading(false);
       }
     },
-    [action, limit, setData, setLoading],
+    [action, limit, setData, setLoading, setGlobalMeta],
   );
 
   useEffect(() => {
-    onFetch(page);
+    onFetch(globalMeta.currentPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page, onFetch]);
+  }, [globalMeta.currentPage, onFetch]);
 
-  if (totalPages <= 1) {
+  if (globalMeta.totalPages <= 1) {
     return null;
   }
 
@@ -87,27 +89,29 @@ export const Pagination: React.FC<PaginationProps> = ({
     <div className="flex items-center justify-center gap-2 mt-8 pb-12">
       <Button
         icon={faAngleRight}
-        disabled={page === 1}
-        onClick={() => handlePageChange(page - 1)}
+        disabled={globalMeta.currentPage === 1}
+        onClick={() => handlePageChange(globalMeta.currentPage - 1)}
         className={getButtonStyles(false)}
       />
 
       <div className="flex items-center gap-2">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-          <Button
-            key={p}
-            onClick={() => handlePageChange(p)}
-            className={getButtonStyles(p === page)}
-          >
-            <span className="text-xs font-black">{p}</span>
-          </Button>
-        ))}
+        {Array.from({ length: globalMeta.totalPages }, (_, i) => i + 1).map(
+          (p) => (
+            <Button
+              key={p}
+              onClick={() => handlePageChange(p)}
+              className={getButtonStyles(p === globalMeta.currentPage)}
+            >
+              <span className="text-xs font-black">{p}</span>
+            </Button>
+          ),
+        )}
       </div>
 
       <Button
         icon={faAngleLeft}
-        disabled={!hasNext}
-        onClick={() => handlePageChange(page + 1)}
+        disabled={!globalMeta.hasNext}
+        onClick={() => handlePageChange(globalMeta.currentPage + 1)}
         className={getButtonStyles(false)}
       />
     </div>

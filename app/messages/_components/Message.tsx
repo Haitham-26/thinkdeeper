@@ -29,7 +29,7 @@ export default function Message({ message }: Props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const { setMessages, setMessagesLoading } = useGlobalContext();
+  const { setMessages, setMessagesLoading, globalMeta } = useGlobalContext();
 
   const textRef = useRef<HTMLParagraphElement>(null);
 
@@ -48,6 +48,10 @@ export default function Message({ message }: Props) {
 
       const { data } = await NextClient("/message/messages", {
         method: "POST",
+        data: {
+          page: globalMeta.currentPage,
+          limit: 10,
+        },
       });
 
       setMessages(data as any);

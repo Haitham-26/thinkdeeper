@@ -30,6 +30,8 @@ type GlobalContextType = {
   setMessages: (messages: DataWithMeta<Message>) => void;
   messagesLoading: boolean;
   setMessagesLoading: (loading: boolean) => void;
+  globalMeta: PageMeta;
+  setGlobalMeta: React.Dispatch<React.SetStateAction<PageMeta>>;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -43,6 +45,13 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
   const [messagesLoading, setMessagesLoading] = useState(false);
 
+  const [globalMeta, setGlobalMeta] = useState<PageMeta>({
+    currentPage: 1,
+    hasNext: false,
+    totalPages: 1,
+    total: 0,
+  });
+
   return (
     <GlobalContext.Provider
       value={{
@@ -54,6 +63,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setMessages,
         messagesLoading,
         setMessagesLoading,
+        globalMeta,
+        setGlobalMeta,
       }}
     >
       {children}

@@ -29,7 +29,7 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [togglePrivacyModalVisible, setTogglePrivacyModalVisible] =
     useState(false);
-  const { setQuestions } = useGlobalContext();
+  const { setQuestions, globalMeta } = useGlobalContext();
 
   const togglePrivacy = async () => {
     try {
@@ -44,7 +44,11 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
 
       const { data } = await NextClient("/questions", {
         method: "POST",
-        data: { userId: question.userId },
+        data: {
+          userId: question.userId,
+          page: globalMeta.currentPage,
+          limit: 5,
+        },
       });
 
       setQuestions(data as any);
@@ -68,7 +72,11 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
       });
       const { data } = await NextClient("/questions", {
         method: "POST",
-        data: { userId: question.userId },
+        data: {
+          userId: question.userId,
+          page: globalMeta.currentPage,
+          limit: 5,
+        },
       });
 
       setQuestions(data as any);
