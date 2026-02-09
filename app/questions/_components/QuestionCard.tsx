@@ -140,7 +140,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 <h2 className="text-xl md:text-2xl font-black text-text-primary leading-snug group-hover/title:text-accent transition-colors line-clamp-2">
                   {question.question}
                 </h2>
-                <div className="shrink-0 w-8 h-8 rounded-full bg-surface-muted flex items-center justify-center text-text-muted group-hover/title:bg-accent group-hover/title:text-white transition-all -rotate-45 group-hover/title:rotate-0">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-surface-muted flex items-center justify-center text-text-muted group-hover/title:bg-accent group-hover/title:text-white transition-all">
                   <Icon icon={faAngleLeft} className="text-sm" />
                 </div>
               </Link>

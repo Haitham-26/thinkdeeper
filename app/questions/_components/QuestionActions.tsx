@@ -29,7 +29,11 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [togglePrivacyModalVisible, setTogglePrivacyModalVisible] =
     useState(false);
-  const { setQuestions, globalMeta } = useGlobalContext();
+  const {
+    setQuestions,
+    globalMeta,
+    questionsFilters: { isPublic, sort },
+  } = useGlobalContext();
 
   const togglePrivacy = async () => {
     try {
@@ -48,6 +52,8 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
           userId: question.userId,
           page: globalMeta.currentPage,
           limit: 5,
+          isPublic,
+          sort,
         },
       });
 
@@ -76,6 +82,8 @@ export const QuestionActions: React.FC<QuestionActionsProps> = ({
           userId: question.userId,
           page: globalMeta.currentPage,
           limit: 5,
+          isPublic,
+          sort,
         },
       });
 

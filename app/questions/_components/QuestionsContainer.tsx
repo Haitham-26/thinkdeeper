@@ -11,6 +11,9 @@ import { Icon } from "@/app/components/Icon";
 import { Empty } from "@/app/components/Empty";
 import { Spinner } from "@/app/components/Spinner";
 import { Pagination } from "@/app/components/Pagination";
+import { GenericSortType } from "@/model/shared/dto/GenericSortType";
+import { GetQuestionsDto } from "@/model/question/dto/GetQuestionsDto";
+import { Select } from "@/app/components/Select";
 
 type QuestionsContainerProps = {
   userId: string | null;
@@ -22,15 +25,21 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
   const [createQuestionModalVisible, setCreateQuestionModalVisible] =
     useState(false);
   const [questionsLoading, setQuestionsLoading] = useState(false);
-  const { questions, setQuestions } = useGlobalContext();
+
+  const {
+    questions,
+    setQuestions,
+    questionsFilters: { isPublic, sort },
+    setQuestionsFilters,
+  } = useGlobalContext();
 
   const paginationAction = useMemo(
     () => ({
       endpoint: "/questions",
       method: "POST" as const,
-      data: { userId },
+      data: { userId, isPublic, sort } as GetQuestionsDto,
     }),
-    [userId],
+    [userId, isPublic, sort],
   );
 
   return (
@@ -39,7 +48,6 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
         <aside className="lg:col-span-4 space-y-6">
           <div className="bg-primary rounded-[2.5rem] p-8 text-secondary shadow-2xl relative overflow-hidden group">
             <div className="absolute top-[-20%] right-[-20%] w-40 h-40 bg-accent rounded-full blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
-
             <div className="relative z-10">
               <div className="inline-flex items-center justify-center p-3 bg-secondary/10 backdrop-blur-md rounded-2xl mb-6">
                 <Icon icon={faComments} className="text-accent text-2xl" />
@@ -47,10 +55,6 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
               <h1 className="text-4xl font-black mb-4 leading-tight">
                 مركز الأسئلة
               </h1>
-              <p className="text-secondary/60 font-medium text-sm leading-relaxed mb-8">
-                قم بإدارة تساؤلاتك، وتابع تفاعل أصدقائك مع المواضيع التي تطرحها.
-              </p>
-
               <div className="flex items-baseline gap-2 mb-8">
                 <span className="text-6xl font-black text-accent">
                   {questions?.meta?.total || 0}
@@ -59,15 +63,58 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
                   سؤال نشط
                 </span>
               </div>
-
               <Button
                 onClick={() => setCreateQuestionModalVisible(true)}
-                className="w-full !h-14 !rounded-2xl !bg-accent !text-secondary font-black shadow-lg shadow-accent/20 transition-transform"
+                className="w-full !h-14 !rounded-2xl !bg-accent !text-secondary font-black shadow-lg shadow-accent/20"
                 icon={faPlus}
               >
                 طرح سؤال جديد
               </Button>
             </div>
+          </div>
+
+          <div className="bg-surface border border-border rounded-[2.5rem] p-6 space-y-4 shadow-sm">
+            <h3 className="font-bold text-text-primary px-2">تصفية النتائج</h3>
+
+            <Select
+              items={[
+                {
+                  label: "كل الأنواع",
+                  value: undefined,
+                },
+                {
+                  label: "خاص",
+                  value: false,
+                },
+                {
+                  label: "عام",
+                  value: true,
+                },
+              ]}
+              value={isPublic}
+              onChange={(v) =>
+                setQuestionsFilters((prev) => ({ ...prev, isPublic: v }))
+              }
+              placeholder="اختر النوع"
+            />
+
+            <Select
+              items={[
+                {
+                  label: "من الأحدث الى الأقدم",
+                  value: GenericSortType.NEWEST,
+                },
+                {
+                  label: "من الأقدم الى الأحدث",
+                  value: GenericSortType.OLDEST,
+                },
+              ]}
+              value={sort}
+              onChange={(v) =>
+                setQuestionsFilters((prev) => ({ ...prev, sort: v }))
+              }
+              placeholder="اختر الترتيب"
+            />
           </div>
         </aside>
 
@@ -95,8 +142,8 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
                   </div>
                 ) : (
                   <Empty
-                    title="لا توجد أسئلة حالياً"
-                    description="لم تقم بإضافة أي سؤال بعد. ابدأ الآن وشارك أول تساؤل لك مع العالم!"
+                    title="لا توجد نتائج"
+                    description="جرب تغيير فلاتر البحث أو ابدأ بإضافة سؤال جديد."
                     action={{
                       title: "أضف سؤالك الأول",
                       onClick: () => setCreateQuestionModalVisible(true),
@@ -104,7 +151,9 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
                   />
                 )
               ) : (
-                <Spinner className="text-accent static" />
+                <div className="flex justify-center items-center py-20">
+                  <Spinner className="text-accent static" />
+                </div>
               )}
 
               <Pagination
