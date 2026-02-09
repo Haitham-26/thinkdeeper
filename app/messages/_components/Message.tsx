@@ -17,6 +17,7 @@ import { WarningModal } from "@/app/components/WarningModal";
 import { Toast } from "@/tools/Toast";
 import { NextClient } from "@/tools/NextClient";
 import { useGlobalContext } from "@/app/questions/context/global-context";
+import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
 
 type Props = {
   message: MessageModel;
@@ -28,36 +29,33 @@ export default function Message({ message }: Props) {
   const [isCollapsible, setIsCollapsible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [starLoading, setStarLoading] = useState(false);
 
-  const { setMessages, setMessagesLoading, globalMeta } = useGlobalContext();
+  const {
+    setMessages,
+    setMessagesLoading,
+    globalMeta,
+    messagesFilters: { isStarred, sort },
+  } = useGlobalContext();
 
   const textRef = useRef<HTMLParagraphElement>(null);
 
   const deleteMessage = async () => {
     try {
       setDeleteLoading(true);
-
       await NextClient("/message/delete", {
         method: "DELETE",
-        data: {
-          messageId: message._id,
-        },
+        data: { messageId: message._id },
       });
 
       setMessagesLoading(true);
-
       const { data } = await NextClient("/message/messages", {
         method: "POST",
-        data: {
-          page: globalMeta.currentPage,
-          limit: 10,
-        },
+        data: { page: globalMeta.currentPage, limit: 10 },
       });
 
       setMessages(data as any);
-
       setDeleteModalVisible(false);
-
       Toast.success("تم حذف الرسالة بنجاح");
     } catch (e) {
       console.log(e);
@@ -65,6 +63,34 @@ export default function Message({ message }: Props) {
     } finally {
       setDeleteLoading(false);
       setMessagesLoading(false);
+    }
+  };
+
+  const toggleStar = async () => {
+    try {
+      setStarLoading(true);
+      await NextClient(`/message/toggle-star`, {
+        method: "PATCH",
+        data: {
+          messageId: message._id,
+          isStarred: !message?.isStarred,
+        },
+      });
+
+      const { data } = await NextClient("/message/messages", {
+        method: "POST",
+        data: { page: globalMeta.currentPage, limit: 10, isStarred, sort },
+      });
+
+      setMessages(data as any);
+      Toast.success(
+        message?.isStarred ? "تم إزالة التميز" : "تم تمييز الرسالة بنجاح",
+      );
+    } catch (e) {
+      console.log(e);
+      Toast.apiError(e);
+    } finally {
+      setStarLoading(false);
     }
   };
 
@@ -79,11 +105,12 @@ export default function Message({ message }: Props) {
     <div className="relative w-full max-w-2xl mx-auto group">
       <div className="absolute inset-0 bg-accent/5 rounded-2xl md:rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      <div className="relative bg-surface border border-border rounded-2xl md:rounded-3xl overflow-hidden transition-all duration-300 hover:border-accent/20 shadow-sm hover:shadow-md">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface-muted/30">
-          <div className="flex items-center gap-2.5">
+      <div className="relative bg-surface border border-border rounded-2xl md:rounded-3xl transition-all duration-300 hover:border-accent/20 shadow-sm hover:shadow-md">
+        <div className="flex flex-wrap items-start justify-between px-4 py-3 border-b border-border bg-surface-muted/30 gap-y-3">
+          {/* Left Side: Identity Info */}
+          <div className="flex items-center gap-2.5 min-w-0 max-w-full">
             <div
-              className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs shadow-sm ${
+              className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs shadow-sm ${
                 isAnonymous
                   ? "bg-white text-text-muted border border-border"
                   : "bg-accent text-white"
@@ -91,15 +118,15 @@ export default function Message({ message }: Props) {
             >
               <Icon icon={isAnonymous ? faUserSecret : faCircleUser} />
             </div>
-            <span className="font-black text-xs md:text-sm text-text-primary">
+            <span className="font-black text-xs md:text-sm text-text-primary break-words leading-tight">
               {message.name || "مجهول"}
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold text-text-muted opacity-80">
+          <div className="flex items-center gap-1 md:gap-3 flex-shrink-0 ms-auto">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-text-muted opacity-80 whitespace-nowrap">
               <Icon icon={faCalendar} className="text-[9px]" />
-              <span className="dir-ltr whitespace-nowrap">
+              <span className="dir-ltr">
                 {formattedDate(message.createdAt, true)}
               </span>
             </div>
@@ -119,6 +146,21 @@ export default function Message({ message }: Props) {
                 className="!w-8 !h-8 aspect-square rounded-full !bg-transparent hover:!bg-border/50 !text-text-muted shadow-none !p-3"
               />
             </Dropdown>
+
+            <Button
+              onClick={toggleStar}
+              loading={starLoading}
+              className={`!w-fit !p-0 !bg-transparent shadow-none border-none ${
+                message.isStarred
+                  ? "!text-amber-500 scale-110"
+                  : "!text-text-muted/40 hover:!text-amber-400"
+              }`}
+            >
+              <Icon
+                icon={faStar}
+                className={`text-sm ${message.isStarred ? "drop-shadow-[0_0_5px_rgba(245,158,11,0.4)]" : ""}`}
+              />
+            </Button>
           </div>
         </div>
 
@@ -134,12 +176,12 @@ export default function Message({ message }: Props) {
             >
               {message.message}
             </p>
-            {isCollapsible && !isExpanded ? (
+            {isCollapsible && !isExpanded && (
               <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-surface to-transparent" />
-            ) : null}
+            )}
           </div>
 
-          {isCollapsible ? (
+          {isCollapsible && (
             <Button
               onClick={() => setIsExpanded(!isExpanded)}
               className="mt-3 flex items-center gap-1.5 text-[11px] font-black !text-accent hover:opacity-80 transition-all uppercase tracking-tighter !p-2 !bg-transparent shadow-none"
@@ -150,7 +192,7 @@ export default function Message({ message }: Props) {
                 className="text-[9px]"
               />
             </Button>
-          ) : null}
+          )}
         </div>
       </div>
 

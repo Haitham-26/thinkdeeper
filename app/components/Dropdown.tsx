@@ -71,9 +71,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 <Icon
                   icon={item.icon}
                   className={
-                    item.className?.includes("text-danger")
-                      ? "text-danger"
-                      : "text-accent"
+                    !item.className?.includes("text-") ? "text-accent" : ""
                   }
                 />
               ) : null}

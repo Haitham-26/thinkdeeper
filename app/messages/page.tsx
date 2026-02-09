@@ -8,22 +8,25 @@ import { useMemo } from "react";
 import { Pagination } from "../components/Pagination";
 
 export default function Page() {
-  const { setMessagesLoading, setMessages } = useGlobalContext();
+  const {
+    setMessagesLoading,
+    setMessages,
+    messagesFilters: { isStarred, sort },
+  } = useGlobalContext();
 
   const paginationAction = useMemo(
     () => ({
       endpoint: "/message/messages",
       method: "POST" as const,
+      data: { isStarred, sort },
     }),
-    [],
+    [isStarred, sort],
   );
 
   return (
     <div className="w-full bg-surface-muted p-4 pt-6 md:p-8 lg:p-12 relative">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <aside className="lg:col-span-4 space-y-6">
-          <MessagesCounter />
-        </aside>
+        <MessagesCounter />
 
         <div className="lg:col-span-8">
           <div className="bg-surface border border-border rounded-[3rem] shadow-sm min-h-[600px] flex flex-col overflow-hidden">

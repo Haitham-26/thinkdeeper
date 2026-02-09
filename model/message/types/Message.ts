@@ -3,6 +3,10 @@ export interface Message {
   message: string;
   name?: string;
   recipientId: string;
+
+  /** For the message recipient only */
+  isStarred?: boolean;
+
   createdAt: Date;
   updatedAt: Date;
 }

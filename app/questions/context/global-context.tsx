@@ -12,9 +12,14 @@ interface DataWithMeta<T> {
   meta: PageMeta;
 }
 
-type QuestionsFilter = {
+type QuestionsFilters = {
   sort?: GenericSortType;
   isPublic?: boolean;
+};
+
+type MessagesFilters = {
+  sort?: GenericSortType;
+  isStarred?: boolean;
 };
 
 const defaultDataWithMeta = {
@@ -30,14 +35,19 @@ const defaultDataWithMeta = {
 type GlobalContextType = {
   questions: DataWithMeta<Question>;
   setQuestions: (questions: DataWithMeta<Question>) => void;
-  questionsFilters: QuestionsFilter;
-  setQuestionsFilters: React.Dispatch<React.SetStateAction<QuestionsFilter>>;
+  questionsFilters: QuestionsFilters;
+  setQuestionsFilters: React.Dispatch<React.SetStateAction<QuestionsFilters>>;
+
   replies: Reply[];
   setReplies: (replies: Reply[]) => void;
+
   messages: DataWithMeta<Message>;
   setMessages: (messages: DataWithMeta<Message>) => void;
+  messagesFilters: MessagesFilters;
+  setMessagesFilters: React.Dispatch<React.SetStateAction<MessagesFilters>>;
   messagesLoading: boolean;
   setMessagesLoading: (loading: boolean) => void;
+
   globalMeta: PageMeta;
   setGlobalMeta: React.Dispatch<React.SetStateAction<PageMeta>>;
 };
@@ -47,16 +57,20 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [questions, setQuestions] =
     useState<DataWithMeta<Question>>(defaultDataWithMeta);
-  const [questionsFilters, setQuestionsFilters] = useState<QuestionsFilter>({
+  const [questionsFilters, setQuestionsFilters] = useState<QuestionsFilters>({
     sort: GenericSortType.NEWEST,
     isPublic: undefined,
   });
 
   const [replies, setReplies] = useState<Reply[]>([]);
+
   const [messages, setMessages] =
     useState<DataWithMeta<Message>>(defaultDataWithMeta);
-
   const [messagesLoading, setMessagesLoading] = useState(false);
+  const [messagesFilters, setMessagesFilters] = useState<MessagesFilters>({
+    sort: GenericSortType.NEWEST,
+    isStarred: undefined,
+  });
 
   const [globalMeta, setGlobalMeta] = useState<PageMeta>({
     currentPage: 1,
@@ -72,12 +86,17 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setQuestions,
         questionsFilters,
         setQuestionsFilters,
+
         replies,
         setReplies,
+
         messages,
         setMessages,
+        messagesFilters,
+        setMessagesFilters,
         messagesLoading,
         setMessagesLoading,
+
         globalMeta,
         setGlobalMeta,
       }}

@@ -100,14 +100,8 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
 
             <Select
               items={[
-                {
-                  label: "من الأحدث الى الأقدم",
-                  value: GenericSortType.NEWEST,
-                },
-                {
-                  label: "من الأقدم الى الأحدث",
-                  value: GenericSortType.OLDEST,
-                },
+                { label: "الأحدث أولاً", value: GenericSortType.NEWEST },
+                { label: "الأقدم أولاً", value: GenericSortType.OLDEST },
               ]}
               value={sort}
               onChange={(v) =>

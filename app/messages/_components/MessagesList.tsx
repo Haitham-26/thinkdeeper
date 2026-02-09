@@ -26,7 +26,7 @@ export default function MessagesList() {
       {messages.data.map((message) => (
         <div
           key={message._id}
-          className="transition-all duration-500 hover:!blur-none group-hover/list:blur-[2px] group-hover/list:opacity-50 hover:!opacity-100 hover:scale-[1.02]"
+          className="transition-all duration-500 hover:!blur-none group-hover/list:blur-[2px] group-hover/list:opacity-50 hover:!opacity-100"
         >
           <Message message={message} />
         </div>
