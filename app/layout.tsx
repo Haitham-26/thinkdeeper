@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "بصراحة",
   description:
     "شارك أسئلتك ودع أصدقاءك يجيبون عليها بشكل سري، أو استقبل رسائل سرية منهم.",
+  themeColor: "#0f172a",
 };
 
 export default async function RootLayout({
