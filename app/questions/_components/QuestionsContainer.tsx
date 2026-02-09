@@ -74,7 +74,9 @@ export const QuestionsContainer: React.FC<QuestionsContainerProps> = ({
           </div>
 
           <div className="bg-surface border border-border rounded-[2.5rem] p-6 space-y-4 shadow-sm">
-            <h3 className="font-bold text-text-primary px-2">تصفية النتائج</h3>
+            <h3 className="font-bold text-text-primary px-2">
+              الأسئلة النتائج
+            </h3>
 
             <Select
               items={[
